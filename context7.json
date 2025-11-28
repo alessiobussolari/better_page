@@ -1,0 +1,39 @@
+{
+  "name": "BetterPage",
+  "description": "Rails engine providing a structured Page Object pattern for building UI configurations with component registration DSL and schema validation",
+  "version": "0.1.0",
+  "language": "ruby",
+  "framework": "rails",
+  "documentation": {
+    "sources": [
+      {
+        "path": "docs",
+        "type": "api",
+        "description": "API reference and technical documentation"
+      },
+      {
+        "path": "guide",
+        "type": "guide",
+        "description": "Step-by-step guides and tutorials"
+      },
+      {
+        "path": "README.md",
+        "type": "overview",
+        "description": "Project overview and quick start"
+      }
+    ],
+    "entryPoint": "README.md"
+  },
+  "keywords": [
+    "rails",
+    "page-object",
+    "ui-configuration",
+    "dry-schema",
+    "component-registry",
+    "presentation-layer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alessiobussolari/better_page"
+  }
+}

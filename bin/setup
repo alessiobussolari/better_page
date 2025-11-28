@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Set up the development environment for BetterPage gem
+
+echo "Installing dependencies..."
+bundle install
+
+echo "Setup complete!"

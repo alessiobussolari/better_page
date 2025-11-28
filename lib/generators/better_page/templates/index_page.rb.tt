@@ -1,0 +1,55 @@
+# frozen_string_literal: true
+
+<% namespace_path.each_with_index do |ns, i| -%>
+<%= "  " * i %>module <%= ns.camelize %>
+<% end -%>
+<%= "  " * namespace_path.length %>class IndexPage < BetterPage::IndexBasePage
+<%= "  " * namespace_path.length %>  def initialize(<%= resource_plural %>, user, params = {})
+<%= "  " * namespace_path.length %>    @<%= resource_plural %> = <%= resource_plural %>
+<%= "  " * namespace_path.length %>    @user = user
+<%= "  " * namespace_path.length %>    @params = params
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  private
+
+<%= "  " * namespace_path.length %>  # Required: Page header configuration
+<%= "  " * namespace_path.length %>  def header
+<%= "  " * namespace_path.length %>    {
+<%= "  " * namespace_path.length %>      title: "<%= resource_name.titleize %>",
+<%= "  " * namespace_path.length %>      breadcrumbs: breadcrumbs_config,
+<%= "  " * namespace_path.length %>      metadata: [],
+<%= "  " * namespace_path.length %>      actions: [
+<%= "  " * namespace_path.length %>        # { label: "New", path: new_<%= resource_singular %>_path, icon: "plus", style: "primary" }
+<%= "  " * namespace_path.length %>      ]
+<%= "  " * namespace_path.length %>    }
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  # Required: Table configuration
+<%= "  " * namespace_path.length %>  def table
+<%= "  " * namespace_path.length %>    {
+<%= "  " * namespace_path.length %>      items: @<%= resource_plural %>,
+<%= "  " * namespace_path.length %>      columns: [
+<%= "  " * namespace_path.length %>        # { key: :id, label: "ID", type: :text },
+<%= "  " * namespace_path.length %>        # { key: :name, label: "Name", type: :link, path: ->(item) { <%= resource_singular %>_path(item) } }
+<%= "  " * namespace_path.length %>      ],
+<%= "  " * namespace_path.length %>      actions: table_actions,
+<%= "  " * namespace_path.length %>      empty_state: {
+<%= "  " * namespace_path.length %>        icon: "inbox",
+<%= "  " * namespace_path.length %>        title: "No <%= resource_plural.humanize.downcase %> found",
+<%= "  " * namespace_path.length %>        message: "There are no <%= resource_plural.humanize.downcase %> to display at the moment."
+<%= "  " * namespace_path.length %>      }
+<%= "  " * namespace_path.length %>    }
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  def table_actions
+<%= "  " * namespace_path.length %>    lambda { |item|
+<%= "  " * namespace_path.length %>      [
+<%= "  " * namespace_path.length %>        # { label: "View", path: <%= resource_singular %>_path(item), icon: "eye", style: "secondary" },
+<%= "  " * namespace_path.length %>        # { label: "Edit", path: edit_<%= resource_singular %>_path(item), icon: "edit", style: "secondary" }
+<%= "  " * namespace_path.length %>      ]
+<%= "  " * namespace_path.length %>    }
+<%= "  " * namespace_path.length %>  end
+<%= "  " * namespace_path.length %>end
+<% namespace_path.reverse.each_with_index do |_, i| -%>
+<%= "  " * (namespace_path.length - i - 1) %>end
+<% end -%>

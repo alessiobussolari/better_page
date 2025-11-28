@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+<% namespace_path.each_with_index do |ns, i| -%>
+<%= "  " * i %>module <%= ns.camelize %>
+<% end -%>
+<%= "  " * namespace_path.length %>class NewPage < BetterPage::FormBasePage
+<%= "  " * namespace_path.length %>  def initialize(<%= resource_singular %>, user)
+<%= "  " * namespace_path.length %>    @<%= resource_singular %> = <%= resource_singular %>
+<%= "  " * namespace_path.length %>    @user = user
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  private
+
+<%= "  " * namespace_path.length %>  # Required: Form header configuration
+<%= "  " * namespace_path.length %>  def header
+<%= "  " * namespace_path.length %>    {
+<%= "  " * namespace_path.length %>      title: "New <%= resource_singular.humanize %>",
+<%= "  " * namespace_path.length %>      description: "Create a new <%= resource_singular.humanize.downcase %>.",
+<%= "  " * namespace_path.length %>      breadcrumbs: breadcrumbs_config
+<%= "  " * namespace_path.length %>    }
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  # Required: Form panels with fields
+<%= "  " * namespace_path.length %>  def panels
+<%= "  " * namespace_path.length %>    [
+<%= "  " * namespace_path.length %>      {
+<%= "  " * namespace_path.length %>        title: "Basic Information",
+<%= "  " * namespace_path.length %>        fields: [
+<%= "  " * namespace_path.length %>          # { name: :name, type: :text, label: "Name", required: true },
+<%= "  " * namespace_path.length %>          # { name: :email, type: :email, label: "Email" }
+<%= "  " * namespace_path.length %>        ]
+<%= "  " * namespace_path.length %>      }
+<%= "  " * namespace_path.length %>      # NOTE: Checkbox and radio fields must be in separate panels
+<%= "  " * namespace_path.length %>      # {
+<%= "  " * namespace_path.length %>      #   title: "Settings",
+<%= "  " * namespace_path.length %>      #   fields: [
+<%= "  " * namespace_path.length %>      #     { name: :is_active, type: :checkbox, label: "Active" }
+<%= "  " * namespace_path.length %>      #   ]
+<%= "  " * namespace_path.length %>      # }
+<%= "  " * namespace_path.length %>    ]
+<%= "  " * namespace_path.length %>  end
+<%= "  " * namespace_path.length %>end
+<% namespace_path.reverse.each_with_index do |_, i| -%>
+<%= "  " * (namespace_path.length - i - 1) %>end
+<% end -%>

@@ -1,0 +1,31 @@
+# frozen_string_literal: true
+
+<% namespace_path.each_with_index do |ns, i| -%>
+<%= "  " * i %>module <%= ns.camelize %>
+<% end -%>
+<%= "  " * namespace_path.length %>class CustomPage < BetterPage::CustomBasePage
+<%= "  " * namespace_path.length %>  def initialize(data, user)
+<%= "  " * namespace_path.length %>    @data = data
+<%= "  " * namespace_path.length %>    @user = user
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  private
+
+<%= "  " * namespace_path.length %>  # Optional: Page header configuration
+<%= "  " * namespace_path.length %>  def header
+<%= "  " * namespace_path.length %>    {
+<%= "  " * namespace_path.length %>      title: "<%= resource_name.titleize %>",
+<%= "  " * namespace_path.length %>      breadcrumbs: breadcrumbs_config
+<%= "  " * namespace_path.length %>    }
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  # Required: Custom content configuration
+<%= "  " * namespace_path.length %>  def content
+<%= "  " * namespace_path.length %>    {
+<%= "  " * namespace_path.length %>      # Add your custom content configuration here
+<%= "  " * namespace_path.length %>    }
+<%= "  " * namespace_path.length %>  end
+<%= "  " * namespace_path.length %>end
+<% namespace_path.reverse.each_with_index do |_, i| -%>
+<%= "  " * (namespace_path.length - i - 1) %>end
+<% end -%>

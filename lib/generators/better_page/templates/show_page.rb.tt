@@ -1,0 +1,44 @@
+# frozen_string_literal: true
+
+<% namespace_path.each_with_index do |ns, i| -%>
+<%= "  " * i %>module <%= ns.camelize %>
+<% end -%>
+<%= "  " * namespace_path.length %>class ShowPage < BetterPage::ShowBasePage
+<%= "  " * namespace_path.length %>  def initialize(<%= resource_singular %>, user)
+<%= "  " * namespace_path.length %>    @<%= resource_singular %> = <%= resource_singular %>
+<%= "  " * namespace_path.length %>    @user = user
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  private
+
+<%= "  " * namespace_path.length %>  # Required: Page header configuration
+<%= "  " * namespace_path.length %>  def header
+<%= "  " * namespace_path.length %>    {
+<%= "  " * namespace_path.length %>      title: @<%= resource_singular %>.to_s,
+<%= "  " * namespace_path.length %>      breadcrumbs: breadcrumbs_config,
+<%= "  " * namespace_path.length %>      metadata: [],
+<%= "  " * namespace_path.length %>      actions: [
+<%= "  " * namespace_path.length %>        # { label: "Edit", path: edit_<%= resource_singular %>_path(@<%= resource_singular %>), icon: "edit", style: "primary" }
+<%= "  " * namespace_path.length %>      ]
+<%= "  " * namespace_path.length %>    }
+<%= "  " * namespace_path.length %>  end
+
+<%= "  " * namespace_path.length %>  # Optional: Content sections
+<%= "  " * namespace_path.length %>  def content_sections
+<%= "  " * namespace_path.length %>    [
+<%= "  " * namespace_path.length %>      # {
+<%= "  " * namespace_path.length %>      #   title: "Details",
+<%= "  " * namespace_path.length %>      #   icon: "info-circle",
+<%= "  " * namespace_path.length %>      #   color: "blue",
+<%= "  " * namespace_path.length %>      #   type: :info_grid,
+<%= "  " * namespace_path.length %>      #   items: [
+<%= "  " * namespace_path.length %>      #     { name: "ID", value: @<%= resource_singular %>.id },
+<%= "  " * namespace_path.length %>      #     { name: "Created", value: format_date(@<%= resource_singular %>.created_at) }
+<%= "  " * namespace_path.length %>      #   ]
+<%= "  " * namespace_path.length %>      # }
+<%= "  " * namespace_path.length %>    ]
+<%= "  " * namespace_path.length %>  end
+<%= "  " * namespace_path.length %>end
+<% namespace_path.reverse.each_with_index do |_, i| -%>
+<%= "  " * (namespace_path.length - i - 1) %>end
+<% end -%>
