@@ -1,0 +1,90 @@
+<% content_for :title, @page[:header][:title] %>
+
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <nav class="text-sm mb-2">
+      <% @page[:header][:breadcrumbs].each_with_index do |crumb, index| %>
+        <% if crumb[:path] %>
+          <%= link_to crumb[:label], crumb[:path], class: "text-blue-600 hover:underline" %>
+        <% else %>
+          <span class="text-gray-500"><%= crumb[:label] %></span>
+        <% end %>
+        <% unless index == @page[:header][:breadcrumbs].size - 1 %>
+          <span class="mx-2">/</span>
+        <% end %>
+      <% end %>
+    </nav>
+
+    <h1 class="text-3xl font-bold"><%= @page[:header][:title] %></h1>
+    <% if @page[:header][:description] %>
+      <p class="text-gray-500 mt-1"><%= @page[:header][:description] %></p>
+    <% end %>
+  </div>
+
+  <!-- Form -->
+  <%= form_with model: Product.new, url: products_path, class: "space-y-6" do |form| %>
+    <% if form.object.errors.any? %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <h3 class="font-bold">Errors:</h3>
+        <ul class="list-disc list-inside">
+          <% form.object.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% @page[:panels].each do |panel| %>
+      <div class="bg-white rounded shadow">
+        <div class="px-6 py-4 border-b">
+          <h2 class="text-xl font-semibold"><%= panel[:title] %></h2>
+          <% if panel[:description] %>
+            <p class="text-gray-500 text-sm"><%= panel[:description] %></p>
+          <% end %>
+        </div>
+        <div class="p-6 space-y-4">
+          <% panel[:fields].each do |field| %>
+            <div>
+              <%= form.label field[:name], field[:label], class: "block text-sm font-medium text-gray-700 mb-1" %>
+              <% case field[:type] %>
+              <% when :text %>
+                <%= form.text_field field[:name],
+                    placeholder: field[:placeholder],
+                    required: field[:required],
+                    class: "w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+              <% when :textarea %>
+                <%= form.text_area field[:name],
+                    placeholder: field[:placeholder],
+                    rows: 4,
+                    class: "w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+              <% when :number %>
+                <%= form.number_field field[:name],
+                    min: field[:min],
+                    step: field[:step],
+                    required: field[:required],
+                    class: "w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+              <% when :checkbox %>
+                <div class="flex items-center">
+                  <%= form.check_box field[:name], class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+                  <% if field[:hint] %>
+                    <span class="ml-2 text-sm text-gray-500"><%= field[:hint] %></span>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Footer -->
+    <div class="flex justify-end gap-2">
+      <% @page[:footer][:secondary_actions].each do |action| %>
+        <%= link_to action[:label], action[:path], class: "px-4 py-2 border rounded hover:bg-gray-100" %>
+      <% end %>
+      <%= form.submit @page[:footer][:primary_action][:label],
+          class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

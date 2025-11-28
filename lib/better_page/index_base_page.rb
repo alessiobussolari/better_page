@@ -65,7 +65,7 @@ module BetterPage
     register_component :search, default: { enabled: false, placeholder: "Search...", current_search: "", results_count: 0 } do
       optional(:enabled).filled(:bool)
       optional(:placeholder).filled(:string)
-      optional(:current_search).filled(:string)
+      optional(:current_search).maybe(:string)
       optional(:results_count).filled(:integer)
     end
 

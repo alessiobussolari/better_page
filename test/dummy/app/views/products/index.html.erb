@@ -1,0 +1,101 @@
+<% content_for :title, @page[:header][:title] %>
+
+<div class="container mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="mb-8">
+    <nav class="text-sm mb-2">
+      <% @page[:header][:breadcrumbs].each_with_index do |crumb, index| %>
+        <% if crumb[:path] %>
+          <%= link_to crumb[:label], crumb[:path], class: "text-blue-600 hover:underline" %>
+        <% else %>
+          <span class="text-gray-500"><%= crumb[:label] %></span>
+        <% end %>
+        <% unless index == @page[:header][:breadcrumbs].size - 1 %>
+          <span class="mx-2">/</span>
+        <% end %>
+      <% end %>
+    </nav>
+
+    <div class="flex justify-between items-center">
+      <div>
+        <h1 class="text-3xl font-bold"><%= @page[:header][:title] %></h1>
+        <% @page[:header][:metadata].each do |meta| %>
+          <span class="text-gray-500"><%= meta[:label] %>: <%= meta[:value] %></span>
+        <% end %>
+      </div>
+
+      <div class="flex gap-2">
+        <% @page[:header][:actions].each do |action| %>
+          <%= link_to action[:path], class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" do %>
+            <%= action[:label] %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics -->
+  <% if @page[:statistics].any? %>
+    <div class="grid grid-cols-3 gap-4 mb-8">
+      <% @page[:statistics].each do |stat| %>
+        <div class="bg-white p-4 rounded shadow">
+          <div class="text-2xl font-bold"><%= stat[:value] %></div>
+          <div class="text-gray-500"><%= stat[:label] %></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Table -->
+  <div class="bg-white rounded shadow overflow-hidden">
+    <% if @page[:table][:items].any? %>
+      <table class="w-full">
+        <thead class="bg-gray-100">
+          <tr>
+            <% @page[:table][:columns].each do |col| %>
+              <th class="px-4 py-3 text-left font-semibold"><%= col[:label] %></th>
+            <% end %>
+            <th class="px-4 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @page[:table][:items].each do |item| %>
+            <tr class="border-t hover:bg-gray-50">
+              <% @page[:table][:columns].each do |col| %>
+                <td class="px-4 py-3">
+                  <% value = col[:key].is_a?(Symbol) ? item.send(col[:key]) : col[:key].call(item) %>
+                  <% if col[:type] == :link && col[:path] %>
+                    <%= link_to value, col[:path].call(item), class: "text-blue-600 hover:underline" %>
+                  <% elsif col[:type] == :badge %>
+                    <span class="px-2 py-1 rounded text-sm <%= value == 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                      <%= value %>
+                    </span>
+                  <% else %>
+                    <%= value %>
+                  <% end %>
+                </td>
+              <% end %>
+              <td class="px-4 py-3 text-right">
+                <% @page[:table][:actions].call(item).each do |action| %>
+                  <%= link_to action[:label], action[:path], class: "text-blue-600 hover:underline mr-2" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <!-- Empty State -->
+      <div class="p-12 text-center">
+        <div class="text-gray-400 text-5xl mb-4">📦</div>
+        <h3 class="text-xl font-semibold mb-2"><%= @page[:table][:empty_state][:title] %></h3>
+        <p class="text-gray-500 mb-4"><%= @page[:table][:empty_state][:message] %></p>
+        <% if @page[:table][:empty_state][:action] %>
+          <%= link_to @page[:table][:empty_state][:action][:label],
+                      @page[:table][:empty_state][:action][:path],
+                      class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

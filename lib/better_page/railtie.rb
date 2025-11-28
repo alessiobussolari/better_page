@@ -3,7 +3,8 @@
 module BetterPage
   class Railtie < ::Rails::Railtie
     # Add app/pages to the autoload paths
-    initializer "better_page.autoload_paths" do |app|
+    # Must run before :set_autoload_paths to avoid FrozenError in Rails 8+
+    initializer "better_page.autoload_paths", before: :set_autoload_paths do |app|
       pages_path = Rails.root.join("app", "pages")
       if pages_path.exist?
         app.config.autoload_paths << pages_path.to_s
