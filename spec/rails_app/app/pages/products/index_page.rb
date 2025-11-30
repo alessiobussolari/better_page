@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Products
-  class IndexPage < BetterPage::IndexBasePage
+  class IndexPage < IndexBasePage
     def initialize(products, current_user = nil)
       @products = products
       @current_user = current_user

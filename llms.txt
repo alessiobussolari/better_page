@@ -12,6 +12,11 @@ gem "better_page"
 rails generate better_page:install
 ```
 
+This creates:
+- `app/pages/application_page.rb`
+- `app/pages/index_base_page.rb`, `show_base_page.rb`, `form_base_page.rb`, `custom_base_page.rb`
+- `config/initializers/better_page.rb`
+
 ## Quick Start
 
 Page returns Hash, controller handles rendering:
@@ -37,7 +42,7 @@ end
 ## Defining a Page
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   def initialize(products, current_user)
     @products = products
     @current_user = current_user
@@ -66,17 +71,42 @@ class Products::IndexPage < BetterPage::IndexBasePage
 end
 ```
 
-## Component Registration
+## Configuration
+
+Components are registered at three levels:
+
+### 1. Global Configuration (Initializer)
 
 ```ruby
-register_component :header, required: true do
-  required(:title).filled(:string)
-  optional(:breadcrumbs).array(:hash)
-  optional(:actions).array(:hash)
+# config/initializers/better_page.rb
+BetterPage.configure do |config|
+  config.register_component :sidebar, default: { enabled: false }
+  config.allow_components :index, :sidebar
 end
+```
 
-register_component :alerts, default: []
-register_component :pagination, default: { enabled: false }
+### 2. Base Page Classes
+
+```ruby
+# app/pages/index_base_page.rb
+class IndexBasePage < ApplicationPage
+  page_type :index
+  register_component :quick_filters, default: []
+end
+```
+
+### 3. Individual Pages
+
+```ruby
+class Products::IndexPage < IndexBasePage
+  register_component :product_stats, default: nil
+end
+```
+
+## Check for Updates
+
+```bash
+rails generate better_page:sync
 ```
 
 ## Turbo Frame Support

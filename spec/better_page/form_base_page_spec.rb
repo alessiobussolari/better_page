@@ -82,20 +82,20 @@ RSpec.describe BetterPage::FormBasePage do
 
   describe "component registration" do
     it "registers required header component" do
-      definition = BetterPage::FormBasePage.registered_components[:header]
+      definition = BetterPage::FormBasePage.effective_components[:header]
 
       expect(definition.required?).to be true
       expect(definition.schema).not_to be_nil
     end
 
     it "registers required panels component" do
-      definition = BetterPage::FormBasePage.registered_components[:panels]
+      definition = BetterPage::FormBasePage.effective_components[:panels]
 
       expect(definition.required?).to be true
     end
 
     it "registers optional components with defaults" do
-      components = BetterPage::FormBasePage.registered_components
+      components = BetterPage::FormBasePage.effective_components
 
       expect(components[:alerts].default).to eq([])
       expect(components[:errors].default).to be_nil

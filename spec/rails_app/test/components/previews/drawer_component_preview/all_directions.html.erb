@@ -1,0 +1,86 @@
+<div class="space-y-6">
+  <h2 class="text-xl font-semibold text-gray-900">All Drawer Directions</h2>
+  <p class="text-gray-600">Click each button to see the drawer slide in from different directions.</p>
+
+  <div class="grid grid-cols-2 gap-4">
+    <%# Right Drawer %>
+    <%= render BetterPage::Ui::DrawerComponent.new(
+      id: "drawer-right-demo",
+      title: "Right Drawer",
+      direction: :right
+    ) do |drawer| %>
+      <% drawer.with_trigger do %>
+        <button
+          data-action="click->drawer#open"
+          class="w-full inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+          Right
+        </button>
+      <% end %>
+      <p class="text-gray-700">This drawer slides in from the <strong>right</strong> side of the screen.</p>
+      <p class="text-sm text-gray-500 mt-2">Default direction for most use cases.</p>
+    <% end %>
+
+    <%# Left Drawer %>
+    <%= render BetterPage::Ui::DrawerComponent.new(
+      id: "drawer-left-demo",
+      title: "Left Drawer",
+      direction: :left
+    ) do |drawer| %>
+      <% drawer.with_trigger do %>
+        <button
+          data-action="click->drawer#open"
+          class="w-full inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+          <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+          </svg>
+          Left
+        </button>
+      <% end %>
+      <p class="text-gray-700">This drawer slides in from the <strong>left</strong> side of the screen.</p>
+      <p class="text-sm text-gray-500 mt-2">Good for navigation menus.</p>
+    <% end %>
+
+    <%# Top Drawer %>
+    <%= render BetterPage::Ui::DrawerComponent.new(
+      id: "drawer-top-demo",
+      title: "Top Drawer",
+      direction: :top
+    ) do |drawer| %>
+      <% drawer.with_trigger do %>
+        <button
+          data-action="click->drawer#open"
+          class="w-full inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+          <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+          </svg>
+          Top
+        </button>
+      <% end %>
+      <p class="text-gray-700">This drawer slides in from the <strong>top</strong> of the screen.</p>
+      <p class="text-sm text-gray-500 mt-2">Useful for notifications or search bars.</p>
+    <% end %>
+
+    <%# Bottom Drawer %>
+    <%= render BetterPage::Ui::DrawerComponent.new(
+      id: "drawer-bottom-demo",
+      title: "Bottom Drawer",
+      direction: :bottom
+    ) do |drawer| %>
+      <% drawer.with_trigger do %>
+        <button
+          data-action="click->drawer#open"
+          class="w-full inline-flex justify-center items-center px-4 py-3 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+          <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+          </svg>
+          Bottom
+        </button>
+      <% end %>
+      <p class="text-gray-700">This drawer slides in from the <strong>bottom</strong> of the screen.</p>
+      <p class="text-sm text-gray-500 mt-2">Similar to mobile bottom sheets (iOS/Android).</p>
+    <% end %>
+  </div>
+</div>

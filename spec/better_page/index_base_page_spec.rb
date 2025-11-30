@@ -57,21 +57,21 @@ RSpec.describe BetterPage::IndexBasePage do
 
   describe "component registration" do
     it "registers required header component" do
-      definition = BetterPage::IndexBasePage.registered_components[:header]
+      definition = BetterPage::IndexBasePage.effective_components[:header]
 
       expect(definition.required?).to be true
       expect(definition.schema).not_to be_nil
     end
 
     it "registers required table component" do
-      definition = BetterPage::IndexBasePage.registered_components[:table]
+      definition = BetterPage::IndexBasePage.effective_components[:table]
 
       expect(definition.required?).to be true
       expect(definition.schema).not_to be_nil
     end
 
     it "registers optional components with defaults" do
-      components = BetterPage::IndexBasePage.registered_components
+      components = BetterPage::IndexBasePage.effective_components
 
       expect(components[:alerts].default).to eq([])
       expect(components[:statistics].default).to eq([])

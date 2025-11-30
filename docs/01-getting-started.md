@@ -22,13 +22,19 @@ bundle install
 
 ### Run Install Generator
 
-Create the base ApplicationPage class in your application.
+Create the page infrastructure in your application.
 
 ```bash
 rails generate better_page:install
 ```
 
-This creates `app/pages/application_page.rb`.
+This creates:
+- `app/pages/application_page.rb` - Base page class
+- `app/pages/index_base_page.rb` - Base for index pages
+- `app/pages/show_base_page.rb` - Base for show pages
+- `app/pages/form_base_page.rb` - Base for form pages
+- `app/pages/custom_base_page.rb` - Base for custom pages
+- `config/initializers/better_page.rb` - Configuration file
 
 --------------------------------
 
@@ -53,7 +59,7 @@ This creates:
 Pages are presentation-layer classes that configure UI without business logic.
 
 ```ruby
-class Admin::Users::IndexPage < BetterPage::IndexBasePage
+class Admin::Users::IndexPage < IndexBasePage
   def initialize(users, current_user)
     @users = users
     @current_user = current_user

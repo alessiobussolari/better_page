@@ -43,15 +43,36 @@ bin/rubocop -a
 ### Core Classes (lib/better_page/)
 
 - **base_page.rb** - `BetterPage::BasePage`: Base class with common helpers (count_text, format_date, percentage, empty_state_with_action)
-- **index_base_page.rb** - `BetterPage::IndexBasePage`: For list pages (requires: build_index_header, build_index_table)
-- **show_base_page.rb** - `BetterPage::ShowBasePage`: For detail pages (requires: build_show_header)
-- **form_base_page.rb** - `BetterPage::FormBasePage`: For form pages (requires: build_form_header, build_form_panels)
-- **custom_base_page.rb** - `BetterPage::CustomBasePage`: For custom pages (requires: build_custom_content)
+- **index_base_page.rb** - `BetterPage::IndexBasePage`: For list pages (page_type :index)
+- **show_base_page.rb** - `BetterPage::ShowBasePage`: For detail pages (page_type :show)
+- **form_base_page.rb** - `BetterPage::FormBasePage`: For form pages (page_type :form)
+- **custom_base_page.rb** - `BetterPage::CustomBasePage`: For custom pages (page_type :custom)
+- **configuration.rb** - `BetterPage::Configuration`: Global component configuration
+- **default_components.rb** - `BetterPage::DefaultComponents`: Registers all default components
+- **component_registry.rb** - `BetterPage::ComponentRegistry`: DSL for component registration
+
+### Page Inheritance Hierarchy
+
+```
+BetterPage::BasePage (gem)
+        │
+        ▼
+ApplicationPage (app/pages/)
+        │
+        ├──▶ IndexBasePage (app/pages/ - page_type :index)
+        ├──▶ ShowBasePage (app/pages/ - page_type :show)
+        ├──▶ FormBasePage (app/pages/ - page_type :form)
+        └──▶ CustomBasePage (app/pages/ - page_type :custom)
+                │
+                ▼
+        Products::IndexPage, etc.
+```
 
 ### Generators (lib/generators/better_page/)
 
-- **install_generator.rb** - `rails g better_page:install`: Creates app/pages/ and ApplicationPage
+- **install_generator.rb** - `rails g better_page:install`: Creates app/pages/, ApplicationPage, base page classes, and initializer
 - **page_generator.rb** - `rails g better_page:page Namespace::Resource actions`: Generates page classes
+- **sync_generator.rb** - `rails g better_page:sync`: Check for new components from gem updates
 
 ### Compliance (lib/better_page/compliance/)
 
@@ -79,7 +100,7 @@ Form pages: Checkbox and radio fields must be in separate panels from other inpu
 # app/pages/admin/users/index_page.rb
 module Admin
   module Users
-    class IndexPage < BetterPage::IndexBasePage
+    class IndexPage < IndexBasePage
       def initialize(users, user, params = {})
         @users = users
         @user = user
@@ -88,14 +109,30 @@ module Admin
 
       private
 
-      def build_index_header
+      def header
         { title: "Users", breadcrumbs: [], metadata: [], actions: [] }
       end
 
-      def build_index_table
+      def table
         { items: @users, columns: [], actions: nil, empty_state: {} }
       end
     end
   end
+end
+```
+
+## Configuration
+
+Components are registered at three levels:
+
+1. **Gem defaults** - `BetterPage::DefaultComponents` registers all standard components
+2. **User config** - `config/initializers/better_page.rb` for customization
+3. **Local classes** - `register_component` in base or individual page classes
+
+```ruby
+# config/initializers/better_page.rb
+BetterPage.configure do |config|
+  config.register_component :sidebar, default: { enabled: false }
+  config.allow_components :index, :sidebar
 end
 ```

@@ -1,15 +1,17 @@
-<button
-  onclick="Stimulus.getControllerForElementAndIdentifier(document.querySelector('#drawer-footer'), 'drawer').open()"
-  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-  Open Drawer with Footer Actions
-</button>
-
 <%= render BetterPage::Ui::DrawerComponent.new(
   id: "drawer-footer",
   title: "Edit User",
   direction: :right,
   actions_position: :footer
 ) do |drawer| %>
+  <% drawer.with_trigger do %>
+    <button
+      data-action="click->drawer#open"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+      Open Drawer with Footer Actions
+    </button>
+  <% end %>
+
   <% drawer.with_actions do %>
     <button
       type="button"

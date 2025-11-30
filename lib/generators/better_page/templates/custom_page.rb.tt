@@ -3,7 +3,7 @@
 <% namespace_path.each_with_index do |ns, i| -%>
 <%= "  " * i %>module <%= ns.camelize %>
 <% end -%>
-<%= "  " * namespace_path.length %>class CustomPage < BetterPage::CustomBasePage
+<%= "  " * namespace_path.length %>class CustomPage < CustomBasePage
 <%= "  " * namespace_path.length %>  def initialize(data, user)
 <%= "  " * namespace_path.length %>    @data = data
 <%= "  " * namespace_path.length %>    @user = user

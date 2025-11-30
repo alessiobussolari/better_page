@@ -2,7 +2,7 @@
 
 module BetterPage
   # Base class for form pages (new/edit).
-  # Uses registered components with schema validation.
+  # Uses page_type to inherit components from global configuration.
   #
   # FORM ORGANIZATION RULES (MANDATORY):
   # =====================================
@@ -41,15 +41,13 @@ module BetterPage
   #   }
   # ]
   #
-  # Required components:
-  # - header: Form header with title, description, breadcrumbs
-  # - panels: Form panels with fields
-  #
-  # Optional components (with defaults):
+  # Available components (from configuration):
+  # - header (required): Form header with title, description, breadcrumbs
+  # - panels (required): Form panels with fields
   # - alerts, errors, footer
   #
   # @example
-  #   class Admin::Users::FormPage < BetterPage::FormBasePage
+  #   class Admin::Users::FormPage < FormBasePage
   #     def header
   #       { title: @item.new_record? ? "New User" : "Edit User" }
   #     end
@@ -60,27 +58,12 @@ module BetterPage
   #   end
   #
   class FormBasePage < BasePage
-    # Header component - required
-    register_component :header, required: true do
-      required(:title).filled(:string)
-      optional(:description).filled(:string)
-      optional(:breadcrumbs).array(:hash)
-    end
+    page_type :form
 
-    # Alerts component - optional
-    register_component :alerts, default: []
-
-    # Errors component - optional
-    register_component :errors, default: nil
-
-    # Panels component - required
-    register_component :panels, required: true
-
-    # Footer component - optional
+    # Override the global footer default with form-specific default
     register_component :footer, default: {
       primary_action: { label: "Save", style: :primary },
-      secondary_actions: [],
-      info: nil
+      secondary_actions: []
     }
 
     # Main method that builds the complete form page configuration

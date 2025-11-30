@@ -6,6 +6,12 @@ ENV["RAILS_ENV"] = "test"
 require_relative "rails_app/config/environment"
 ActiveRecord::Migrator.migrations_paths = [File.expand_path("rails_app/db/migrate", __dir__)]
 
+# Register default components for testing (simulates what railtie does in production)
+unless BetterPage.defaults_registered?
+  BetterPage::DefaultComponents.register!
+  BetterPage.defaults_registered!
+end
+
 require "rspec/rails"
 require "view_component/test_helpers"
 require "capybara/rspec"

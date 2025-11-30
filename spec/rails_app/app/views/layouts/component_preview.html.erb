@@ -16,7 +16,6 @@
   <script type="module">
     import { Application, Controller } from "@hotwired/stimulus"
     const application = Application.start()
-    window.Stimulus = application
 
     // Dropdown Controller
     application.register("dropdown", class extends Controller {
@@ -67,10 +66,11 @@
 
     // Drawer Controller
     application.register("drawer", class extends Controller {
-      static targets = ["panel", "backdrop"]
+      static targets = ["container", "panel", "backdrop"]
       static values = {
         direction: { type: String, default: "right" },
-        open: { type: Boolean, default: false }
+        open: { type: Boolean, default: false },
+        confirmClose: { type: Boolean, default: false }
       }
 
       connect() {
@@ -85,7 +85,7 @@
 
       open() {
         this.openValue = true
-        this.element.classList.remove("hidden")
+        this.containerTarget.classList.remove("hidden")
         document.body.classList.add("overflow-hidden")
 
         requestAnimationFrame(() => {
@@ -100,7 +100,7 @@
         this.backdropTarget.classList.add("opacity-0")
 
         setTimeout(() => {
-          this.element.classList.add("hidden")
+          this.containerTarget.classList.add("hidden")
           document.body.classList.remove("overflow-hidden")
         }, 300)
       }
@@ -109,15 +109,25 @@
         this.openValue ? this.close() : this.open()
       }
 
+      requestClose() {
+        if (this.confirmCloseValue) {
+          if (confirm("Sei sicuro di voler chiudere? I dati non salvati andranno persi.")) {
+            this.close()
+          }
+        } else {
+          this.close()
+        }
+      }
+
       keydown(event) {
         if (event.key === "Escape" && this.openValue) {
-          this.close()
+          this.requestClose()
         }
       }
 
       backdropClick(event) {
         if (event.target === this.backdropTarget) {
-          this.close()
+          this.requestClose()
         }
       }
 

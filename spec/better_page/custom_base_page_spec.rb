@@ -66,23 +66,21 @@ RSpec.describe BetterPage::CustomBasePage do
 
   describe "component registration" do
     it "registers required content component" do
-      definition = BetterPage::CustomBasePage.registered_components[:content]
+      definition = BetterPage::CustomBasePage.effective_components[:content]
 
       expect(definition.required?).to be true
     end
 
     it "registers optional header component" do
-      definition = BetterPage::CustomBasePage.registered_components[:header]
+      definition = BetterPage::CustomBasePage.effective_components[:header]
 
       expect(definition.required?).to be false
-      expect(definition.default).to be_nil
     end
 
     it "registers optional footer component" do
-      definition = BetterPage::CustomBasePage.registered_components[:footer]
+      definition = BetterPage::CustomBasePage.effective_components[:footer]
 
       expect(definition.required?).to be false
-      expect(definition.default).to be_nil
     end
   end
 
@@ -115,12 +113,14 @@ RSpec.describe BetterPage::CustomBasePage do
       expect(result[:content][:charts].size).to eq(1)
     end
 
-    it "returns nil for undefined optional header" do
+    it "uses default values for undefined optional components" do
       page = minimal_custom_page_class.new
       result = page.custom
 
+      # Header has no default in configuration, so it's nil
       expect(result[:header]).to be_nil
-      expect(result[:footer]).to be_nil
+      # Footer has a default from configuration
+      expect(result[:footer]).to eq({ enabled: false })
     end
   end
 

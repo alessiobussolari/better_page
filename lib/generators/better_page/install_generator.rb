@@ -7,7 +7,7 @@ module BetterPage
     class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path("templates", __dir__)
 
-      desc "Creates the app/pages directory, ApplicationPage base class, and ViewComponents"
+      desc "Creates the app/pages directory, ApplicationPage base class, base page classes, initializer, and ViewComponents"
 
       class_option :skip_components, type: :boolean, default: false,
                                      desc: "Skip installing ViewComponents"
@@ -16,8 +16,19 @@ module BetterPage
         empty_directory "app/pages"
       end
 
+      def create_initializer
+        template "better_page_initializer.rb.tt", "config/initializers/better_page.rb"
+      end
+
       def create_application_page
         template "application_page.rb.tt", "app/pages/application_page.rb"
+      end
+
+      def create_base_pages
+        template "index_base_page.rb.tt", "app/pages/index_base_page.rb"
+        template "show_base_page.rb.tt", "app/pages/show_base_page.rb"
+        template "form_base_page.rb.tt", "app/pages/form_base_page.rb"
+        template "custom_base_page.rb.tt", "app/pages/custom_base_page.rb"
       end
 
       def create_view_components
@@ -68,7 +79,12 @@ module BetterPage
         say "BetterPage has been installed successfully!", :green
         say ""
         say "Created:"
+        say "  - config/initializers/better_page.rb (component configuration)"
         say "  - app/pages/application_page.rb"
+        say "  - app/pages/index_base_page.rb"
+        say "  - app/pages/show_base_page.rb"
+        say "  - app/pages/form_base_page.rb"
+        say "  - app/pages/custom_base_page.rb"
         unless options[:skip_components]
           say "  - app/components/better_page/ (ViewComponents)"
           say "  - app/javascript/controllers/better_page/ (Stimulus controllers)"
@@ -84,11 +100,19 @@ module BetterPage
           say "  yarn add better-page-stimulus"
         end
         say ""
+        say "Base page classes in app/pages/ can be customized:"
+        say "  - Add custom components with register_component"
+        say "  - Override helper methods"
+        say "  - Customize stream_components"
+        say ""
         say "You can now generate pages using:"
         say "  rails g better_page:page Namespace::Resource index show new edit"
         say ""
         say "Example:"
         say "  rails g better_page:page Admin::Users index show new edit"
+        say ""
+        say "To check for gem updates:"
+        say "  rails g better_page:sync"
         say ""
         say "To add individual components later:"
         say "  rails g better_page:component ComponentName"

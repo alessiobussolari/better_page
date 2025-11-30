@@ -3,19 +3,21 @@
 module BetterPage
   module Ui
     class DrawerComponent < ViewComponent::Base
+      renders_one :trigger
       renders_one :actions
 
       def initialize(id:, size: :normal, direction: :right, title: nil,
-                     closable: true, actions_position: :header)
+                     closable: true, actions_position: :header, confirm_close: false)
         @id = id
         @size = size.to_sym
         @direction = direction.to_sym
         @title = title
         @closable = closable
         @actions_position = actions_position&.to_sym
+        @confirm_close = confirm_close
       end
 
-      attr_reader :id, :size, :direction, :title, :closable, :actions_position
+      attr_reader :id, :size, :direction, :title, :closable, :actions_position, :confirm_close
 
       def closable? = closable
       def title? = title.present?

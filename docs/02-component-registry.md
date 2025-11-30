@@ -1,23 +1,84 @@
 # Component Registry
 
-### Register Required Component with Schema
+BetterPage uses a hybrid component registration system with three levels.
 
-Use register_component DSL to declare components with dry-schema validation. Required components raise errors if nil.
+### Registration Levels
+
+Components can be registered at three levels:
+
+1. **Global Configuration** - In `config/initializers/better_page.rb`
+2. **Base Page Classes** - In local base pages like `IndexBasePage`
+3. **Individual Pages** - In specific page classes
+
+--------------------------------
+
+### Global Configuration (Initializer)
+
+Register components globally in your initializer. These are available to all pages of the mapped type.
 
 ```ruby
-class BetterPage::IndexBasePage < BetterPage::BasePage
-  register_component :header, required: true do
-    required(:title).filled(:string)
-    optional(:description).filled(:string)
-    optional(:breadcrumbs).array(:hash)
-    optional(:actions).array(:hash)
+# config/initializers/better_page.rb
+BetterPage.configure do |config|
+  # Add a custom component with schema
+  config.register_component :sidebar, default: { enabled: false } do
+    optional(:enabled).filled(:bool)
+    optional(:items).array(:hash)
   end
 
-  register_component :table, required: true do
-    required(:items).value(:array)
-    optional(:columns).array(:hash)
-    optional(:empty_state).hash
+  # Map to page types
+  config.allow_components :index, :sidebar
+  config.allow_components :show, :sidebar
+
+  # Make required for specific page types
+  config.require_components :index, :sidebar
+end
+```
+
+--------------------------------
+
+### Base Page Classes (page_type DSL)
+
+Local base classes use `page_type` to inherit components from global configuration.
+
+```ruby
+# app/pages/index_base_page.rb
+class IndexBasePage < ApplicationPage
+  page_type :index
+
+  # Add component only for index pages
+  register_component :quick_filters, default: []
+end
+```
+
+--------------------------------
+
+### Individual Pages
+
+Register components specific to a single page.
+
+```ruby
+class Admin::Users::IndexPage < IndexBasePage
+  # Component only for this page
+  register_component :user_stats, default: nil
+
+  def user_stats
+    { active_count: @users.active.count }
   end
+end
+```
+
+--------------------------------
+
+### Register Component with Schema
+
+Use dry-schema for validation. Required components raise errors if nil.
+
+```ruby
+register_component :header, required: true do
+  required(:title).filled(:string)
+  optional(:description).filled(:string)
+  optional(:breadcrumbs).array(:hash)
+  optional(:actions).array(:hash)
 end
 ```
 
@@ -25,22 +86,16 @@ end
 
 ### Register Optional Component with Default
 
-Optional components use default values when not defined.
+Optional components use default values when method is not defined.
 
 ```ruby
 register_component :alerts, default: []
-
-register_component :statistics, default: []
 
 register_component :pagination, default: { enabled: false } do
   optional(:enabled).filled(:bool)
   optional(:page).filled(:integer)
   optional(:total_pages).filled(:integer)
-  optional(:per_page).filled(:integer)
 end
-
-register_component :search, default: { enabled: false }
-register_component :tabs, default: { enabled: false }
 ```
 
 --------------------------------
@@ -99,18 +154,27 @@ end
 
 ### Component Inheritance
 
-Subclasses inherit all registered components from parent classes.
+Components are inherited through the class hierarchy and merged with global configuration.
 
 ```ruby
-class ApplicationPage < BetterPage::BasePage
-  register_component :alerts, default: []
-  register_component :footer, default: { enabled: false }
-end
+# Global configuration provides components for each page_type
+# app/pages/index_base_page.rb inherits from ApplicationPage and uses page_type :index
+# Individual pages inherit from their base class
 
-class Admin::Products::IndexPage < BetterPage::IndexBasePage
-  # Inherits from IndexBasePage: header, table, statistics, pagination
-  # Inherits from ApplicationPage: alerts, footer
+class Admin::Products::IndexPage < IndexBasePage
+  # Gets components from:
+  # 1. Global config mapped to :index (header, table, statistics, pagination, etc.)
+  # 2. IndexBasePage local components
+  # 3. ApplicationPage components (alerts, footer)
 end
+```
+
+### Check for New Components
+
+When upgrading BetterPage, check for new default components:
+
+```bash
+rails generate better_page:sync
 ```
 
 --------------------------------

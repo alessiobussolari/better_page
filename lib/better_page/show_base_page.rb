@@ -2,16 +2,14 @@
 
 module BetterPage
   # Base class for show/detail pages.
-  # Uses registered components with schema validation.
+  # Uses page_type to inherit components from global configuration.
   #
-  # Required components:
-  # - header: Page header with title, breadcrumbs, metadata, actions
-  #
-  # Optional components (with defaults):
+  # Available components (from configuration):
+  # - header (required): Page header with title, breadcrumbs, metadata, actions
   # - alerts, statistics, overview, content_sections, footer
   #
   # @example
-  #   class Admin::Users::ShowPage < BetterPage::ShowBasePage
+  #   class Admin::Users::ShowPage < ShowBasePage
   #     def header
   #       { title: @user.name, breadcrumbs: [], actions: [] }
   #     end
@@ -22,28 +20,7 @@ module BetterPage
   #   end
   #
   class ShowBasePage < BasePage
-    # Header component - required
-    register_component :header, required: true do
-      required(:title).filled(:string)
-      optional(:breadcrumbs).array(:hash)
-      optional(:metadata).array(:hash)
-      optional(:actions).array(:hash)
-    end
-
-    # Alerts component - optional
-    register_component :alerts, default: []
-
-    # Statistics cards - optional
-    register_component :statistics, default: []
-
-    # Overview section - optional
-    register_component :overview, default: { enabled: false }
-
-    # Content sections - optional
-    register_component :content_sections, default: []
-
-    # Footer section - optional
-    register_component :footer, default: { enabled: false }
+    page_type :show
 
     # Main method that builds the complete show page configuration
     # @return [Hash] complete show page configuration with :klass for rendering

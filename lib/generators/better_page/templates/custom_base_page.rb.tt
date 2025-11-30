@@ -1,0 +1,83 @@
+# frozen_string_literal: true
+
+# Base class for all custom pages in this application.
+# Use for dashboards, reports, and any page that doesn't fit
+# the standard index/show/form patterns.
+#
+# Components available (from global configuration):
+#   Required: content
+#   Optional: header, footer, alerts
+#
+# Customize this class to:
+#   - Add custom components with register_component
+#   - Override helper methods
+#   - Change stream_components
+#
+# @example Add a custom component
+#   register_component :charts, default: []
+#
+class CustomBasePage < ApplicationPage
+  page_type :custom
+
+  # ─────────────────────────────────────────────────────────────────
+  # CUSTOM COMPONENTS
+  # ─────────────────────────────────────────────────────────────────
+  # Add custom components for all custom pages here:
+  #
+  # register_component :charts, default: []
+  # register_component :kpis, default: []
+  # register_component :filters, default: { enabled: false }
+
+  # Main method that builds the complete custom page configuration
+  # @return [Hash] complete custom page configuration with :klass for rendering
+  def custom
+    build_page
+  end
+
+  # The ViewComponent class used to render this custom page
+  # @return [Class] BetterPage::CustomViewComponent
+  def view_component_class
+    return BetterPage::CustomViewComponent if defined?(BetterPage::CustomViewComponent)
+
+    raise NotImplementedError, "BetterPage::CustomViewComponent not found. Run: rails g better_page:install"
+  end
+
+  # Components to include in stream updates by default
+  # Override to customize which components update via Turbo Streams
+  # @return [Array<Symbol>]
+  def stream_components
+    %i[alerts content]
+  end
+
+  protected
+
+  # Helper to build a widget section
+  # @param title [String] widget title
+  # @param type [Symbol] widget type
+  # @param data [Hash, Array] widget data
+  # @param options [Hash] additional options
+  # @return [Hash] formatted widget
+  def widget_format(title:, type:, data:, **options)
+    {
+      title: title,
+      type: type,
+      data: data,
+      **options
+    }
+  end
+
+  # Helper to build a chart configuration
+  # @param title [String] chart title
+  # @param type [Symbol] chart type (:line, :bar, :pie, etc.)
+  # @param data [Hash] chart data with labels and datasets
+  # @param options [Hash] additional chart options
+  # @return [Hash] formatted chart
+  def chart_format(title:, type:, data:, **options)
+    {
+      title: title,
+      type: type,
+      data: data,
+      **options
+    }
+  end
+end

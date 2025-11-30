@@ -1,0 +1,44 @@
+<%= render BetterPage::Ui::DrawerComponent.new(
+  id: "drawer-confirm",
+  title: "Confirm Before Close",
+  direction: :right,
+  confirm_close: true
+) do |drawer| %>
+  <% drawer.with_trigger do %>
+    <button
+      data-action="click->drawer#open"
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
+      Open Drawer with Confirm Close
+    </button>
+  <% end %>
+
+  <div class="space-y-4">
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-amber-800">Confirm Close Enabled</h3>
+          <p class="mt-2 text-sm text-amber-700">
+            This drawer has <code class="bg-amber-100 px-1 rounded">confirm_close: true</code>.
+            A confirmation dialog will appear when you try to close it via:
+          </p>
+          <ul class="mt-2 text-sm text-amber-700 list-disc list-inside">
+            <li>Clicking the X button</li>
+            <li>Pressing the ESC key</li>
+            <li>Clicking on the backdrop</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Sample Input</label>
+      <input type="text" placeholder="Type something here..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm">
+      <p class="mt-1 text-xs text-gray-500">Try typing something, then close the drawer to see the confirmation.</p>
+    </div>
+  </div>
+<% end %>

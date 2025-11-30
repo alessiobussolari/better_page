@@ -42,4 +42,19 @@ class DrawerComponentPreview < ViewComponent::Preview
   def with_turbo_frame
     render_with_template
   end
+
+  # @label With confirm close
+  def with_confirm_close
+    render_with_template
+  end
+
+  # @label Without header
+  def without_header
+    render_with_template
+  end
+
+  # @label All directions
+  def all_directions
+    render_with_template
+  end
 end

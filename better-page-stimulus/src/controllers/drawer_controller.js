@@ -8,17 +8,19 @@ import { Controller } from "@hotwired/stimulus"
  *
  * Usage:
  *   <div data-controller="drawer" data-drawer-direction-value="right">
- *     <div data-drawer-target="backdrop" data-action="click->drawer#backdropClick"></div>
- *     <div data-drawer-target="panel">
- *       <button data-action="click->drawer#close">Close</button>
- *       <!-- content -->
+ *     <button data-action="click->drawer#open">Open Drawer</button>
+ *
+ *     <div data-drawer-target="container" class="hidden">
+ *       <div data-drawer-target="backdrop" data-action="click->drawer#backdropClick"></div>
+ *       <div data-drawer-target="panel">
+ *         <button data-action="click->drawer#close">Close</button>
+ *         <!-- content -->
+ *       </div>
  *     </div>
  *   </div>
- *
- *   <button data-action="click->drawer#open">Open Drawer</button>
  */
 export default class extends Controller {
-  static targets = ["panel", "backdrop"]
+  static targets = ["container", "panel", "backdrop"]
   static values = {
     direction: { type: String, default: "right" },
     open: { type: Boolean, default: false }
@@ -36,7 +38,7 @@ export default class extends Controller {
 
   open() {
     this.openValue = true
-    this.element.classList.remove("hidden")
+    this.containerTarget.classList.remove("hidden")
     document.body.classList.add("overflow-hidden")
 
     // Trigger animation on next frame
@@ -53,7 +55,7 @@ export default class extends Controller {
 
     // Wait for animation to complete
     setTimeout(() => {
-      this.element.classList.add("hidden")
+      this.containerTarget.classList.add("hidden")
       document.body.classList.remove("overflow-hidden")
     }, 300)
   }

@@ -1,0 +1,65 @@
+# frozen_string_literal: true
+
+# Base class for all index/list pages in this application.
+#
+# Components available (from global configuration):
+#   Required: header, table
+#   Optional: alerts, statistics, metrics, tabs, search, pagination,
+#             overview, calendar, footer, modals, split_view
+#
+# Customize this class to:
+#   - Add custom components with register_component
+#   - Override helper methods
+#   - Change stream_components
+#
+# @example Add a custom component
+#   register_component :sidebar, default: { enabled: false }
+#
+class IndexBasePage < ApplicationPage
+  page_type :index
+
+  # ─────────────────────────────────────────────────────────────────
+  # CUSTOM COMPONENTS
+  # ─────────────────────────────────────────────────────────────────
+  # Add custom components for all index pages here:
+  #
+  # register_component :filters, default: []
+  # register_component :bulk_actions, default: { enabled: false }
+
+  # Main method that builds the complete index page configuration
+  # @return [Hash] complete index page configuration with :klass for rendering
+  def index
+    build_page
+  end
+
+  # The ViewComponent class used to render this index page
+  # @return [Class] BetterPage::IndexViewComponent
+  def view_component_class
+    return BetterPage::IndexViewComponent if defined?(BetterPage::IndexViewComponent)
+
+    raise NotImplementedError, "BetterPage::IndexViewComponent not found. Run: rails g better_page:install"
+  end
+
+  # Components to include in stream updates by default
+  # Override to customize which components update via Turbo Streams
+  # @return [Array<Symbol>]
+  def stream_components
+    %i[alerts statistics table pagination]
+  end
+
+  protected
+
+  # Helper for split view empty state
+  # @param icon [String] icon name
+  # @param title [String] title text
+  # @param message [String] message text
+  # @return [Hash] empty state configuration
+  def split_view_empty_state_format(icon: "hand-pointer", title: "Select an item",
+                                    message: "Click on an item from the list to see its details")
+    {
+      icon: icon,
+      title: title,
+      message: message
+    }
+  end
+end

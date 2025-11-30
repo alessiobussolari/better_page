@@ -12,6 +12,13 @@ module BetterPage
       end
     end
 
+    # Register default components before user initializers
+    # This allows users to override or extend defaults in their initializers
+    initializer "better_page.register_defaults", before: :load_config_initializers do
+      BetterPage::DefaultComponents.register!
+      BetterPage.defaults_registered!
+    end
+
     # Load rake tasks
     rake_tasks do
       load "tasks/better_page.rake"
@@ -21,6 +28,7 @@ module BetterPage
     generators do
       require "generators/better_page/install_generator"
       require "generators/better_page/page_generator"
+      require "generators/better_page/sync_generator"
     end
   end
 end

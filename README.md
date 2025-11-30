@@ -37,7 +37,8 @@ rails generate better_page:page admin/users index show new edit
 ### Define a Page
 
 ```ruby
-class Admin::Users::IndexPage < BetterPage::IndexBasePage
+# app/pages/admin/users/index_page.rb
+class Admin::Users::IndexPage < IndexBasePage
   def initialize(users, current_user)
     @users = users
     @current_user = current_user
@@ -96,25 +97,70 @@ end
 | Form | `FormBasePage` | `header`, `panels` | New/Edit forms |
 | Custom | `CustomBasePage` | `content` | Dashboards, reports |
 
-## Component Registration
+## Configuration
 
-Define components with schema validation:
+BetterPage uses a hybrid configuration system. Default components are registered by the gem, and you can customize them in your initializer:
 
 ```ruby
-class BetterPage::IndexBasePage < BasePage
-  register_component :header, required: true do
-    required(:title).filled(:string)
-    optional(:breadcrumbs).array(:hash)
-    optional(:actions).array(:hash)
-  end
+# config/initializers/better_page.rb
+BetterPage.configure do |config|
+  # Add a custom global component
+  config.register_component :sidebar, default: { enabled: false }
+  config.allow_components :index, :sidebar
 
-  register_component :table, required: true do
-    required(:items).value(:array)
-    optional(:columns).array(:hash)
-    optional(:empty_state).hash
-  end
+  # Override a default component
+  config.register_component :pagination, default: { enabled: true, per_page: 25 }
+end
+```
 
-  register_component :pagination, default: { enabled: false }
+### Check for Updates
+
+When upgrading BetterPage, check for new components:
+
+```bash
+rails generate better_page:sync
+```
+
+## Component Registration
+
+Components can be registered at three levels:
+
+### 1. Global Configuration (Initializer)
+
+```ruby
+# config/initializers/better_page.rb
+BetterPage.configure do |config|
+  config.register_component :sidebar, default: { enabled: false } do
+    optional(:enabled).filled(:bool)
+    optional(:items).array(:hash)
+  end
+  config.allow_components :index, :sidebar
+end
+```
+
+### 2. Base Page Classes (Local)
+
+```ruby
+# app/pages/index_base_page.rb
+class IndexBasePage < ApplicationPage
+  page_type :index
+
+  # Add component only for index pages
+  register_component :quick_filters, default: []
+end
+```
+
+### 3. Individual Pages
+
+```ruby
+# app/pages/admin/users/index_page.rb
+class Admin::Users::IndexPage < IndexBasePage
+  # Component only for this specific page
+  register_component :user_stats, default: nil
+
+  def user_stats
+    { active_count: @users.active.count }
+  end
 end
 ```
 
@@ -185,6 +231,7 @@ Open http://localhost:3099/lookbook to browse component previews.
 - [Schema Validation](docs/04-schema-validation.md)
 - [Turbo Support](docs/05-turbo-support.md)
 - [Compliance Analyzer](docs/06-compliance-analyzer.md)
+- [Configuration](docs/07-configuration.md)
 - [Quick Start Guide](guide/01-quick-start.md)
 - [Building Index Pages](guide/02-building-index-page.md)
 - [Building Form Pages](guide/04-building-form-page.md)

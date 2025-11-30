@@ -1,0 +1,53 @@
+# frozen_string_literal: true
+
+# BetterPage Configuration
+# ========================
+#
+# Default components are registered automatically by the gem.
+# Use this file to:
+#   - Add custom global components
+#   - Override default component settings
+#   - Map custom components to page types
+#
+# Components can also be registered locally in:
+#   - Base page classes (app/pages/*_base_page.rb)
+#   - Individual page classes (for page-specific components)
+
+BetterPage.configure do |config|
+  # ─────────────────────────────────────────────────────────────────
+  # CUSTOM COMPONENTS
+  # ─────────────────────────────────────────────────────────────────
+  #
+  # Register a custom component and allow it for specific page types:
+  #
+  # config.register_component :sidebar, default: { enabled: false } do
+  #   optional(:enabled).filled(:bool)
+  #   optional(:items).array(:hash)
+  # end
+  # config.allow_components :index, :sidebar
+  #
+  # ─────────────────────────────────────────────────────────────────
+  # OVERRIDE DEFAULT COMPONENTS
+  # ─────────────────────────────────────────────────────────────────
+  #
+  # Override a default component's settings:
+  #
+  # config.register_component :pagination, default: { enabled: true, per_page: 25 }
+  #
+  # ─────────────────────────────────────────────────────────────────
+  # EXAMPLES
+  # ─────────────────────────────────────────────────────────────────
+  #
+  # Example: Add a timeline component to show pages
+  #
+  # config.register_component :timeline, default: { events: [] }
+  # config.allow_components :show, :timeline
+  #
+  # Example: Add a dashboard widget to custom pages
+  #
+  # config.register_component :dashboard_widget, default: { enabled: false } do
+  #   optional(:title).filled(:string)
+  #   optional(:data).hash
+  # end
+  # config.allow_components :custom, :dashboard_widget
+end

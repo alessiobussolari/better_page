@@ -2,16 +2,14 @@
 
 module BetterPage
   # Base class for custom pages that don't fit index/show/form patterns.
-  # Uses registered components with schema validation.
+  # Uses page_type to inherit components from global configuration.
   #
-  # Required components:
-  # - content: Main custom content section
-  #
-  # Optional components (with defaults):
-  # - header, footer
+  # Available components (from configuration):
+  # - content (required): Main custom content section
+  # - header, footer, alerts
   #
   # @example
-  #   class Admin::Dashboard::CustomPage < BetterPage::CustomBasePage
+  #   class Admin::Dashboard::CustomPage < CustomBasePage
   #     def header
   #       { title: "Dashboard", breadcrumbs: [] }
   #     end
@@ -22,22 +20,7 @@ module BetterPage
   #   end
   #
   class CustomBasePage < BasePage
-    # Header component - optional
-    register_component :header, default: nil do
-      optional(:title).filled(:string)
-      optional(:breadcrumbs).array(:hash)
-      optional(:metadata).array(:hash)
-      optional(:actions).array(:hash)
-    end
-
-    # Content component - required
-    register_component :content, required: true
-
-    # Footer component - optional
-    register_component :footer, default: nil
-
-    # Alerts component - optional
-    register_component :alerts, default: []
+    page_type :custom
 
     # Main method that builds the complete custom page configuration
     # @return [Hash] complete custom page configuration with :klass for rendering

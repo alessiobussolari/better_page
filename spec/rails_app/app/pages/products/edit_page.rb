@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Products
-  class EditPage < BetterPage::FormBasePage
+  class EditPage < FormBasePage
     def initialize(product, current_user = nil)
       @product = product
       @current_user = current_user

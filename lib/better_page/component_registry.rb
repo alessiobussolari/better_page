@@ -5,20 +5,22 @@ require "dry-schema"
 module BetterPage
   # Module that provides component registration DSL for page classes.
   #
-  # Components are registered at the class level with optional schema validation.
-  # Each component can be required or optional, with a default value.
+  # Components can be registered at three levels:
+  # 1. Global configuration (via BetterPage.configure in initializer)
+  # 2. Class level (via register_component in base classes)
+  # 3. Page type mapping (via page_type in base classes)
   #
-  # @example Registering components
-  #   class MyPage < BetterPage::BasePage
-  #     register_component :header, required: true do
-  #       required(:title).filled(:string)
-  #       optional(:breadcrumbs).array(:hash)
-  #     end
+  # @example Using page_type to inherit global components
+  #   class IndexBasePage < ApplicationPage
+  #     page_type :index  # Inherits components from BetterPage.configuration.components_for(:index)
+  #   end
   #
-  #     register_component :footer, default: { enabled: false }
+  # @example Registering local components
+  #   class MyPage < IndexBasePage
+  #     register_component :custom_widget, default: nil
   #
-  #     def header
-  #       { title: "My Page", breadcrumbs: [] }
+  #     def custom_widget
+  #       { data: @data }
   #     end
   #   end
   #
@@ -27,10 +29,31 @@ module BetterPage
 
     included do
       class_attribute :registered_components, default: {}
+      class_attribute :_page_type, default: nil
     end
 
     class_methods do
+      # Set the page type for this class
+      # This determines which global components are available
+      #
+      # @param type [Symbol] :index, :show, :form, or :custom
+      # @return [Symbol]
+      #
+      # @example
+      #   class IndexBasePage < ApplicationPage
+      #     page_type :index
+      #   end
+      #
+      def page_type(type = nil)
+        if type
+          self._page_type = type
+        else
+          _page_type
+        end
+      end
+
       # Register a component with optional schema validation
+      # Local components are added to those from global configuration
       #
       # @param name [Symbol] the component name
       # @param required [Boolean] whether the component is required
@@ -58,6 +81,47 @@ module BetterPage
         )
       end
 
+      # Get all components available for this page class
+      # Combines global configuration components with locally registered ones
+      #
+      # @return [Hash<Symbol, ComponentDefinition>]
+      def effective_components
+        result = {}
+
+        # First, add components from global configuration for this page type
+        if _page_type && BetterPage.defaults_registered?
+          global_names = BetterPage.configuration.components_for(_page_type)
+          global_names.each do |name|
+            global_def = BetterPage.configuration.component(name)
+            next unless global_def
+
+            # Check if this component is required for this page type
+            is_required = BetterPage.configuration.component_required?(_page_type, name)
+
+            result[name] = ComponentDefinition.new(
+              name: global_def.name,
+              required: is_required,
+              default: global_def.default,
+              schema: global_def.schema
+            )
+          end
+        end
+
+        # Then, merge locally registered components (they override global ones)
+        registered_components.each do |name, definition|
+          result[name] = definition
+        end
+
+        result
+      end
+
+      # Get the list of component names available for this page class
+      #
+      # @return [Array<Symbol>]
+      def allowed_component_names
+        effective_components.keys
+      end
+
       # Ensure subclasses inherit registered components
       def inherited(subclass)
         super
@@ -77,7 +141,7 @@ module BetterPage
     def build_page
       result = {}
 
-      self.class.registered_components.each do |name, definition|
+      self.class.effective_components.each do |name, definition|
         value = resolve_component_value(name, definition)
         validate_component(name, value, definition)
         result[name] = value
@@ -153,7 +217,7 @@ module BetterPage
     #
     # @return [Array<Symbol>] component names
     def stream_components
-      self.class.registered_components.keys
+      self.class.effective_components.keys
     end
 
     # Get the Turbo Frame target for a component
