@@ -1,39 +1,14 @@
 {
-  "name": "BetterPage",
-  "description": "Rails engine providing a structured Page Object pattern for building UI configurations with component registration DSL and schema validation",
-  "version": "0.1.0",
-  "language": "ruby",
-  "framework": "rails",
-  "documentation": {
-    "sources": [
-      {
-        "path": "docs",
-        "type": "api",
-        "description": "API reference and technical documentation"
-      },
-      {
-        "path": "guide",
-        "type": "guide",
-        "description": "Step-by-step guides and tutorials"
-      },
-      {
-        "path": "README.md",
-        "type": "overview",
-        "description": "Project overview and quick start"
-      }
-    ],
-    "entryPoint": "README.md"
-  },
-  "keywords": [
-    "rails",
-    "page-object",
-    "ui-configuration",
-    "dry-schema",
-    "component-registry",
-    "presentation-layer"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alessiobussolari/better_page"
-  }
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "BetterPage",
+  "description": "A Ruby gem for building structured Page Objects in Rails with dry-schema validation and Turbo support.",
+  "folders": ["context7", "docs", "guide"],
+  "excludeFolders": ["spec", "tmp", "vendor"],
+  "excludeFiles": [],
+  "rules": [
+    "No database queries in Pages - data passed via constructor",
+    "No business logic - UI configuration only",
+    "Use Hash-only structures, no OpenStruct/Struct",
+    "Checkbox and radio fields must be in separate panels"
+  ]
 }

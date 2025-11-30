@@ -1,0 +1,55 @@
+<header class="mb-6">
+  <%% if breadcrumbs? %>
+    <nav class="flex mb-4" aria-label="Breadcrumb">
+      <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <%% breadcrumbs.each_with_index do |crumb, i| %>
+          <li class="inline-flex items-center">
+            <%% if crumb[:path] %>
+              <%%= link_to crumb[:label], crumb[:path], class: "text-sm text-gray-500 hover:text-gray-700" %>
+            <%% else %>
+              <span class="text-sm font-medium text-gray-500"><%%= crumb[:label] %></span>
+            <%% end %>
+            <%% unless i == breadcrumbs.size - 1 %>
+              <svg class="w-4 h-4 mx-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+              </svg>
+            <%% end %>
+          </li>
+        <%% end %>
+      </ol>
+    </nav>
+  <%% end %>
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900"><%%= title %></h1>
+      <%% if metadata? %>
+        <div class="mt-1 flex items-center space-x-4">
+          <%% metadata.each do |meta| %>
+            <span class="text-sm text-gray-500">
+              <%% if meta[:icon] %>
+                <span class="mr-1"><%%= meta[:icon] %></span>
+              <%% end %>
+              <%%= meta[:value] %>
+            </span>
+          <%% end %>
+        </div>
+      <%% end %>
+    </div>
+
+    <%% if actions? %>
+      <div class="flex space-x-3">
+        <%% actions.each do |action| %>
+          <%%= link_to action[:path],
+              data: { turbo_method: action[:method], turbo_confirm: action[:confirm] }.compact,
+              class: action_classes(action[:style]) do %>
+            <%% if action[:icon] %>
+              <span class="mr-2"><%%= action[:icon] %></span>
+            <%% end %>
+            <%%= action[:label] %>
+          <%% end %>
+        <%% end %>
+      </div>
+    <%% end %>
+  </div>
+</header>

@@ -1,0 +1,18 @@
+# frozen_string_literal: true
+
+module BetterPage
+  module Ui
+    class ErrorsComponent < ViewComponent::Base
+      def initialize(resource:)
+        @resource = resource
+      end
+
+      attr_reader :resource
+
+      def errors? = resource.respond_to?(:errors) && resource.errors.any?
+      def errors = resource.errors
+      def error_count = errors.count
+      def error_messages = errors.full_messages
+    end
+  end
+end

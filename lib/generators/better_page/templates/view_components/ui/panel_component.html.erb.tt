@@ -1,0 +1,31 @@
+<div class="bg-white shadow rounded-lg overflow-hidden mb-6" <%% if collapsible? %>data-controller="panel"<%% end %>>
+  <%% if title? %>
+    <div class="px-4 py-5 sm:px-6 border-b border-gray-200 <%%= collapsible? ? 'cursor-pointer' : '' %>" <%% if collapsible? %>data-action="click->panel#toggle"<%% end %>>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-medium leading-6 text-gray-900"><%%= title %></h3>
+          <%% if description? %>
+            <p class="mt-1 text-sm text-gray-500"><%%= description %></p>
+          <%% end %>
+        </div>
+        <%% if collapsible? %>
+          <div class="ml-4 flex-shrink-0">
+            <svg class="h-5 w-5 text-gray-400 transition-transform" data-panel-target="icon" <%%= collapsed? ? '' : 'style="transform: rotate(180deg)"' %> fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        <%% end %>
+      </div>
+    </div>
+  <%% end %>
+
+  <%% if fields? %>
+    <div class="px-4 py-5 sm:p-6 <%%= collapsed? ? 'hidden' : '' %>" <%% if collapsible? %>data-panel-target="content"<%% end %>>
+      <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+        <%% fields.each do |field| %>
+          <%%= render BetterPage::Ui::FieldComponent.new(**field) %>
+        <%% end %>
+      </div>
+    </div>
+  <%% end %>
+</div>

@@ -113,9 +113,29 @@ module BetterPage
     }
 
     # Main method that builds the complete index page configuration
-    # @return [Hash] complete index page configuration
+    # @return [Hash] complete index page configuration with :klass for rendering
     def index
       build_page
+    end
+
+    # Note: frame_index and stream_index are dynamically generated via method_missing in ComponentRegistry
+    # Usage:
+    #   page.frame_index(:table)              # Single component for Turbo Frame
+    #   page.stream_index                      # All stream components for Turbo Streams
+    #   page.stream_index(:table, :pagination) # Specific components for Turbo Streams
+
+    # The ViewComponent class used to render this index page
+    # @return [Class] BetterPage::IndexViewComponent
+    def view_component_class
+      return BetterPage::IndexViewComponent if defined?(BetterPage::IndexViewComponent)
+
+      raise NotImplementedError, "BetterPage::IndexViewComponent not found. Run: rails g better_page:install"
+    end
+
+    # Components to include in stream updates by default
+    # @return [Array<Symbol>]
+    def stream_components
+      %i[alerts statistics table pagination]
     end
 
     protected

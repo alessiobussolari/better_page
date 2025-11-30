@@ -1,0 +1,29 @@
+<div class="better-page better-page--show">
+  <%% if alerts? %>
+    <%%= render BetterPage::Ui::AlertsComponent.new(alerts: alerts) %>
+  <%% end %>
+
+  <%% if header? %>
+    <%%= render BetterPage::Ui::HeaderComponent.new(**header) %>
+  <%% end %>
+
+  <%% if statistics? %>
+    <%%= render BetterPage::Ui::StatisticsComponent.new(stats: statistics) %>
+  <%% end %>
+
+  <%% if overview? %>
+    <%%= render BetterPage::Ui::OverviewComponent.new(**overview) %>
+  <%% end %>
+
+  <%% if content_sections? %>
+    <div class="space-y-6">
+      <%% content_sections.each do |section| %>
+        <%%= render BetterPage::Ui::ContentSectionComponent.new(**section) %>
+      <%% end %>
+    </div>
+  <%% end %>
+
+  <%% if footer? %>
+    <%%= render BetterPage::Ui::FooterComponent.new(**footer) %>
+  <%% end %>
+</div>

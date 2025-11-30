@@ -1,0 +1,189 @@
+# BetterPage
+
+> Page Object pattern for Rails with dry-schema validation
+
+## Installation
+
+```ruby
+gem "better_page"
+```
+
+```bash
+rails generate better_page:install
+```
+
+## Quick Start
+
+Page returns Hash, controller handles rendering:
+
+```ruby
+class ProductsController < ApplicationController
+  def index
+    config = Products::IndexPage.new(@products, current_user).index
+    render config[:klass].new(config: config)
+  end
+end
+```
+
+## Page Types
+
+| Type | Base Class | Required Components |
+|------|-----------|---------------------|
+| Index | `IndexBasePage` | `header`, `table` |
+| Show | `ShowBasePage` | `header` |
+| Form | `FormBasePage` | `header`, `panels` |
+| Custom | `CustomBasePage` | `content` |
+
+## Defining a Page
+
+```ruby
+class Products::IndexPage < BetterPage::IndexBasePage
+  def initialize(products, current_user)
+    @products = products
+    @current_user = current_user
+  end
+
+  private
+
+  def header
+    {
+      title: "Products",
+      breadcrumbs: [{ label: "Home", path: root_path }],
+      actions: [{ label: "New", path: new_product_path, style: :primary }]
+    }
+  end
+
+  def table
+    {
+      items: @products,
+      columns: [
+        { key: :name, label: "Name" },
+        { key: :price, label: "Price", format: :currency }
+      ],
+      empty_state: { message: "No products yet" }
+    }
+  end
+end
+```
+
+## Component Registration
+
+```ruby
+register_component :header, required: true do
+  required(:title).filled(:string)
+  optional(:breadcrumbs).array(:hash)
+  optional(:actions).array(:hash)
+end
+
+register_component :alerts, default: []
+register_component :pagination, default: { enabled: false }
+```
+
+## Turbo Frame Support
+
+Single component for lazy loading or navigation:
+
+```ruby
+# Page method
+page.frame_index(:table)
+
+# Returns single Hash:
+# {
+#   component: :table,
+#   config: { items: [...], columns: [...] },
+#   klass: TableComponent,
+#   target: "better_page_table"
+# }
+
+# Controller
+def table
+  component = Products::IndexPage.new(@products, current_user).frame_index(:table)
+  render component[:klass].new(**component[:config])
+end
+```
+
+## Turbo Stream Support
+
+Multiple components for real-time updates:
+
+```ruby
+# Page method
+page.stream_index(:table, :statistics)
+
+# Returns Array of Hashes:
+# [
+#   { component: :table, config: {...}, klass: TableComponent, target: "..." },
+#   { component: :statistics, config: {...}, klass: StatsComponent, target: "..." }
+# ]
+
+# Controller
+def refresh
+  components = Products::IndexPage.new(@products, current_user).stream_index(:table, :statistics)
+
+  render turbo_stream: components.map { |c|
+    turbo_stream.replace(c[:target], c[:klass].new(**c[:config]))
+  }
+end
+```
+
+## Dynamic Turbo Methods
+
+Methods are generated dynamically based on the page's main action:
+
+| Page Type | Main Action | Frame Method | Stream Method |
+|-----------|-------------|--------------|---------------|
+| IndexBasePage | `index` | `frame_index(:component)` | `stream_index(*components)` |
+| ShowBasePage | `show` | `frame_show(:component)` | `stream_show(*components)` |
+| FormBasePage | `form` | `frame_form(:component)` | `stream_form(*components)` |
+| CustomBasePage | `custom` | `frame_custom(:component)` | `stream_custom(*components)` |
+
+Custom pages with different action names work automatically:
+
+```ruby
+class Reports::DailyPage < BetterPage::CustomBasePage
+  def daily
+    build_page
+  end
+end
+
+# Automatically available:
+page.frame_daily(:chart)
+page.stream_daily(:chart, :summary)
+```
+
+## Architecture Rules
+
+Pages must follow these rules:
+
+1. **No database queries** - Data passed via constructor
+2. **No business logic** - UI configuration only
+3. **No service layer access** - No service objects
+4. **Hash-only structures** - No OpenStruct/Struct
+
+## Helper Methods
+
+```ruby
+# From BasePage
+count_text(5, "user", "users")  # => "5 users"
+format_date(date, :short)       # => "Jan 15"
+percentage(25, 100)             # => 25.0
+
+# From IndexBasePage
+empty_state_with_action(icon: "inbox", title: "No items", action: {...})
+
+# From ShowBasePage
+content_section_format(title: "Details", type: :info_grid, content: {...})
+statistic_format(label: "Total", value: 100, icon: "chart", color: "blue")
+
+# From FormBasePage
+field_format(name: :email, type: :email, label: "Email", required: true)
+panel_format(title: "Basic Info", fields: [...])
+```
+
+## Compliance Check
+
+```bash
+rake better_page:compliance:analyze
+```
+
+Validates pages follow architecture rules (no DB queries, no business logic, etc.)

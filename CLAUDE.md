@@ -15,12 +15,17 @@ bundle install
 
 ### Run tests
 ```bash
-bin/test
+bundle exec rspec
 ```
 
 ### Run a single test file
 ```bash
-bin/test test/better_page_test.rb
+bundle exec rspec spec/better_page_spec.rb
+```
+
+### Run tests with documentation format
+```bash
+bundle exec rspec --format documentation
 ```
 
 ### Lint code

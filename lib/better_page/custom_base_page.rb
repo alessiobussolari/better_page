@@ -36,10 +36,35 @@ module BetterPage
     # Footer component - optional
     register_component :footer, default: nil
 
+    # Alerts component - optional
+    register_component :alerts, default: []
+
     # Main method that builds the complete custom page configuration
-    # @return [Hash] complete custom page configuration
+    # @return [Hash] complete custom page configuration with :klass for rendering
     def custom
       build_page
+    end
+
+    # Note: frame_custom and stream_custom are dynamically generated via method_missing in ComponentRegistry
+    # For custom pages with different action names (e.g. #daily), frame_daily/stream_daily work automatically
+    # Usage:
+    #   page.frame_custom(:content)        # Single component for Turbo Frame
+    #   page.stream_custom                  # All stream components for Turbo Streams
+    #   page.frame_daily(:chart)           # For a page with #daily method
+    #   page.stream_daily(:chart, :summary) # Multiple components for Turbo Streams
+
+    # The ViewComponent class used to render this custom page
+    # @return [Class] BetterPage::CustomViewComponent
+    def view_component_class
+      return BetterPage::CustomViewComponent if defined?(BetterPage::CustomViewComponent)
+
+      raise NotImplementedError, "BetterPage::CustomViewComponent not found. Run: rails g better_page:install"
+    end
+
+    # Components to include in stream updates by default
+    # @return [Array<Symbol>]
+    def stream_components
+      %i[alerts content]
     end
 
     protected

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Stimulus via CDN -->
+  <script type="importmap">
+  {
+    "imports": {
+      "@hotwired/stimulus": "https://unpkg.com/@hotwired/stimulus/dist/stimulus.js"
+    }
+  }
+  </script>
+  <script type="module">
+    import { Application, Controller } from "@hotwired/stimulus"
+    const application = Application.start()
+    window.Stimulus = application
+
+    // Dropdown Controller
+    application.register("dropdown", class extends Controller {
+      static targets = ["menu"]
+
+      connect() {
+        this.boundHide = this.hide.bind(this)
+        document.addEventListener("click", this.boundHide)
+      }
+
+      disconnect() {
+        document.removeEventListener("click", this.boundHide)
+      }
+
+      toggle(event) {
+        event.stopPropagation()
+        this.menuTarget.classList.toggle("hidden")
+      }
+
+      hide(event) {
+        if (!this.element.contains(event.target)) {
+          this.menuTarget.classList.add("hidden")
+        }
+      }
+    })
+
+    // Table Controller (select all)
+    application.register("table", class extends Controller {
+      static targets = ["selectAll", "row"]
+
+      selectAll(event) {
+        const checked = event.target.checked
+        this.rowTargets.forEach(checkbox => {
+          checkbox.checked = checked
+        })
+      }
+
+      rowChanged() {
+        const total = this.rowTargets.length
+        const checked = this.rowTargets.filter(cb => cb.checked).length
+
+        if (this.hasSelectAllTarget) {
+          this.selectAllTarget.checked = checked === total
+          this.selectAllTarget.indeterminate = checked > 0 && checked < total
+        }
+      }
+    })
+
+    // Drawer Controller
+    application.register("drawer", class extends Controller {
+      static targets = ["panel", "backdrop"]
+      static values = {
+        direction: { type: String, default: "right" },
+        open: { type: Boolean, default: false }
+      }
+
+      connect() {
+        this.boundKeydown = this.keydown.bind(this)
+        document.addEventListener("keydown", this.boundKeydown)
+      }
+
+      disconnect() {
+        document.removeEventListener("keydown", this.boundKeydown)
+        document.body.classList.remove("overflow-hidden")
+      }
+
+      open() {
+        this.openValue = true
+        this.element.classList.remove("hidden")
+        document.body.classList.add("overflow-hidden")
+
+        requestAnimationFrame(() => {
+          this.panelTarget.classList.remove(this.hiddenClass)
+          this.backdropTarget.classList.remove("opacity-0")
+        })
+      }
+
+      close() {
+        this.openValue = false
+        this.panelTarget.classList.add(this.hiddenClass)
+        this.backdropTarget.classList.add("opacity-0")
+
+        setTimeout(() => {
+          this.element.classList.add("hidden")
+          document.body.classList.remove("overflow-hidden")
+        }, 300)
+      }
+
+      toggle() {
+        this.openValue ? this.close() : this.open()
+      }
+
+      keydown(event) {
+        if (event.key === "Escape" && this.openValue) {
+          this.close()
+        }
+      }
+
+      backdropClick(event) {
+        if (event.target === this.backdropTarget) {
+          this.close()
+        }
+      }
+
+      get hiddenClass() {
+        const classes = {
+          right: "translate-x-full",
+          left: "-translate-x-full",
+          top: "-translate-y-full",
+          bottom: "translate-y-full"
+        }
+        return classes[this.directionValue] || "translate-x-full"
+      }
+    })
+  </script>
+</head>
+<body class="p-4 bg-white">
+  <%= yield %>
+</body>
+</html>

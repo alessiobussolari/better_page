@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+module BetterPage
+  class ShowViewComponent < ViewComponent::Base
+    def initialize(config:)
+      @config = config
+    end
+
+    # Component accessors
+    def header = @config[:header]
+    def alerts = @config[:alerts]
+    def statistics = @config[:statistics]
+    def overview = @config[:overview]
+    def content_sections = @config[:content_sections]
+    def footer = @config[:footer]
+
+    # Presence helpers
+    def header? = header.present?
+    def alerts? = alerts.present?
+    def statistics? = statistics.present?
+    def overview? = overview.present?
+    def content_sections? = content_sections.present?
+    def footer? = footer.present?
+  end
+end

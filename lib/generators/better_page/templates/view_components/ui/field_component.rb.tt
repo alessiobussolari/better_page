@@ -1,0 +1,91 @@
+# frozen_string_literal: true
+
+module BetterPage
+  module Ui
+    class FieldComponent < ViewComponent::Base
+      FIELD_TYPES = %i[text email password number tel url textarea select checkbox radio date datetime file hidden].freeze
+
+      def initialize(name:, type: :text, label: nil, placeholder: nil, hint: nil, required: false,
+                     disabled: false, readonly: false, options: [], value: nil, span: nil,
+                     min: nil, max: nil, step: nil, pattern: nil, autocomplete: nil, data: {})
+        @name = name
+        @type = type.to_sym
+        @label = label || name.to_s.humanize
+        @placeholder = placeholder
+        @hint = hint
+        @required = required
+        @disabled = disabled
+        @readonly = readonly
+        @options = options
+        @value = value
+        @span = span
+        @min = min
+        @max = max
+        @step = step
+        @pattern = pattern
+        @autocomplete = autocomplete
+        @data = data
+      end
+
+      attr_reader :name, :type, :label, :placeholder, :hint, :required, :disabled, :readonly,
+                  :options, :value, :span, :min, :max, :step, :pattern, :autocomplete, :data
+
+      def hint? = hint.present?
+      def required? = required
+      def disabled? = disabled
+      def readonly? = readonly
+      def options? = options.any?
+
+      def text_field? = %i[text email password number tel url].include?(type)
+      def textarea? = type == :textarea
+      def select? = type == :select
+      def checkbox? = type == :checkbox
+      def radio? = type == :radio
+      def date_field? = %i[date datetime].include?(type)
+      def file_field? = type == :file
+      def hidden? = type == :hidden
+
+      def span_classes
+        case span
+        when 1 then "sm:col-span-1"
+        when 2 then "sm:col-span-2"
+        when 3 then "sm:col-span-3"
+        when 4 then "sm:col-span-4"
+        when 5 then "sm:col-span-5"
+        when 6 then "sm:col-span-6"
+        else "sm:col-span-3"
+        end
+      end
+
+      def input_classes
+        base = "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        base += " bg-gray-50 cursor-not-allowed" if disabled? || readonly?
+        base
+      end
+
+      def checkbox_classes
+        "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+      end
+
+      def radio_classes
+        "h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+      end
+
+      def input_attributes
+        attrs = {
+          class: input_classes,
+          placeholder: placeholder,
+          required: required?,
+          disabled: disabled?,
+          readonly: readonly?,
+          autocomplete: autocomplete
+        }
+        attrs[:min] = min if min
+        attrs[:max] = max if max
+        attrs[:step] = step if step
+        attrs[:pattern] = pattern if pattern
+        attrs.merge(data)
+      end
+    end
+  end
+end

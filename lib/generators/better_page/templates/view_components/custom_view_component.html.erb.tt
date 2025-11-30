@@ -1,0 +1,21 @@
+<div class="better-page better-page--custom">
+  <%% if alerts? %>
+    <%%= render BetterPage::Ui::AlertsComponent.new(alerts: alerts) %>
+  <%% end %>
+
+  <%% if header? %>
+    <%%= render BetterPage::Ui::HeaderComponent.new(**header) %>
+  <%% end %>
+
+  <%% if content? %>
+    <div class="space-y-6">
+      <%% content.each do |widget| %>
+        <%%= render BetterPage::Ui::WidgetComponent.new(**widget) %>
+      <%% end %>
+    </div>
+  <%% end %>
+
+  <%% if footer? %>
+    <%%= render BetterPage::Ui::FooterComponent.new(**footer) %>
+  <%% end %>
+</div>

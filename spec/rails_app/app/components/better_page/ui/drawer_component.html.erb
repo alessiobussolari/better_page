@@ -1,0 +1,63 @@
+<div id="<%= id %>"
+     data-controller="drawer"
+     data-drawer-direction-value="<%= direction %>"
+     class="hidden relative z-50"
+     aria-modal="true"
+     role="dialog">
+
+  <%# Backdrop %>
+  <div data-drawer-target="backdrop"
+       data-action="click->drawer#backdropClick"
+       class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-300 ease-in-out opacity-0">
+  </div>
+
+  <%# Panel container %>
+  <div class="fixed inset-0 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="<%= panel_position_class %> <%= panel_size_class %>">
+        <div data-drawer-target="panel"
+             class="<%= panel_classes %> flex flex-col transform transition-transform duration-300 ease-in-out <%= initial_transform_class %>">
+
+          <%# Header %>
+          <% if show_header? %>
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 flex-shrink-0">
+              <div class="flex items-center gap-4">
+                <% if title? %>
+                  <h2 class="text-lg font-medium text-gray-900"><%= title %></h2>
+                <% end %>
+                <% if header_actions? %>
+                  <div class="flex items-center gap-2">
+                    <%= actions %>
+                  </div>
+                <% end %>
+              </div>
+              <% if closable? %>
+                <button type="button"
+                        data-action="click->drawer#close"
+                        class="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                  <span class="sr-only">Close</span>
+                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%# Content %>
+          <div class="flex-1 overflow-y-auto p-4">
+            <%= content %>
+          </div>
+
+          <%# Footer %>
+          <% if footer_actions? %>
+            <div class="flex items-center justify-end gap-2 px-4 py-3 border-t border-gray-200 flex-shrink-0 bg-gray-50">
+              <%= actions %>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

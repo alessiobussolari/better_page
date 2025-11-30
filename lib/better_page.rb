@@ -20,4 +20,10 @@ module BetterPage
   module Compliance
     autoload :Analyzer, "better_page/compliance/analyzer"
   end
+
+  # ViewComponent classes (loaded from user's app/components directory)
+  # These are defined when the user runs the install generator
+  module Ui
+    # UI components are autoloaded from the user's application
+  end
 end

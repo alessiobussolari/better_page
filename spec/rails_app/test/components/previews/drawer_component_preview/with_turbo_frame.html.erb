@@ -1,0 +1,37 @@
+<button
+  onclick="Stimulus.getControllerForElementAndIdentifier(document.querySelector('#drawer-turbo'), 'drawer').open()"
+  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+  Open Drawer with Turbo Frame
+</button>
+
+<%= render BetterPage::Ui::DrawerComponent.new(
+  id: "drawer-turbo",
+  title: "Dynamic Content",
+  direction: :right
+) do %>
+  <p class="text-gray-600 mb-4 text-sm">
+    This drawer demonstrates Turbo Frame integration. The content below would be loaded dynamically.
+  </p>
+
+  <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
+    <turbo-frame id="drawer-content" class="block">
+      <div class="text-center text-gray-500">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <p class="mt-2 text-sm">Turbo Frame content would load here</p>
+        <p class="mt-1 text-xs text-gray-400">turbo-frame id="drawer-content"</p>
+      </div>
+    </turbo-frame>
+  </div>
+
+  <div class="mt-6 bg-gray-50 rounded-lg p-4">
+    <h4 class="font-medium text-gray-900 mb-2">Usage Example</h4>
+    <pre class="text-xs text-gray-600 overflow-x-auto"><code>&lt;%= link_to "Edit User",
+    edit_user_path(@user),
+    data: {
+      turbo_frame: "drawer-content",
+      action: "turbo:frame-load->drawer#open"
+    } %&gt;</code></pre>
+  </div>
+<% end %>

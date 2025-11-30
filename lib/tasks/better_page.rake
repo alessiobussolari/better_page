@@ -18,7 +18,7 @@ namespace :better_page do
   end
 
   desc "Analyze a specific page file for compliance"
-  task :analyze_page, [:file_path] => :environment do |_t, args|
+  task :analyze_page, [ :file_path ] => :environment do |_t, args|
     require "better_page/compliance/analyzer"
 
     if args[:file_path].blank?

@@ -1,0 +1,72 @@
+<div class="<%%= size_classes %> bg-white shadow rounded-lg overflow-hidden">
+  <%% if title? %>
+    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+      <h3 class="text-lg font-medium leading-6 text-gray-900"><%%= title %></h3>
+    </div>
+  <%% end %>
+
+  <div class="px-4 py-5 sm:p-6">
+    <%% if stats? && options[:stats] %>
+      <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <%% options[:stats].each do |stat| %>
+          <div class="overflow-hidden">
+            <dt class="truncate text-sm font-medium text-gray-500"><%%= stat[:label] %></dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%%= stat[:value] %></dd>
+          </div>
+        <%% end %>
+      </dl>
+
+    <%% elsif list? && options[:items] %>
+      <ul role="list" class="divide-y divide-gray-200">
+        <%% options[:items].each do |item| %>
+          <li class="py-4">
+            <div class="flex items-center space-x-4">
+              <%% if item[:icon] %>
+                <div class="flex-shrink-0">
+                  <span class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
+                    <%%= item[:icon] %>
+                  </span>
+                </div>
+              <%% end %>
+              <div class="min-w-0 flex-1">
+                <p class="truncate text-sm font-medium text-gray-900"><%%= item[:title] %></p>
+                <%% if item[:subtitle] %>
+                  <p class="truncate text-sm text-gray-500"><%%= item[:subtitle] %></p>
+                <%% end %>
+              </div>
+              <%% if item[:action] %>
+                <%%= link_to item[:action][:label], item[:action][:path], class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+              <%% end %>
+            </div>
+          </li>
+        <%% end %>
+      </ul>
+
+    <%% elsif table? && options[:table] %>
+      <%%= render BetterPage::Ui::TableComponent.new(**options[:table]) %>
+
+    <%% elsif text? && options[:content] %>
+      <div class="prose max-w-none">
+        <%%= options[:content].html_safe %>
+      </div>
+
+    <%% elsif chart? && options[:chart] %>
+      <div class="h-64" data-controller="chart" data-chart-type-value="<%%= options[:chart][:type] %>" data-chart-data-value="<%%= options[:chart][:data].to_json %>">
+        <canvas data-chart-target="canvas"></canvas>
+      </div>
+
+    <%% elsif custom? && options[:partial] %>
+      <%%= render partial: options[:partial], locals: options[:locals] || {} %>
+    <%% end %>
+  </div>
+
+  <%% if options[:footer] %>
+    <div class="bg-gray-50 px-4 py-4 sm:px-6">
+      <%% if options[:footer][:link] %>
+        <%%= link_to options[:footer][:link][:label], options[:footer][:link][:path], class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+      <%% elsif options[:footer][:text] %>
+        <p class="text-sm text-gray-500"><%%= options[:footer][:text] %></p>
+      <%% end %>
+    </div>
+  <%% end %>
+</div>

@@ -84,11 +84,31 @@ module BetterPage
     }
 
     # Main method that builds the complete form page configuration
-    # @return [Hash] complete form page configuration
+    # @return [Hash] complete form page configuration with :klass for rendering
     def form
       result = build_page
       validate_form_panels_rules(result[:panels]) if result[:panels]
       result
+    end
+
+    # Note: frame_form and stream_form are dynamically generated via method_missing in ComponentRegistry
+    # Usage:
+    #   page.frame_form(:panels)            # Single component for Turbo Frame
+    #   page.stream_form                     # All stream components for Turbo Streams
+    #   page.stream_form(:panels, :errors)   # Specific components for Turbo Streams
+
+    # The ViewComponent class used to render this form page
+    # @return [Class] BetterPage::FormViewComponent
+    def view_component_class
+      return BetterPage::FormViewComponent if defined?(BetterPage::FormViewComponent)
+
+      raise NotImplementedError, "BetterPage::FormViewComponent not found. Run: rails g better_page:install"
+    end
+
+    # Components to include in stream updates by default
+    # @return [Array<Symbol>]
+    def stream_components
+      %i[alerts errors panels]
     end
 
     protected

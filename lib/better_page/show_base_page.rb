@@ -46,9 +46,29 @@ module BetterPage
     register_component :footer, default: { enabled: false }
 
     # Main method that builds the complete show page configuration
-    # @return [Hash] complete show page configuration
+    # @return [Hash] complete show page configuration with :klass for rendering
     def show
       build_page
+    end
+
+    # Note: frame_show and stream_show are dynamically generated via method_missing in ComponentRegistry
+    # Usage:
+    #   page.frame_show(:overview)                    # Single component for Turbo Frame
+    #   page.stream_show                               # All stream components for Turbo Streams
+    #   page.stream_show(:overview, :content_sections) # Specific components for Turbo Streams
+
+    # The ViewComponent class used to render this show page
+    # @return [Class] BetterPage::ShowViewComponent
+    def view_component_class
+      return BetterPage::ShowViewComponent if defined?(BetterPage::ShowViewComponent)
+
+      raise NotImplementedError, "BetterPage::ShowViewComponent not found. Run: rails g better_page:install"
+    end
+
+    # Components to include in stream updates by default
+    # @return [Array<Symbol>]
+    def stream_components
+      %i[alerts statistics overview content_sections]
     end
 
     protected

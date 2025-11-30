@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+module BetterPage
+  module Ui
+    class PanelComponent < ViewComponent::Base
+      def initialize(title: nil, description: nil, fields: [], collapsible: false, collapsed: false)
+        @title = title
+        @description = description
+        @fields = fields
+        @collapsible = collapsible
+        @collapsed = collapsed
+      end
+
+      attr_reader :title, :description, :fields, :collapsible, :collapsed
+
+      def title? = title.present?
+      def description? = description.present?
+      def fields? = fields.any?
+      def collapsible? = collapsible
+      def collapsed? = collapsed
+    end
+  end
+end

@@ -1,0 +1,34 @@
+# frozen_string_literal: true
+
+module BetterPage
+  module Ui
+    class WidgetComponent < ViewComponent::Base
+      def initialize(type:, title: nil, **options)
+        @type = type.to_sym
+        @title = title
+        @options = options
+      end
+
+      attr_reader :type, :title, :options
+
+      def title? = title.present?
+
+      def chart? = type == :chart
+      def list? = type == :list
+      def stats? = type == :stats
+      def table? = type == :table
+      def text? = type == :text
+      def custom? = type == :custom
+
+      def size_classes
+        case options[:size]&.to_sym
+        when :small then "col-span-1"
+        when :medium then "col-span-2"
+        when :large then "col-span-3"
+        when :full then "col-span-full"
+        else "col-span-1"
+        end
+      end
+    end
+  end
+end

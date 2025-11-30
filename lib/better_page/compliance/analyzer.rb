@@ -76,11 +76,11 @@ module BetterPage
         result[:compliant] = result[:issues].empty?
         result[:status] = if result[:issues].any?
                             :error
-                          elsif result[:warnings].any?
+        elsif result[:warnings].any?
                             :warning
-                          else
+        else
                             :compliant
-                          end
+        end
 
         result
       rescue StandardError => e
@@ -89,7 +89,7 @@ module BetterPage
           class_name: "PARSE_ERROR",
           page_type: :unknown,
           namespace: "UNKNOWN",
-          issues: ["Parse error: #{e.message}"],
+          issues: [ "Parse error: #{e.message}" ],
           warnings: [],
           compliant: false,
           status: :error
@@ -102,10 +102,10 @@ module BetterPage
       def format_single_page_report(result)
         output = []
         status_icon = case result[:status]
-                      when :compliant then "[OK]"
-                      when :warning then "[WARN]"
-                      when :error then "[ERROR]"
-                      end
+        when :compliant then "[OK]"
+        when :warning then "[WARN]"
+        when :error then "[ERROR]"
+        end
 
         output << "#{status_icon} #{result[:file_path]}"
         output << "   Class: #{result[:class_name]}" if result[:class_name] != "UNKNOWN"

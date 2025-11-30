@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+module BetterPage
+  class FormViewComponent < ViewComponent::Base
+    def initialize(config:)
+      @config = config
+    end
+
+    # Component accessors
+    def header = @config[:header]
+    def alerts = @config[:alerts]
+    def errors = @config[:errors]
+    def panels = @config[:panels]
+    def footer = @config[:footer]
+
+    # Presence helpers
+    def header? = header.present?
+    def alerts? = alerts.present?
+    def errors? = errors.present?
+    def panels? = panels.present?
+    def footer? = footer.present?
+  end
+end

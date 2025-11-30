@@ -1,0 +1,42 @@
+<div class="bg-white shadow overflow-hidden rounded-lg mb-6">
+  <%% if title? || actions? %>
+    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <div>
+          <%% if title? %>
+            <h3 class="text-lg font-medium leading-6 text-gray-900"><%%= title %></h3>
+          <%% end %>
+          <%% if description? %>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500"><%%= description %></p>
+          <%% end %>
+        </div>
+        <%% if actions? %>
+          <div class="flex space-x-2">
+            <%% actions.each do |action| %>
+              <%%= link_to action[:path],
+                  method: action[:method],
+                  data: action[:confirm] ? { turbo_confirm: action[:confirm] } : {},
+                  class: action_classes(action[:style]) do %>
+                <%%= action[:label] %>
+              <%% end %>
+            <%% end %>
+          </div>
+        <%% end %>
+      </div>
+    </div>
+  <%% end %>
+
+  <%% if content? %>
+    <div class="px-4 py-5 sm:p-6">
+      <%% if content.is_a?(String) %>
+        <div class="prose max-w-none">
+          <%%= content.html_safe %>
+        </div>
+      <%% elsif content.is_a?(Hash) && content[:type] == :table %>
+        <%%= render BetterPage::Ui::TableComponent.new(**content.except(:type)) %>
+      <%% elsif content.is_a?(Hash) && content[:type] == :overview %>
+        <%%= render BetterPage::Ui::OverviewComponent.new(**content.except(:type)) %>
+      <%% end %>
+    </div>
+  <%% end %>
+</div>

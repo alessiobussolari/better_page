@@ -1,0 +1,33 @@
+<%% if actions? || info? %>
+  <footer class="bg-white border-t border-gray-200 px-4 py-4 sm:px-6">
+    <div class="flex items-center justify-between">
+      <%% if info? %>
+        <div class="text-sm text-gray-500">
+          <%%= info %>
+        </div>
+      <%% else %>
+        <div></div>
+      <%% end %>
+
+      <%% if actions? %>
+        <div class="flex space-x-3">
+          <%% actions.each do |action| %>
+            <%% if action[:type] == :submit %>
+              <%%= submit_tag action[:label], class: action_classes(action[:style]), data: action[:data] || {} %>
+            <%% else %>
+              <%%= link_to action[:path],
+                  method: action[:method],
+                  data: action[:confirm] ? { turbo_confirm: action[:confirm] } : {},
+                  class: action_classes(action[:style]) do %>
+                <%% if action[:icon] %>
+                  <span class="mr-2"><%%= action[:icon] %></span>
+                <%% end %>
+                <%%= action[:label] %>
+              <%% end %>
+            <%% end %>
+          <%% end %>
+        </div>
+      <%% end %>
+    </div>
+  </footer>
+<%% end %>

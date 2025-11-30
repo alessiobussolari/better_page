@@ -1,0 +1,47 @@
+# frozen_string_literal: true
+
+module BetterPage
+  module Ui
+    class AlertsComponent < ViewComponent::Base
+      def initialize(alerts:)
+        @alerts = Array(alerts)
+      end
+
+      attr_reader :alerts
+
+      def alerts? = alerts.any?
+
+      def alert_classes(type)
+        base = "rounded-md p-4 mb-4"
+
+        case type&.to_sym
+        when :success
+          "#{base} bg-green-50 text-green-800"
+        when :error, :danger
+          "#{base} bg-red-50 text-red-800"
+        when :warning
+          "#{base} bg-yellow-50 text-yellow-800"
+        when :info
+          "#{base} bg-blue-50 text-blue-800"
+        else
+          "#{base} bg-gray-50 text-gray-800"
+        end
+      end
+
+      def icon_classes(type)
+        case type&.to_sym
+        when :success
+          "text-green-400"
+        when :error, :danger
+          "text-red-400"
+        when :warning
+          "text-yellow-400"
+        when :info
+          "text-blue-400"
+        else
+          "text-gray-400"
+        end
+      end
+    end
+  end
+end

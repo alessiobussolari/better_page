@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib,docs,guide}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "CHANGELOG.md"]
   end
 
-  spec.add_dependency "rails", ">= 8.1.1"
+  spec.add_dependency "rails", ">= 7.0"
   spec.add_dependency "dry-schema", "~> 1.13"
+  spec.add_dependency "view_component", ">= 3.0"
 end

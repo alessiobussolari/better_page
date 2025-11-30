@@ -1,0 +1,65 @@
+<%% unless hidden? %>
+  <div class="<%%= span_classes %>">
+    <%% if checkbox? %>
+      <div class="relative flex items-start">
+        <div class="flex h-5 items-center">
+          <%%= check_box_tag name, "1", value, class: checkbox_classes, disabled: disabled?, id: name %>
+        </div>
+        <div class="ml-3 text-sm">
+          <%%= label_tag name, label, class: "font-medium text-gray-700" %>
+          <%% if hint? %>
+            <p class="text-gray-500"><%%= hint %></p>
+          <%% end %>
+        </div>
+      </div>
+
+    <%% elsif radio? %>
+      <fieldset>
+        <legend class="text-sm font-medium text-gray-900"><%%= label %></legend>
+        <%% if hint? %>
+          <p class="text-sm text-gray-500 mb-4"><%%= hint %></p>
+        <%% end %>
+        <div class="mt-4 space-y-4">
+          <%% options.each do |option| %>
+            <div class="flex items-center">
+              <%%= radio_button_tag name, option[:value], value == option[:value], class: radio_classes, disabled: disabled?, id: "#{name}_#{option[:value]}" %>
+              <%%= label_tag "#{name}_#{option[:value]}", option[:label], class: "ml-3 block text-sm font-medium text-gray-700" %>
+            </div>
+          <%% end %>
+        </div>
+      </fieldset>
+
+    <%% else %>
+      <%%= label_tag name, class: "block text-sm font-medium text-gray-700" do %>
+        <%%= label %>
+        <%% if required? %>
+          <span class="text-red-500">*</span>
+        <%% end %>
+      <%% end %>
+
+      <div class="mt-1">
+        <%% if textarea? %>
+          <%%= text_area_tag name, value, **input_attributes.merge(rows: 4) %>
+
+        <%% elsif select? %>
+          <%%= select_tag name, options_for_select(options.map { |o| [o[:label], o[:value]] }, value), **input_attributes.except(:placeholder).merge(include_blank: placeholder || true) %>
+
+        <%% elsif date_field? %>
+          <%%= date_field_tag name, value, **input_attributes %>
+
+        <%% elsif file_field? %>
+          <%%= file_field_tag name, **input_attributes.except(:placeholder) %>
+
+        <%% else %>
+          <%%= send("#{type}_field_tag", name, value, **input_attributes) %>
+        <%% end %>
+      </div>
+
+      <%% if hint? %>
+        <p class="mt-2 text-sm text-gray-500"><%%= hint %></p>
+      <%% end %>
+    <%% end %>
+  </div>
+<%% else %>
+  <%%= hidden_field_tag name, value %>
+<%% end %>

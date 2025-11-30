@@ -1,0 +1,18 @@
+<button
+  onclick="Stimulus.getControllerForElementAndIdentifier(document.querySelector('#drawer-left'), 'drawer').open()"
+  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+  Open Drawer (Left)
+</button>
+
+<%= render BetterPage::Ui::DrawerComponent.new(
+  id: "drawer-left",
+  title: "Left Drawer",
+  direction: :left
+) do %>
+  <p class="text-gray-700">
+    This drawer slides in from the left side.
+  </p>
+  <p class="mt-4 text-gray-600">
+    Great for navigation menus or sidebars.
+  </p>
+<% end %>

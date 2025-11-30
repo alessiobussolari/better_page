@@ -7,6 +7,7 @@ A Rails engine that provides a structured Page Object pattern for building UI co
 - **Component Registration DSL** - Declare UI components with schema validation using dry-schema
 - **Multiple Page Types** - Index, Show, Form, and Custom page base classes
 - **Schema Validation** - Automatic validation of component data in development
+- **Turbo Support** - Built-in support for Turbo Frames and Turbo Streams
 - **Compliance Analyzer** - Ensure pages follow architecture rules
 - **Rails Generators** - Quickly scaffold new pages
 
@@ -132,6 +133,45 @@ Run compliance check:
 rake better_page:compliance:analyze
 ```
 
+## Turbo Support
+
+BetterPage provides built-in support for Turbo Frames and Turbo Streams.
+
+### Turbo Frame (Single Component)
+
+```ruby
+# Controller - lazy load table
+def table
+  component = Products::IndexPage.new(@products, current_user).frame_index(:table)
+  render component[:klass].new(**component[:config])
+end
+```
+
+### Turbo Stream (Multiple Components)
+
+```ruby
+# Controller - update multiple components
+def refresh
+  components = Products::IndexPage.new(@products, current_user).stream_index(:table, :statistics)
+
+  render turbo_stream: components.map { |c|
+    turbo_stream.replace(c[:target], c[:klass].new(**c[:config]))
+  }
+end
+```
+
+Dynamic methods are generated based on your page's main action: `frame_index`, `stream_index`, `frame_show`, `stream_show`, etc.
+
+## Lookbook (Component Preview)
+
+BetterPage includes [Lookbook](https://lookbook.build/) for previewing ViewComponents in development.
+
+```bash
+cd spec/rails_app && bin/rails server -p 3099
+```
+
+Open http://localhost:3099/lookbook to browse component previews.
+
 ## Documentation
 
 - **[docs/](docs/)** - API reference and technical documentation
@@ -139,13 +179,16 @@ rake better_page:compliance:analyze
 
 ### Quick Links
 
-- [Getting Started](docs/getting-started.md)
-- [Component Registry](docs/component-registry.md)
-- [Base Pages Reference](docs/base-pages.md)
-- [Schema Validation](docs/schema-validation.md)
-- [Building Index Pages](guide/building-index-page.md)
-- [Building Form Pages](guide/building-form-page.md)
-- [Best Practices](guide/best-practices.md)
+- [Getting Started](docs/01-getting-started.md)
+- [Component Registry](docs/02-component-registry.md)
+- [Base Pages Reference](docs/03-base-pages.md)
+- [Schema Validation](docs/04-schema-validation.md)
+- [Turbo Support](docs/05-turbo-support.md)
+- [Compliance Analyzer](docs/06-compliance-analyzer.md)
+- [Quick Start Guide](guide/01-quick-start.md)
+- [Building Index Pages](guide/02-building-index-page.md)
+- [Building Form Pages](guide/04-building-form-page.md)
+- [Best Practices](guide/06-best-practices.md)
 
 ## Requirements
 

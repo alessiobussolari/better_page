@@ -1,0 +1,33 @@
+<%% if stats? %>
+  <div class="mb-6">
+    <dl class="grid gap-5 <%%= grid_classes %>">
+      <%% stats.each do |stat| %>
+        <div class="relative bg-white pt-5 px-4 pb-12 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden">
+          <dt>
+            <%% if stat[:icon] %>
+              <div class="absolute bg-indigo-500 rounded-md p-3">
+                <span class="h-6 w-6 text-white"><%%= stat[:icon] %></span>
+              </div>
+            <%% end %>
+            <p class="<%%= stat[:icon] ? 'ml-16' : '' %> text-sm font-medium text-gray-500 truncate"><%%= stat[:label] %></p>
+          </dt>
+          <dd class="<%%= stat[:icon] ? 'ml-16' : '' %> flex items-baseline pb-6 sm:pb-7">
+            <p class="text-2xl font-semibold text-gray-900"><%%= stat[:value] %></p>
+            <%% if stat[:change] %>
+              <p class="ml-2 flex items-baseline text-sm font-semibold <%%= trend_classes(stat[:trend]) %>">
+                <%%= trend_icon(stat[:trend]) %>
+                <span class="sr-only"><%%= stat[:trend] == :up ? 'Increased' : 'Decreased' %> by</span>
+                <%%= stat[:change] %>
+              </p>
+            <%% end %>
+            <%% if stat[:link] %>
+              <div class="absolute bottom-0 inset-x-0 bg-gray-50 px-4 py-4 sm:px-6">
+                <%%= link_to stat[:link][:label], stat[:link][:path], class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+              </div>
+            <%% end %>
+          </dd>
+        </div>
+      <%% end %>
+    </dl>
+  </div>
+<%% end %>

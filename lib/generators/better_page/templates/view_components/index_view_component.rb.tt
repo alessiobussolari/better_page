@@ -1,0 +1,29 @@
+# frozen_string_literal: true
+
+module BetterPage
+  class IndexViewComponent < ViewComponent::Base
+    def initialize(config:)
+      @config = config
+    end
+
+    # Component accessors
+    def header = @config[:header]
+    def table = @config[:table]
+    def alerts = @config[:alerts]
+    def statistics = @config[:statistics]
+    def pagination = @config[:pagination]
+    def tabs = @config[:tabs]
+    def search = @config[:search]
+    def footer = @config[:footer]
+
+    # Presence helpers
+    def header? = header.present?
+    def table? = table.present?
+    def alerts? = alerts.present?
+    def statistics? = statistics.present?
+    def pagination? = pagination.present?
+    def tabs? = tabs.present?
+    def search? = search.present?
+    def footer? = footer.present?
+  end
+end

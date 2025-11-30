@@ -1,0 +1,36 @@
+{
+  "name": "better-page-stimulus",
+  "version": "0.1.0",
+  "description": "Stimulus controllers for BetterPage Rails gem",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./controllers/*": "./src/controllers/*"
+  },
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "stimulus",
+    "rails",
+    "hotwired",
+    "better-page",
+    "dropdown",
+    "components"
+  ],
+  "author": "Alessio Bussolari",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alessiobussolari/better_page"
+  },
+  "homepage": "https://github.com/alessiobussolari/better_page#readme",
+  "bugs": {
+    "url": "https://github.com/alessiobussolari/better_page/issues"
+  },
+  "peerDependencies": {
+    "@hotwired/stimulus": "^3.0.0"
+  }
+}
