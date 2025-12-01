@@ -1,0 +1,29 @@
+<%= render BetterPage::Ui::ModalComponent.new(id: "modal-no-header", title: nil, closable: false, actions_position: :footer) do |modal| %>
+  <% modal.with_trigger do %>
+    <button type="button"
+            data-action="click->modal#open"
+            class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+      Open Modal (no header)
+    </button>
+  <% end %>
+
+  <% modal.with_actions do %>
+    <button type="button"
+            data-action="click->modal#close"
+            class="w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+      Got it!
+    </button>
+  <% end %>
+
+  <div class="text-center">
+    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+      <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+      </svg>
+    </div>
+    <h3 class="mt-4 text-lg font-semibold text-gray-900">Success!</h3>
+    <p class="mt-2 text-gray-500">
+      Your action was completed successfully. You can close this modal by clicking the button below or the backdrop.
+    </p>
+  </div>
+<% end %>

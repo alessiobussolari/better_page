@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class StatisticsComponent < ViewComponent::Base
+    class StatisticsComponent < BetterPage::ApplicationViewComponent
       def initialize(stats:, columns: 4)
         @stats = Array(stats)
         @columns = columns

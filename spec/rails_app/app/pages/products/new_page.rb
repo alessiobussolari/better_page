@@ -2,9 +2,10 @@
 
 module Products
   class NewPage < FormBasePage
-    def initialize(product, current_user = nil)
+    def initialize(product, metadata = {})
       @product = product
-      @current_user = current_user
+      @user = metadata[:user]
+      super(product, metadata)
     end
 
     private
@@ -28,10 +29,10 @@ module Products
           description: "Enter the product details",
           icon: "info",
           fields: [
-            field_format(name: :name, type: :text, label: "Name", required: true, placeholder: "Product name"),
-            field_format(name: :description, type: :textarea, label: "Description", placeholder: "Product description"),
-            field_format(name: :price, type: :number, label: "Price", required: true, min: 0, step: 0.01),
-            field_format(name: :stock, type: :number, label: "Stock", min: 0)
+            { name: :name, type: :text, label: "Name", required: true, placeholder: "Product name" },
+            { name: :description, type: :textarea, label: "Description", placeholder: "Product description" },
+            { name: :price, type: :number, label: "Price", required: true, min: 0, step: 0.01 },
+            { name: :stock, type: :number, label: "Stock", min: 0 }
           ]
         },
         {
@@ -39,7 +40,7 @@ module Products
           description: "Product status",
           icon: "settings",
           fields: [
-            field_format(name: :active, type: :checkbox, label: "Active", hint: "Enable to make product visible")
+            { name: :active, type: :checkbox, label: "Active", hint: "Enable to make product visible" }
           ]
         }
       ]

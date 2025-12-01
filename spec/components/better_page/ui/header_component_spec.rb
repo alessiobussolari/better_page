@@ -52,7 +52,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
 
       render_inline(described_class.new(title: "Test", actions: actions))
 
-      expect(page).to have_css("a.bg-indigo-600", text: "Save")
+      expect(page).to have_css("a.bg-blue-600", text: "Save")
     end
 
     it "applies danger action style" do
@@ -109,7 +109,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
 
     it "returns primary classes" do
       classes = component.action_classes(:primary)
-      expect(classes).to include("bg-indigo-600")
+      expect(classes).to include("bg-blue-600")
     end
 
     it "returns secondary classes" do

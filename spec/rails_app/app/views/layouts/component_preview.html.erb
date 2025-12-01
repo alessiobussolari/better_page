@@ -23,16 +23,50 @@
 
       connect() {
         this.boundHide = this.hide.bind(this)
+        this.boundUpdatePosition = this.updatePosition.bind(this)
         document.addEventListener("click", this.boundHide)
+        window.addEventListener("scroll", this.boundUpdatePosition, true)
+        window.addEventListener("resize", this.boundUpdatePosition)
       }
 
       disconnect() {
         document.removeEventListener("click", this.boundHide)
+        window.removeEventListener("scroll", this.boundUpdatePosition, true)
+        window.removeEventListener("resize", this.boundUpdatePosition)
       }
 
       toggle(event) {
         event.stopPropagation()
-        this.menuTarget.classList.toggle("hidden")
+        const isHidden = this.menuTarget.classList.contains("hidden")
+
+        if (isHidden) {
+          this.menuTarget.classList.remove("hidden")
+          this.menuTarget.style.position = "fixed"
+          this.updatePosition()
+        } else {
+          this.menuTarget.classList.add("hidden")
+        }
+      }
+
+      updatePosition() {
+        if (this.menuTarget.classList.contains("hidden")) return
+
+        const button = this.element.querySelector("button")
+        const rect = button.getBoundingClientRect()
+        const menuRect = this.menuTarget.getBoundingClientRect()
+
+        // Posiziona sotto il bottone, allineato a destra
+        let top = rect.bottom + 8
+        let left = rect.right - menuRect.width
+
+        // Controlla se esce dalla viewport
+        if (left < 0) left = rect.left
+        if (top + menuRect.height > window.innerHeight) {
+          top = rect.top - menuRect.height - 8
+        }
+
+        this.menuTarget.style.top = `${top}px`
+        this.menuTarget.style.left = `${left}px`
       }
 
       hide(event) {
@@ -139,6 +173,314 @@
           bottom: "translate-y-full"
         }
         return classes[this.directionValue] || "translate-x-full"
+      }
+    })
+
+    // Modal Controller
+    application.register("modal", class extends Controller {
+      static targets = ["container", "panel", "backdrop"]
+      static values = {
+        open: { type: Boolean, default: false },
+        confirmClose: { type: Boolean, default: false }
+      }
+
+      connect() {
+        this.boundKeydown = this.keydown.bind(this)
+        document.addEventListener("keydown", this.boundKeydown)
+      }
+
+      disconnect() {
+        document.removeEventListener("keydown", this.boundKeydown)
+        document.body.classList.remove("overflow-hidden")
+      }
+
+      open() {
+        this.openValue = true
+        this.containerTarget.classList.remove("hidden")
+        document.body.classList.add("overflow-hidden")
+
+        requestAnimationFrame(() => {
+          this.backdropTarget.classList.remove("opacity-0")
+          this.panelTarget.classList.remove("opacity-0", "translate-y-4", "sm:translate-y-0", "sm:scale-95")
+          this.panelTarget.classList.add("opacity-100", "translate-y-0", "sm:scale-100")
+        })
+      }
+
+      close() {
+        this.openValue = false
+        this.backdropTarget.classList.add("opacity-0")
+        this.panelTarget.classList.remove("opacity-100", "translate-y-0", "sm:scale-100")
+        this.panelTarget.classList.add("opacity-0", "translate-y-4", "sm:translate-y-0", "sm:scale-95")
+
+        setTimeout(() => {
+          this.containerTarget.classList.add("hidden")
+          document.body.classList.remove("overflow-hidden")
+        }, 300)
+      }
+
+      toggle() {
+        this.openValue ? this.close() : this.open()
+      }
+
+      requestClose() {
+        if (this.confirmCloseValue) {
+          if (confirm("Sei sicuro di voler chiudere? I dati non salvati andranno persi.")) {
+            this.close()
+          }
+        } else {
+          this.close()
+        }
+      }
+
+      keydown(event) {
+        if (event.key === "Escape" && this.openValue) {
+          this.requestClose()
+        }
+      }
+
+      backdropClick(event) {
+        if (event.target === this.backdropTarget) {
+          this.requestClose()
+        }
+      }
+    })
+
+    // Tabs Controller
+    application.register("tabs", class extends Controller {
+      static targets = ["tab", "panel"]
+      static values = {
+        default: String,
+        style: { type: String, default: "underline" },
+        activeClass: String,
+        inactiveClass: String
+      }
+
+      connect() {
+        const defaultId = this.defaultValue || this.tabTargets[0]?.dataset.tabId
+        if (defaultId) {
+          this.selectTab(defaultId, false)
+        }
+      }
+
+      select(event) {
+        const tabId = event.currentTarget.dataset.tabId
+        this.selectTab(tabId)
+      }
+
+      selectTab(tabId, animate = true) {
+        // Update tabs
+        this.tabTargets.forEach(tab => {
+          const isActive = tab.dataset.tabId === tabId
+          tab.setAttribute("aria-selected", isActive)
+          tab.setAttribute("tabindex", isActive ? "0" : "-1")
+
+          // Update classes
+          const activeClasses = this.activeClassValue.split(" ").filter(c => c)
+          const inactiveClasses = this.inactiveClassValue.split(" ").filter(c => c)
+
+          if (isActive) {
+            tab.classList.remove(...inactiveClasses)
+            tab.classList.add(...activeClasses)
+          } else {
+            tab.classList.remove(...activeClasses)
+            tab.classList.add(...inactiveClasses)
+          }
+        })
+
+        // Update panels
+        this.panelTargets.forEach(panel => {
+          const isActive = panel.dataset.tabId === tabId
+          panel.classList.toggle("hidden", !isActive)
+        })
+
+        // Dispatch custom event
+        this.dispatch("changed", { detail: { tabId } })
+      }
+
+      keydown(event) {
+        const currentTab = event.currentTarget
+        const currentIndex = this.tabTargets.indexOf(currentTab)
+        let newIndex
+
+        switch (event.key) {
+          case "ArrowLeft":
+            event.preventDefault()
+            newIndex = currentIndex - 1
+            if (newIndex < 0) newIndex = this.tabTargets.length - 1
+            break
+          case "ArrowRight":
+            event.preventDefault()
+            newIndex = currentIndex + 1
+            if (newIndex >= this.tabTargets.length) newIndex = 0
+            break
+          case "Home":
+            event.preventDefault()
+            newIndex = 0
+            break
+          case "End":
+            event.preventDefault()
+            newIndex = this.tabTargets.length - 1
+            break
+          default:
+            return
+        }
+
+        const newTab = this.tabTargets[newIndex]
+        if (newTab) {
+          newTab.focus()
+          this.selectTab(newTab.dataset.tabId)
+        }
+      }
+    })
+
+    // Sidebar Controller
+    application.register("sidebar", class extends Controller {
+      static targets = ["brand", "brandText", "toggleIcon", "item", "itemLabel", "group", "groupToggle", "groupLabel", "groupIcon", "groupContent"]
+      static values = {
+        collapsed: { type: Boolean, default: false },
+        persist: { type: Boolean, default: true },
+        storageKey: { type: String, default: "sidebar-collapsed" }
+      }
+
+      connect() {
+        if (this.persistValue) {
+          const saved = localStorage.getItem(this.storageKeyValue)
+          if (saved !== null) {
+            this.collapsedValue = saved === "true"
+          }
+        }
+        this.updateUI()
+      }
+
+      toggle() {
+        this.collapsedValue = !this.collapsedValue
+        if (this.persistValue) {
+          localStorage.setItem(this.storageKeyValue, this.collapsedValue)
+        }
+        this.updateUI()
+      }
+
+      toggleGroup(event) {
+        const groupId = event.currentTarget.dataset.groupId
+        const content = this.groupContentTargets.find(el => el.dataset.groupId === groupId)
+        const icon = event.currentTarget.querySelector("[data-sidebar-target='groupIcon']")
+
+        if (content) {
+          const isHidden = content.classList.contains("hidden")
+          content.classList.toggle("hidden", !isHidden)
+          event.currentTarget.setAttribute("aria-expanded", isHidden)
+
+          if (icon) {
+            icon.classList.toggle("-rotate-90", !isHidden)
+            icon.classList.toggle("rotate-0", isHidden)
+          }
+        }
+      }
+
+      updateUI() {
+        const element = this.element
+
+        // Update width
+        if (this.collapsedValue) {
+          element.classList.remove("w-64")
+          element.classList.add("w-16")
+        } else {
+          element.classList.remove("w-16")
+          element.classList.add("w-64")
+        }
+
+        // Update toggle icon rotation
+        if (this.hasToggleIconTarget) {
+          this.toggleIconTarget.classList.toggle("rotate-180", this.collapsedValue)
+        }
+
+        // Hide/show text elements
+        const textTargets = [
+          ...this.brandTextTargets,
+          ...this.itemLabelTargets,
+          ...this.groupLabelTargets
+        ]
+        textTargets.forEach(el => {
+          el.classList.toggle("opacity-0", this.collapsedValue)
+          el.classList.toggle("w-0", this.collapsedValue)
+          el.classList.toggle("overflow-hidden", this.collapsedValue)
+        })
+
+        // Hide group icons when collapsed
+        this.groupIconTargets.forEach(el => {
+          el.classList.toggle("hidden", this.collapsedValue)
+        })
+
+        // Dispatch event
+        this.dispatch("toggled", { detail: { collapsed: this.collapsedValue } })
+      }
+    })
+
+    // AppNav Controller
+    application.register("app-nav", class extends Controller {
+      static targets = ["mobileMenu", "menuIcon", "closeIcon"]
+      static values = {
+        mobileOpen: { type: Boolean, default: false }
+      }
+
+      toggleMobile() {
+        this.mobileOpenValue = !this.mobileOpenValue
+        this.updateMobileMenu()
+      }
+
+      toggleNotification(event) {
+        const notificationId = event.currentTarget.dataset.notificationId
+        this.dispatch("notification-clicked", { detail: { notificationId } })
+      }
+
+      updateMobileMenu() {
+        if (this.hasMobileMenuTarget) {
+          this.mobileMenuTarget.classList.toggle("hidden", !this.mobileOpenValue)
+        }
+        if (this.hasMenuIconTarget) {
+          this.menuIconTarget.classList.toggle("hidden", this.mobileOpenValue)
+        }
+        if (this.hasCloseIconTarget) {
+          this.closeIconTarget.classList.toggle("hidden", !this.mobileOpenValue)
+        }
+      }
+    })
+
+    // TabBar Controller
+    application.register("tab-bar", class extends Controller {
+      static targets = ["tab"]
+      static values = {
+        activeClass: { type: String, default: "text-blue-600" },
+        inactiveClass: { type: String, default: "text-gray-500" }
+      }
+
+      select(event) {
+        if (event.currentTarget.tagName === "A") {
+          // Let the link navigate naturally
+          // But update the active state visually
+          this.updateActiveTab(event.currentTarget)
+        }
+      }
+
+      updateActiveTab(activeTab) {
+        this.tabTargets.forEach(tab => {
+          const isActive = tab === activeTab
+          tab.setAttribute("aria-current", isActive ? "page" : "false")
+
+          // Update icon color
+          const icon = tab.querySelector("span.w-6")
+          if (icon) {
+            icon.classList.toggle("text-blue-600", isActive)
+            icon.classList.toggle("text-gray-500", !isActive)
+          }
+
+          // Update label color
+          const label = tab.querySelector("span.text-xs")
+          if (label) {
+            label.classList.toggle("text-blue-600", isActive)
+            label.classList.toggle("text-gray-500", !isActive)
+          }
+        })
       }
     })
   </script>

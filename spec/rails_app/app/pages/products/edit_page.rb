@@ -2,9 +2,10 @@
 
 module Products
   class EditPage < FormBasePage
-    def initialize(product, current_user = nil)
+    def initialize(product, metadata = {})
       @product = product
-      @current_user = current_user
+      @user = metadata[:user]
+      super(product, metadata)
     end
 
     private
@@ -29,10 +30,10 @@ module Products
           description: "Update the product details",
           icon: "info",
           fields: [
-            field_format(name: :name, type: :text, label: "Name", required: true, value: @product.name),
-            field_format(name: :description, type: :textarea, label: "Description", value: @product.description),
-            field_format(name: :price, type: :number, label: "Price", required: true, min: 0, step: 0.01, value: @product.price),
-            field_format(name: :stock, type: :number, label: "Stock", min: 0, value: @product.stock)
+            { name: :name, type: :text, label: "Name", required: true, value: @product.name },
+            { name: :description, type: :textarea, label: "Description", value: @product.description },
+            { name: :price, type: :number, label: "Price", required: true, min: 0, step: 0.01, value: @product.price },
+            { name: :stock, type: :number, label: "Stock", min: 0, value: @product.stock }
           ]
         },
         {
@@ -40,7 +41,7 @@ module Products
           description: "Product status",
           icon: "settings",
           fields: [
-            field_format(name: :active, type: :checkbox, label: "Active", hint: "Enable to make product visible", checked: @product.active?)
+            { name: :active, type: :checkbox, label: "Active", hint: "Enable to make product visible", checked: @product.active? }
           ]
         }
       ]

@@ -5,10 +5,11 @@
 Create a CustomPage for dashboards, reports, or any non-standard layout. Content is required.
 
 ```ruby
-class Admin::DashboardPage < BetterPage::CustomBasePage
-  def initialize(data, current_user)
+class Admin::DashboardPage < CustomBasePage
+  def initialize(data, metadata = {})
     @data = data
-    @current_user = current_user
+    @user = metadata[:user]
+    super(data, metadata)
   end
 
   private
@@ -36,10 +37,11 @@ end
 Add multiple chart types to your dashboard.
 
 ```ruby
-class Reports::SalesPage < BetterPage::CustomBasePage
-  def initialize(sales_data, current_user)
+class Reports::SalesPage < CustomBasePage
+  def initialize(sales_data, metadata = {})
     @sales_data = sales_data
-    @current_user = current_user
+    @user = metadata[:user]
+    super(sales_data, metadata)
   end
 
   private

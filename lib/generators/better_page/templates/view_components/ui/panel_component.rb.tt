@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class PanelComponent < ViewComponent::Base
+    class PanelComponent < BetterPage::ApplicationViewComponent
       def initialize(title: nil, description: nil, fields: [], collapsible: false, collapsed: false)
         @title = title
         @description = description

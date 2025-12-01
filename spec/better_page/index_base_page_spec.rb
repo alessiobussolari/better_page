@@ -39,6 +39,10 @@ RSpec.describe BetterPage::IndexBasePage do
 
   let(:minimal_index_page_class) do
     Class.new(BetterPage::IndexBasePage) do
+      def initialize(items = [])
+        super(items)
+      end
+
       def header
         { title: "Minimal" }
       end

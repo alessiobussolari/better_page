@@ -5,10 +5,11 @@
 Create a ShowPage for displaying record details with header and content sections.
 
 ```ruby
-class Products::ShowPage < BetterPage::ShowBasePage
-  def initialize(product, current_user)
+class Products::ShowPage < ShowBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private
@@ -35,10 +36,11 @@ end
 Add content sections using helper methods for info grids and statistics.
 
 ```ruby
-class Products::ShowPage < BetterPage::ShowBasePage
-  def initialize(product, current_user)
+class Products::ShowPage < ShowBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private

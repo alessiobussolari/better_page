@@ -5,7 +5,7 @@
         <div class="relative bg-white pt-5 px-4 pb-12 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden">
           <dt>
             <%% if stat[:icon] %>
-              <div class="absolute bg-indigo-500 rounded-md p-3">
+              <div class="absolute bg-blue-500 rounded-md p-3">
                 <span class="h-6 w-6 text-white"><%%= stat[:icon] %></span>
               </div>
             <%% end %>
@@ -22,7 +22,7 @@
             <%% end %>
             <%% if stat[:link] %>
               <div class="absolute bottom-0 inset-x-0 bg-gray-50 px-4 py-4 sm:px-6">
-                <%%= link_to stat[:link][:label], stat[:link][:path], class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+                <%%= link_to stat[:link][:label], stat[:link][:path], class: "text-sm font-medium text-blue-600 hover:text-blue-500" %>
               </div>
             <%% end %>
           </dd>

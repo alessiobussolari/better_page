@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class ErrorsComponent < ViewComponent::Base
+    class ErrorsComponent < BetterPage::ApplicationViewComponent
       def initialize(resource:)
         @resource = resource
       end

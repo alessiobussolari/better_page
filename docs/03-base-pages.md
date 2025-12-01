@@ -2,7 +2,7 @@
 
 ### Page Types Overview
 
-BetterPage provides four base page classes for different page types.
+BetterPage provides four base page classes, generated locally in your `app/pages/` folder.
 
 | Type | Base Class | Required Components | Use Case |
 |------|-----------|---------------------|----------|
@@ -10,6 +10,20 @@ BetterPage provides four base page classes for different page types.
 | Show | `ShowBasePage` | `header` | Detail views |
 | Form | `FormBasePage` | `header`, `panels` | New/Edit forms |
 | Custom | `CustomBasePage` | `content` | Dashboards, reports |
+
+### Inheritance Hierarchy
+
+```
+BetterPage::BasePage (gem)
+        │
+        ▼
+ApplicationPage (app/pages/)
+        │
+        ├── IndexBasePage (page_type :index)
+        ├── ShowBasePage (page_type :show)
+        ├── FormBasePage (page_type :form)
+        └── CustomBasePage (page_type :custom)
+```
 
 --------------------------------
 
@@ -34,10 +48,11 @@ Components available for list/index pages.
 ### IndexBasePage Example
 
 ```ruby
-class Admin::Users::IndexPage < BetterPage::IndexBasePage
-  def initialize(users, current_user)
+class Admin::Users::IndexPage < IndexBasePage
+  def initialize(users, metadata = {})
     @users = users
-    @current_user = current_user
+    @user = metadata[:user]
+    super(users, metadata)
   end
 
   private
@@ -136,10 +151,11 @@ panel_format(title: "Basic Info", fields: [...], description: "Enter details")
 ### FormBasePage Example
 
 ```ruby
-class Admin::Users::NewPage < BetterPage::FormBasePage
-  def initialize(user, current_user)
+class Admin::Users::NewPage < FormBasePage
+  def initialize(user, metadata = {})
     @user = user
-    @current_user = current_user
+    @current_user = metadata[:user]
+    super(user, metadata)
   end
 
   private
@@ -197,10 +213,11 @@ chart_format(title: "Revenue", type: :line, data: { labels: [...], datasets: [..
 ### CustomBasePage Example
 
 ```ruby
-class Admin::DashboardPage < BetterPage::CustomBasePage
-  def initialize(data, current_user)
+class Admin::DashboardPage < CustomBasePage
+  def initialize(data, metadata = {})
     @data = data
-    @current_user = current_user
+    @user = metadata[:user]
+    super(data, metadata)
   end
 
   private

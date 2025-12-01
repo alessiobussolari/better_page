@@ -137,7 +137,7 @@ module BetterPage
 
     # Build the page by collecting and validating all registered components
     #
-    # @return [Hash] hash with all component values including :klass for self-rendering
+    # @return [BetterPage::Config] config object with components and metadata
     def build_page
       result = {}
 
@@ -147,9 +147,13 @@ module BetterPage
         result[name] = value
       end
 
-      # Add self-rendering support
-      result[:klass] = view_component_class
-      result
+      BetterPage::Config.new(
+        result,
+        meta: {
+          page_type: self.class.page_type,
+          klass: view_component_class
+        }
+      )
     end
 
     # Build a single component for Turbo Frame

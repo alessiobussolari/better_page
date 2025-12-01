@@ -1,5 +1,7 @@
 # Turbo Stream
 
+> **Note:** All BetterPage ViewComponents inherit from `ApplicationViewComponent`, which includes `Turbo::FramesHelper`. This means you have access to Turbo helpers directly in your component templates.
+
 ### Update Multiple Components with Turbo Stream
 
 Use `stream_<action>(*components)` to get multiple components for Turbo Stream updates.
@@ -8,7 +10,7 @@ Use `stream_<action>(*components)` to get multiple components for Turbo Stream u
 # In controller
 def refresh
   @products = Product.filtered(params)
-  components = Products::IndexPage.new(@products, current_user).stream_index(:table, :statistics)
+  components = Products::IndexPage.new(@products, user: current_user).stream_index(:table, :statistics)
 
   respond_to do |format|
     format.turbo_stream do
@@ -72,7 +74,7 @@ Stream methods are generated based on the page's main action.
 Override `stream_components` to define default components for stream methods.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   def stream_components
     %i[alerts statistics table pagination]
   end
@@ -116,7 +118,7 @@ end
 Override `stream_target` to customize DOM element IDs.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   def stream_target(name)
     "products_#{name}"  # Returns "products_table" instead of "better_page_table"
   end

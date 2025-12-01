@@ -52,6 +52,10 @@ RSpec.describe BetterPage::CustomBasePage do
 
   let(:minimal_custom_page_class) do
     Class.new(BetterPage::CustomBasePage) do
+      def initialize(data = nil)
+        super(data)
+      end
+
       def content
         { data: "minimal" }
       end
@@ -185,6 +189,32 @@ RSpec.describe BetterPage::CustomBasePage do
 
       expect(result[:legend]).to be true
       expect(result[:colors]).to eq(%w[red blue green])
+    end
+  end
+
+  describe "#view_component_class" do
+    it "returns BetterPage::CustomViewComponent when defined" do
+      page = test_custom_page_class.new
+
+      # BetterPage::CustomViewComponent is defined in rails_helper
+      expect(page.view_component_class).to eq(BetterPage::CustomViewComponent)
+    end
+
+    it "raises NotImplementedError when component is not defined" do
+      page = test_custom_page_class.new
+
+      # Temporarily undefine the constant
+      hide_const("BetterPage::CustomViewComponent")
+
+      expect { page.view_component_class }.to raise_error(NotImplementedError, /CustomViewComponent not found/)
+    end
+  end
+
+  describe "#stream_components" do
+    it "returns default stream components" do
+      page = test_custom_page_class.new
+
+      expect(page.stream_components).to eq(%i[alerts content])
     end
   end
 end

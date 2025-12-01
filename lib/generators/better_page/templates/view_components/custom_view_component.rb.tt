@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BetterPage
-  class CustomViewComponent < ViewComponent::Base
+  class CustomViewComponent < ApplicationViewComponent
     def initialize(config:)
       @config = config
     end

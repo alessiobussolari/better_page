@@ -1,4 +1,4 @@
-<header class="mb-6">
+<header class="bg-white shadow rounded-xl p-4">
   <%% if breadcrumbs? %>
     <nav class="flex mb-4" aria-label="Breadcrumb">
       <ol class="inline-flex items-center space-x-1 md:space-x-3">

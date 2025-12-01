@@ -43,6 +43,10 @@ RSpec.describe BetterPage::ShowBasePage do
 
   let(:minimal_show_page_class) do
     Class.new(BetterPage::ShowBasePage) do
+      def initialize(item = nil)
+        super(item)
+      end
+
       def header
         { title: "Minimal Show" }
       end
@@ -199,6 +203,73 @@ RSpec.describe BetterPage::ShowBasePage do
                          style: "secondary")
 
       expect(result[:method]).to eq(:get)
+    end
+  end
+
+  describe "#view_component_class" do
+    it "returns BetterPage::ShowViewComponent when defined" do
+      page = test_show_page_class.new({ id: 1, name: "Test", email: "test@example.com" })
+
+      # BetterPage::ShowViewComponent is defined in rails_helper
+      expect(page.view_component_class).to eq(BetterPage::ShowViewComponent)
+    end
+
+    it "raises NotImplementedError when component is not defined" do
+      page = test_show_page_class.new({ id: 1, name: "Test", email: "test@example.com" })
+
+      # Temporarily undefine the constant
+      allow(page).to receive(:view_component_class).and_call_original
+      hide_const("BetterPage::ShowViewComponent")
+
+      expect { page.view_component_class }.to raise_error(NotImplementedError, /ShowViewComponent not found/)
+    end
+  end
+
+  describe "#stream_components" do
+    it "returns default stream components" do
+      page = test_show_page_class.new({ id: 1, name: "Test", email: "test@example.com" })
+
+      expect(page.stream_components).to eq(%i[alerts statistics overview content_sections])
+    end
+  end
+
+  describe "#content_section_format edge cases" do
+    let(:page) { test_show_page_class.new({ id: 1, name: "Test", email: "test@example.com" }) }
+
+    it "handles info_grid with pre-formatted items array" do
+      items = [{ name: "Name", value: "John" }, { name: "Email", value: "john@example.com" }]
+      result = page.send(:content_section_format,
+                         title: "Details",
+                         icon: "info",
+                         color: "blue",
+                         type: :info_grid,
+                         content: items)
+
+      expect(result[:items]).to eq(items)
+    end
+
+    it "handles info_grid with plain array content" do
+      content = ["item1", "item2"]
+      result = page.send(:content_section_format,
+                         title: "List",
+                         icon: "list",
+                         color: "gray",
+                         type: :info_grid,
+                         content: content)
+
+      expect(result[:items]).to eq(content)
+    end
+
+    it "handles non-info_grid type with content" do
+      result = page.send(:content_section_format,
+                         title: "Notes",
+                         icon: "note",
+                         color: "yellow",
+                         type: :custom,
+                         content: { custom_data: "value" })
+
+      expect(result[:content]).to eq({ custom_data: "value" })
+      expect(result).not_to have_key(:items)
     end
   end
 end

@@ -5,10 +5,11 @@
 Create a FormPage for new/edit forms. Header and panels are required.
 
 ```ruby
-class Products::NewPage < BetterPage::FormBasePage
-  def initialize(product, current_user)
+class Products::NewPage < FormBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private
@@ -43,10 +44,11 @@ end
 Checkbox and radio fields MUST be in separate panels from text inputs.
 
 ```ruby
-class Products::EditPage < BetterPage::FormBasePage
-  def initialize(product, current_user)
+class Products::EditPage < FormBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private

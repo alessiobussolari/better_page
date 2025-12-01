@@ -1,0 +1,57 @@
+<%= render BetterPage::Ui::TabsComponent.new(id: "tabs-default") do |tabs| %>
+  <% tabs.with_tab(id: "account", label: "Account") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Account Settings</h3>
+      <p class="mt-2 text-gray-600">
+        Manage your account settings, including your email address, password, and profile information.
+      </p>
+      <div class="mt-4 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" value="user@example.com" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Username</label>
+          <input type="text" value="johndoe" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% tabs.with_tab(id: "notifications", label: "Notifications") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Notification Preferences</h3>
+      <p class="mt-2 text-gray-600">
+        Choose how you want to be notified about updates and activity.
+      </p>
+      <div class="mt-4 space-y-3">
+        <label class="flex items-center">
+          <input type="checkbox" checked class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2 text-gray-700">Email notifications</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2 text-gray-700">SMS notifications</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" checked class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2 text-gray-700">Push notifications</span>
+        </label>
+      </div>
+    </div>
+  <% end %>
+
+  <% tabs.with_tab(id: "security", label: "Security") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Security Settings</h3>
+      <p class="mt-2 text-gray-600">
+        Manage your security preferences and two-factor authentication.
+      </p>
+      <div class="mt-4">
+        <button type="button" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+          Enable 2FA
+        </button>
+      </div>
+    </div>
+  <% end %>
+<% end %>

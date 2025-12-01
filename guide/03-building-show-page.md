@@ -5,15 +5,16 @@ A complete guide to building detail pages with content sections.
 ### Basic Show Page Structure
 
 ```ruby
-class Products::ShowPage < BetterPage::ShowBasePage
-  def initialize(product, current_user)
+class Products::ShowPage < ShowBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private
 
-  def build_show_header
+  def header
     { title: @product.name }
   end
 end
@@ -24,7 +25,7 @@ end
 ### Adding Header with Actions
 
 ```ruby
-def build_show_header
+def header
   {
     title: @product.name,
     breadcrumbs: [
@@ -207,15 +208,16 @@ end
 ### Complete Show Page Example
 
 ```ruby
-class Products::ShowPage < BetterPage::ShowBasePage
-  def initialize(product, current_user)
+class Products::ShowPage < ShowBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private
 
-  def build_show_header
+  def header
     {
       title: @product.name,
       breadcrumbs: [{ label: "Products", path: products_path }, { label: @product.name }],

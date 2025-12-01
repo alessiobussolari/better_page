@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class TableComponent < ViewComponent::Base
+    class TableComponent < BetterPage::ApplicationViewComponent
       def initialize(items:, columns:, row_actions: nil, empty_state: nil,
                      selectable: false, row_link: nil, actions_display: :inline)
         @items = items
@@ -64,7 +64,7 @@ module BetterPage
         when :danger
           "text-red-600 hover:text-red-900"
         when :primary
-          "text-indigo-600 hover:text-indigo-900"
+          "text-blue-600 hover:text-blue-900"
         else
           "text-gray-600 hover:text-gray-900"
         end
@@ -74,7 +74,7 @@ module BetterPage
         base = "block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
         color = case style&.to_sym
                 when :danger then "text-red-600"
-                when :primary then "text-indigo-600"
+                when :primary then "text-blue-600"
                 else "text-gray-700"
                 end
         "#{base} #{color}"

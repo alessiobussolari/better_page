@@ -293,3 +293,190 @@ RSpec.describe BetterPage::ComponentDefinition do
     end
   end
 end
+
+RSpec.describe "ComponentRegistry additional coverage" do
+  let(:mock_view_component) { Class.new }
+
+  describe "#page_type getter" do
+    it "returns nil when page_type not set" do
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+      end
+
+      expect(klass.page_type).to be_nil
+    end
+
+    it "returns the set page type" do
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+        page_type :index
+      end
+
+      expect(klass.page_type).to eq(:index)
+    end
+  end
+
+  describe "#allowed_component_names" do
+    it "returns list of component names" do
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+        register_component :header, required: true
+        register_component :footer, default: nil
+      end
+
+      expect(klass.allowed_component_names).to contain_exactly(:header, :footer)
+    end
+  end
+
+  describe "#ui_component_class" do
+    it "returns nil for unmapped component" do
+      mock_component = mock_view_component
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+        register_component :custom, default: nil
+
+        define_method(:view_component_class) { mock_component }
+      end
+
+      page = klass.new
+      expect(page.ui_component_class(:custom)).to be_nil
+    end
+  end
+
+  describe "#stream_components default" do
+    it "returns all effective component keys by default" do
+      mock_component = mock_view_component
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+        register_component :header, required: true
+        register_component :footer, default: nil
+
+        def header
+          { title: "Test" }
+        end
+
+        define_method(:view_component_class) { mock_component }
+      end
+
+      page = klass.new
+      expect(page.stream_components).to contain_exactly(:header, :footer)
+    end
+  end
+
+  describe "validation with array schema" do
+    it "handles validation errors in array items" do
+      mock_component = mock_view_component
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+
+        register_component :items, required: true do
+          required(:name).filled(:string)
+        end
+
+        def items
+          [{ name: 123 }] # Invalid - name should be string
+        end
+
+        define_method(:view_component_class) { mock_component }
+      end
+
+      page = klass.new
+      # In development mode, this should raise or log
+      allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("development"))
+      expect { page.build_page }.to raise_error(BetterPage::ValidationError)
+    end
+  end
+
+  describe "handle_validation_error" do
+    it "logs warning in production" do
+      mock_component = mock_view_component
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+
+        register_component :field, required: true
+
+        def field
+          nil
+        end
+
+        define_method(:view_component_class) { mock_component }
+      end
+
+      page = klass.new
+      allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("production"))
+      expect(Rails.logger).to receive(:warn).with(/required but returned nil/)
+
+      page.build_page
+    end
+  end
+
+  describe "skip_empty_component" do
+    let(:mock_component) { Class.new }
+
+    it "skips nil components in stream_page" do
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+
+        register_component :header, default: { title: "Test" }
+        register_component :sidebar, default: nil
+
+        define_method(:view_component_class) { Class.new }
+      end
+
+      page = klass.new
+      result = page.stream_page(:header, :sidebar)
+
+      # sidebar should be skipped because it's nil
+      expect(result.map { |c| c[:component] }).to contain_exactly(:header)
+    end
+
+    it "skips empty array components in stream_page" do
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+
+        register_component :header, default: { title: "Test" }
+        register_component :alerts, default: []
+
+        define_method(:view_component_class) { Class.new }
+      end
+
+      page = klass.new
+      result = page.stream_page(:header, :alerts)
+
+      # alerts should be skipped because it's empty array
+      expect(result.map { |c| c[:component] }).to contain_exactly(:header)
+    end
+
+    it "skips disabled components in stream_page" do
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+
+        register_component :header, default: { title: "Test" }
+        register_component :footer, default: { enabled: false }
+
+        define_method(:view_component_class) { Class.new }
+      end
+
+      page = klass.new
+      result = page.stream_page(:header, :footer)
+
+      # footer should be skipped because enabled: false
+      expect(result.map { |c| c[:component] }).to contain_exactly(:header)
+    end
+  end
+
+  describe "frame_page with disabled component" do
+    it "returns nil for disabled component" do
+      klass = Class.new do
+        include BetterPage::ComponentRegistry
+
+        register_component :footer, default: { enabled: false }
+
+        define_method(:view_component_class) { Class.new }
+      end
+
+      page = klass.new
+      expect(page.frame_page(:footer)).to be_nil
+    end
+  end
+end

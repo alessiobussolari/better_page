@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class PaginationComponent < ViewComponent::Base
+    class PaginationComponent < BetterPage::ApplicationViewComponent
       def initialize(items:, info: true)
         @items = items
         @show_info = info
@@ -59,7 +59,7 @@ module BetterPage
         base = "relative inline-flex items-center px-4 py-2 text-sm font-medium"
 
         if page == current_page
-          "#{base} z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
+          "#{base} z-10 bg-blue-50 border-blue-500 text-blue-600"
         else
           "#{base} bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
         end

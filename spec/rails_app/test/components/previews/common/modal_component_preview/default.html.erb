@@ -1,0 +1,14 @@
+<%= render BetterPage::Ui::ModalComponent.new(id: "modal-default", title: "Default Modal") do |modal| %>
+  <% modal.with_trigger do %>
+    <button type="button"
+            data-action="click->modal#open"
+            class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+      Open Modal
+    </button>
+  <% end %>
+
+  <p class="text-gray-700">
+    This is the default modal with a title and close button.
+    Click outside or press ESC to close.
+  </p>
+<% end %>

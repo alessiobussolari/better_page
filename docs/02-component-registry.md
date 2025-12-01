@@ -105,7 +105,7 @@ end
 Define methods matching the component names in your page class.
 
 ```ruby
-class Admin::Users::IndexPage < BetterPage::IndexBasePage
+class Admin::Users::IndexPage < IndexBasePage
   def initialize(users, current_user)
     @users = users
     @current_user = current_user

@@ -1,5 +1,7 @@
 # Turbo Frame
 
+> **Note:** All BetterPage ViewComponents inherit from `ApplicationViewComponent`, which includes `Turbo::FramesHelper`. This means you have access to `turbo_frame_tag` and other Turbo helpers directly in your component templates.
+
 ### Lazy Load Component with Turbo Frame
 
 Use `frame_<action>(:component)` to get a single component for Turbo Frame lazy loading.
@@ -8,7 +10,7 @@ Use `frame_<action>(:component)` to get a single component for Turbo Frame lazy 
 # In controller
 def table
   @products = Product.all
-  component = Products::IndexPage.new(@products, current_user).frame_index(:table)
+  component = Products::IndexPage.new(@products, user: current_user).frame_index(:table)
 
   render component[:klass].new(**component[:config])
 end
@@ -59,7 +61,7 @@ Frame methods are generated based on the page's main action.
 If you define a custom action, frame methods work automatically.
 
 ```ruby
-class Reports::DailyPage < BetterPage::CustomBasePage
+class Reports::DailyPage < CustomBasePage
   register_component :chart, default: {}
 
   def daily
@@ -83,7 +85,7 @@ page.frame_daily(:chart)  # Works automatically
 Override `frame_target` to customize DOM element IDs.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   def frame_target(name)
     "products_#{name}"  # Returns "products_table" instead of "better_page_table"
   end

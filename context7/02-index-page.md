@@ -5,10 +5,11 @@
 Create an IndexPage that returns Hash configurations for header and table components. Data is passed via constructor.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
-  def initialize(products, current_user)
+class Products::IndexPage < IndexBasePage
+  def initialize(products, metadata = {})
     @products = products
-    @current_user = current_user
+    @user = metadata[:user]
+    super(products, metadata)
   end
 
   private
@@ -45,10 +46,11 @@ end
 Add statistics cards above the table.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
-  def initialize(products, current_user)
+class Products::IndexPage < IndexBasePage
+  def initialize(products, metadata = {})
     @products = products
-    @current_user = current_user
+    @user = metadata[:user]
+    super(products, metadata)
   end
 
   private

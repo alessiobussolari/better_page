@@ -1,0 +1,122 @@
+<%# Contenitore esterno trasparente con padding %>
+<div class="<%= wrapper_classes %>">
+  <aside id="<%= id %>"
+         class="<%= sidebar_classes %> <%= width_classes %>"
+         data-controller="sidebar"
+         data-sidebar-collapsed-value="<%= collapsed? %>"
+         data-sidebar-persist-value="<%= persist_state? %>"
+         data-sidebar-storage-key-value="<%= id %>-collapsed"
+         aria-label="Sidebar navigation">
+
+    <%# Header with brand and toggle %>
+    <div class="flex items-center justify-between px-3 py-4 border-b border-gray-200">
+      <% if brand? %>
+        <div data-sidebar-target="brand" class="flex items-center gap-2 overflow-hidden">
+          <% if brand_icon? %>
+            <span class="flex-shrink-0"><%= brand_icon %></span>
+          <% end %>
+          <span data-sidebar-target="brandText" class="font-semibold text-gray-900 whitespace-nowrap transition-opacity duration-200">
+            <%= brand %>
+          </span>
+        </div>
+      <% elsif header? %>
+        <%= header %>
+      <% end %>
+
+      <% if collapsible? %>
+        <button type="button"
+                data-action="click->sidebar#toggle"
+                class="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                aria-label="Toggle sidebar">
+          <svg data-sidebar-target="toggleIcon" class="w-5 h-5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+      <% end %>
+    </div>
+
+    <%# Navigation content %>
+    <nav class="flex-1 overflow-y-auto py-4 px-2">
+      <%# Render groups with their items %>
+      <% groups.each do |group| %>
+        <div class="mb-4" data-sidebar-target="group">
+          <%# Group header %>
+          <button type="button"
+                  data-action="click->sidebar#toggleGroup"
+                  data-sidebar-target="groupToggle"
+                  data-group-id="<%= group.id %>"
+                  class="flex items-center justify-between w-full px-2 py-1.5 text-xs font-semibold text-gray-500 uppercase tracking-wider hover:text-gray-700"
+                  aria-expanded="<%= group.expanded? %>">
+            <span class="flex items-center gap-2 overflow-hidden">
+              <% if group.icon? %>
+                <span class="flex-shrink-0"><%= group.icon %></span>
+              <% end %>
+              <span data-sidebar-target="groupLabel" class="whitespace-nowrap transition-opacity duration-200"><%= group.label %></span>
+            </span>
+            <svg data-sidebar-target="groupIcon" class="w-4 h-4 transition-transform duration-200 <%= group.expanded? ? 'rotate-0' : '-rotate-90' %>" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+
+          <%# Group items - filtered by group_id %>
+          <div data-sidebar-target="groupContent"
+               data-group-id="<%= group.id %>"
+               class="mt-1 space-y-1 <%= group.expanded? ? '' : 'hidden' %>">
+            <% items_for_group(group.id).each do |item| %>
+              <a href="<%= item.href %>"
+                 class="<%= item.item_classes %>"
+                 aria-current="<%= item.active? ? 'page' : 'false' %>"
+                 data-sidebar-target="item">
+                <% if item.content? %>
+                  <span class="flex-shrink-0 w-5 h-5"><%= item %></span>
+                <% end %>
+                <span data-sidebar-target="itemLabel" class="flex-1 whitespace-nowrap transition-opacity duration-200 overflow-hidden">
+                  <%= item.label %>
+                </span>
+                <% if item.badge? %>
+                  <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                    <%= item.badge %>
+                  </span>
+                <% end %>
+              </a>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Render standalone items (without group) %>
+      <% if standalone_items.any? %>
+        <div class="space-y-1">
+          <% standalone_items.each do |item| %>
+            <a href="<%= item.href %>"
+               class="<%= item.item_classes %>"
+               aria-current="<%= item.active? ? 'page' : 'false' %>"
+               data-sidebar-target="item">
+              <% if item.content? %>
+                <span class="flex-shrink-0 w-5 h-5"><%= item %></span>
+              <% end %>
+              <span data-sidebar-target="itemLabel" class="flex-1 whitespace-nowrap transition-opacity duration-200 overflow-hidden">
+                <%= item.label %>
+              </span>
+              <% if item.badge? %>
+                <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                  <%= item.badge %>
+                </span>
+              <% end %>
+            </a>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%# Default content slot %>
+      <%= content %>
+    </nav>
+
+    <%# Footer slot %>
+    <% if footer? %>
+      <div class="border-t border-gray-200 px-3 py-3">
+        <%= footer %>
+      </div>
+    <% end %>
+  </aside>
+</div>

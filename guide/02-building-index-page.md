@@ -5,19 +5,20 @@ A complete guide to building feature-rich index pages.
 ### Basic Index Page Structure
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
-  def initialize(products, current_user)
+class Products::IndexPage < IndexBasePage
+  def initialize(products, metadata = {})
     @products = products
-    @current_user = current_user
+    @user = metadata[:user]
+    super(products, metadata)
   end
 
   private
 
-  def build_index_header
+  def header
     { title: "Products" }
   end
 
-  def build_index_table
+  def table
     { items: @products, columns: table_columns }
   end
 end
@@ -28,7 +29,7 @@ end
 ### Adding Breadcrumbs
 
 ```ruby
-def build_index_header
+def header
   {
     title: "Products",
     breadcrumbs: [
@@ -45,7 +46,7 @@ end
 ### Adding Header Actions
 
 ```ruby
-def build_index_header
+def header
   {
     title: "Products",
     actions: [
@@ -61,7 +62,7 @@ end
 ### Defining Table Columns
 
 ```ruby
-def build_index_table
+def table
   {
     items: @products,
     columns: [
@@ -81,7 +82,7 @@ end
 ### Adding Row Actions
 
 ```ruby
-def build_index_table
+def table
   {
     items: @products,
     columns: table_columns,
@@ -100,7 +101,7 @@ end
 ### Configuring Empty State
 
 ```ruby
-def build_index_table
+def table
   {
     items: @products,
     columns: table_columns,
@@ -185,16 +186,17 @@ end
 ### Complete Index Page Example
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
-  def initialize(products, current_user, filter: :all)
+class Products::IndexPage < IndexBasePage
+  def initialize(products, metadata = {})
     @products = products
-    @current_user = current_user
-    @filter = filter
+    @user = metadata[:user]
+    @filter = metadata[:filter] || :all
+    super(products, metadata)
   end
 
   private
 
-  def build_index_header
+  def header
     {
       title: "Products",
       breadcrumbs: [{ label: "Home", path: root_path }, { label: "Products" }],
@@ -202,7 +204,7 @@ class Products::IndexPage < BetterPage::IndexBasePage
     }
   end
 
-  def build_index_table
+  def table
     {
       items: @products,
       columns: table_columns,

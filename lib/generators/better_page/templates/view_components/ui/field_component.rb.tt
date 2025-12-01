@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class FieldComponent < ViewComponent::Base
+    class FieldComponent < BetterPage::ApplicationViewComponent
       FIELD_TYPES = %i[text email password number tel url textarea select checkbox radio date datetime file hidden].freeze
 
       def initialize(name:, type: :text, label: nil, placeholder: nil, hint: nil, required: false,
@@ -58,17 +58,17 @@ module BetterPage
       end
 
       def input_classes
-        base = "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        base = "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         base += " bg-gray-50 cursor-not-allowed" if disabled? || readonly?
         base
       end
 
       def checkbox_classes
-        "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+        "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
       end
 
       def radio_classes
-        "h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+        "h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
       end
 
       def input_attributes

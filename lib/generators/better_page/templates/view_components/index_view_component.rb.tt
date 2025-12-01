@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BetterPage
-  class IndexViewComponent < ViewComponent::Base
+  class IndexViewComponent < ApplicationViewComponent
     def initialize(config:)
       @config = config
     end

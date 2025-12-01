@@ -5,19 +5,20 @@ A complete guide to building new and edit form pages.
 ### Basic Form Page Structure
 
 ```ruby
-class Products::NewPage < BetterPage::FormBasePage
-  def initialize(product, current_user)
+class Products::NewPage < FormBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private
 
-  def build_form_header
+  def header
     { title: "New Product" }
   end
 
-  def build_form_panels
+  def panels
     [
       panel_format(title: "Basic Info", fields: basic_fields)
     ]
@@ -30,7 +31,7 @@ end
 ### Adding Header with Description
 
 ```ruby
-def build_form_header
+def header
   {
     title: "New Product",
     description: "Create a new product in your catalog",
@@ -113,7 +114,7 @@ panel_format(
 Checkbox and radio fields MUST be in separate panels from text inputs.
 
 ```ruby
-def build_form_panels
+def panels
   [
     # Text inputs panel
     panel_format(
@@ -141,7 +142,7 @@ end
 ### Select Field with Options
 
 ```ruby
-def build_form_panels
+def panels
   [
     panel_format(
       title: "Details",
@@ -191,15 +192,16 @@ end
 ### Edit Page Example
 
 ```ruby
-class Products::EditPage < BetterPage::FormBasePage
-  def initialize(product, current_user)
+class Products::EditPage < FormBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
+    @user = metadata[:user]
+    super(product, metadata)
   end
 
   private
 
-  def build_form_header
+  def header
     {
       title: "Edit #{@product.name}",
       breadcrumbs: [
@@ -210,7 +212,7 @@ class Products::EditPage < BetterPage::FormBasePage
     }
   end
 
-  def build_form_panels
+  def panels
     [
       panel_format(title: "Product Details", fields: detail_fields),
       panel_format(title: "Pricing", fields: pricing_fields),
@@ -246,16 +248,17 @@ end
 ### Complete New Page Example
 
 ```ruby
-class Products::NewPage < BetterPage::FormBasePage
-  def initialize(product, current_user, categories:)
+class Products::NewPage < FormBasePage
+  def initialize(product, metadata = {})
     @product = product
-    @current_user = current_user
-    @categories = categories
+    @user = metadata[:user]
+    @categories = metadata[:categories] || []
+    super(product, metadata)
   end
 
   private
 
-  def build_form_header
+  def header
     {
       title: "New Product",
       description: "Add a new product to your catalog",
@@ -263,7 +266,7 @@ class Products::NewPage < BetterPage::FormBasePage
     }
   end
 
-  def build_form_panels
+  def panels
     [
       panel_format(
         title: "Basic Information",

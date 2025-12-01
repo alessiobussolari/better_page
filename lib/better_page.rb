@@ -6,6 +6,7 @@ require "better_page/railtie" if defined?(Rails::Railtie)
 module BetterPage
   # Core components
   autoload :ValidationError, "better_page/validation_error"
+  autoload :Config, "better_page/config"
   autoload :ComponentRegistry, "better_page/component_registry"
   autoload :ComponentDefinition, "better_page/component_registry"
   autoload :Configuration, "better_page/configuration"

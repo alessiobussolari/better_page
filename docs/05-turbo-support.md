@@ -2,6 +2,30 @@
 
 BetterPage provides built-in support for Turbo Frames and Turbo Streams.
 
+### Turbo Helpers in ViewComponents
+
+All BetterPage ViewComponents inherit from `ApplicationViewComponent`, which includes `Turbo::FramesHelper`. This means you have access to Turbo helpers like `turbo_frame_tag` directly in your component templates.
+
+```ruby
+# app/components/better_page/application_view_component.rb
+module BetterPage
+  class ApplicationViewComponent < ViewComponent::Base
+    include Turbo::FramesHelper
+  end
+end
+```
+
+This allows you to use Turbo helpers in any component template:
+
+```erb
+<%# In any component .html.erb template %>
+<%= turbo_frame_tag "my_frame" do %>
+  <!-- Content -->
+<% end %>
+```
+
+--------------------------------
+
 ### Overview
 
 | Method Type | Use Case | Returns |
@@ -113,7 +137,7 @@ Methods are generated based on the page's main action.
 If you define a custom action, turbo methods work automatically.
 
 ```ruby
-class Reports::DailyPage < BetterPage::CustomBasePage
+class Reports::DailyPage < CustomBasePage
   register_component :chart, default: {}
 
   def daily
@@ -138,7 +162,7 @@ page.stream_daily(:chart, :summary) # Multiple components
 Override `stream_components` to define defaults.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   def stream_components
     %i[alerts statistics table pagination]
   end

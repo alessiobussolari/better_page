@@ -38,6 +38,10 @@ module BetterPage
         empty_directory "app/components/better_page"
         empty_directory "app/components/better_page/ui"
 
+        # Copy base component first (all components inherit from this)
+        template "view_components/application_view_component.rb.tt",
+                 "app/components/better_page/application_view_component.rb"
+
         # Copy main view components
         copy_view_component "index_view_component"
         copy_view_component "show_view_component"
@@ -86,6 +90,7 @@ module BetterPage
         say "  - app/pages/form_base_page.rb"
         say "  - app/pages/custom_base_page.rb"
         unless options[:skip_components]
+          say "  - app/components/better_page/application_view_component.rb (base component)"
           say "  - app/components/better_page/ (ViewComponents)"
           say "  - app/javascript/controllers/better_page/ (Stimulus controllers)"
           say ""

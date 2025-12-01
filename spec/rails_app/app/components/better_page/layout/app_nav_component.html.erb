@@ -1,0 +1,119 @@
+<%# Contenitore esterno trasparente con padding %>
+<div class="<%= wrapper_classes %>">
+  <header id="<%= id %>"
+          class="<%= nav_classes %> overflow-visible"
+          data-controller="app-nav"
+          role="banner">
+    <div class="flex items-center justify-between h-16 px-4">
+      <%# Brand slot %>
+      <div class="flex items-center">
+        <% if brand? %>
+          <%= brand %>
+        <% else %>
+          <span class="text-xl font-bold text-gray-900">BetterPage</span>
+        <% end %>
+      </div>
+
+      <%# Right side: notifications and user menu %>
+      <div class="flex items-center gap-2">
+        <%# Notifications %>
+        <% notifications.each do |notification| %>
+          <button type="button"
+                  data-action="click->app-nav#toggleNotification"
+                  data-notification-id="<%= notification.id %>"
+                  class="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                  aria-label="Notifications">
+            <% if notification.icon? %>
+              <%= notification.icon %>
+            <% else %>
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+              </svg>
+            <% end %>
+            <% if notification.badge? %>
+              <span class="absolute top-1 right-1 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                <%= notification.badge %>
+              </span>
+            <% end %>
+          </button>
+        <% end %>
+
+        <%# User menu %>
+        <% if user_menu? %>
+          <div class="relative" data-controller="dropdown">
+            <button type="button"
+                    data-action="click->dropdown#toggle"
+                    class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                    aria-expanded="false"
+                    aria-haspopup="true">
+              <% if user_menu.avatar? %>
+                <img src="<%= user_menu.avatar %>" alt="" class="w-8 h-8 rounded-full object-cover">
+              <% else %>
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
+                  <%= user_menu.initials %>
+                </span>
+              <% end %>
+              <% if user_menu.name? %>
+                <span class="hidden md:block text-sm font-medium text-gray-700"><%= user_menu.name %></span>
+              <% end %>
+              <svg class="hidden md:block w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </button>
+
+            <%# Dropdown menu %>
+            <div data-dropdown-target="menu"
+                 class="hidden absolute top-full right-0 mt-2 w-56 rounded-xl bg-white shadow-lg border border-gray-200 py-1 z-50"
+                 role="menu"
+                 aria-orientation="vertical">
+              <%# User info header %>
+              <% if user_menu.name? || user_menu.email? %>
+                <div class="px-4 py-3 border-b border-gray-100">
+                  <% if user_menu.name? %>
+                    <p class="text-sm font-medium text-gray-900"><%= user_menu.name %></p>
+                  <% end %>
+                  <% if user_menu.email? %>
+                    <p class="text-xs text-gray-500 truncate"><%= user_menu.email %></p>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <%# Menu items %>
+              <% user_menu.menu_items.each do |item| %>
+                <a href="<%= item.href %>"
+                   class="<%= item.item_classes %>"
+                   role="menuitem">
+                  <% if item.icon? %>
+                    <span class="w-5 h-5"><%= item.icon %></span>
+                  <% end %>
+                  <%= item.label %>
+                </a>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Mobile menu button %>
+        <button type="button"
+                data-action="click->app-nav#toggleMobile"
+                class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
+                aria-label="Toggle mobile menu"
+                aria-expanded="false">
+          <svg data-app-nav-target="menuIcon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <svg data-app-nav-target="closeIcon" class="hidden w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <%# Mobile menu (hidden by default) %>
+    <div data-app-nav-target="mobileMenu" class="hidden md:hidden border-t border-gray-200">
+      <div class="px-4 py-3">
+        <%= content %>
+      </div>
+    </div>
+  </header>
+</div>

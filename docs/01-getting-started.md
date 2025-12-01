@@ -35,6 +35,8 @@ This creates:
 - `app/pages/form_base_page.rb` - Base for form pages
 - `app/pages/custom_base_page.rb` - Base for custom pages
 - `config/initializers/better_page.rb` - Configuration file
+- `app/components/better_page/application_view_component.rb` - Base ViewComponent class (includes `Turbo::FramesHelper`)
+- `app/components/better_page/` - ViewComponents for rendering pages
 
 --------------------------------
 
@@ -60,9 +62,10 @@ Pages are presentation-layer classes that configure UI without business logic.
 
 ```ruby
 class Admin::Users::IndexPage < IndexBasePage
-  def initialize(users, current_user)
+  def initialize(users, metadata = {})
     @users = users
-    @current_user = current_user
+    @user = metadata[:user]
+    super(users, metadata)
   end
 
   private
@@ -98,12 +101,12 @@ Instantiate the page and call the main action method.
 class Admin::UsersController < ApplicationController
   def index
     users = User.all
-    @page = Admin::Users::IndexPage.new(users, current_user).index
+    @page = Admin::Users::IndexPage.new(users, user: current_user).index
   end
 
   def show
     user = User.find(params[:id])
-    @page = Admin::Users::ShowPage.new(user, current_user).show
+    @page = Admin::Users::ShowPage.new(user, user: current_user).show
   end
 end
 ```

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **ApplicationViewComponent** - Base class for all ViewComponents
+  - All ViewComponents now inherit from `BetterPage::ApplicationViewComponent` instead of `ViewComponent::Base`
+  - Includes `Turbo::FramesHelper` for Turbo frame/stream support in component templates
+  - Generated automatically by `better_page:install` generator
+
 ## [0.1.0] - 2025-01-28
 
 ### Added

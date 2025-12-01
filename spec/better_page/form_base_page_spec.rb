@@ -44,6 +44,10 @@ RSpec.describe BetterPage::FormBasePage do
 
   let(:minimal_form_page_class) do
     Class.new(BetterPage::FormBasePage) do
+      def initialize(item = nil)
+        super(item)
+      end
+
       def header
         { title: "Minimal Form" }
       end
@@ -56,6 +60,10 @@ RSpec.describe BetterPage::FormBasePage do
 
   let(:violating_form_page_class) do
     Class.new(BetterPage::FormBasePage) do
+      def initialize(item = nil)
+        super(item)
+      end
+
       def header
         { title: "Bad Form" }
       end
@@ -203,6 +211,10 @@ RSpec.describe BetterPage::FormBasePage do
     it "extracts from class name" do
       # Use a named class for this test
       stub_const("Products::NewPage", Class.new(BetterPage::FormBasePage) do
+        def initialize(item = nil)
+          super(item)
+        end
+
         def header
           { title: "Test" }
         end
@@ -226,6 +238,89 @@ RSpec.describe BetterPage::FormBasePage do
       # Should not raise, just log warnings in development
       result = page.form
       expect(result).to have_key(:panels)
+    end
+
+    context "in development environment" do
+      before do
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("development"))
+      end
+
+      it "logs warning for checkbox mixed with other inputs" do
+        page = violating_form_page_class.new
+
+        expect(Rails.logger).to receive(:warn).with(/checkbox/)
+
+        page.form
+      end
+
+      it "logs warning for radio buttons mixed with other inputs" do
+        radio_violating_class = Class.new(BetterPage::FormBasePage) do
+          def initialize(item = nil)
+            super(item)
+          end
+
+          def header
+            { title: "Bad Form" }
+          end
+
+          def panels
+            [
+              {
+                title: "Mixed Panel",
+                fields: [
+                  { name: :name, type: :text, label: "Name" },
+                  { name: :choice, type: :radio, label: "Choice" }
+                ]
+              }
+            ]
+          end
+        end
+
+        page = radio_violating_class.new
+
+        expect(Rails.logger).to receive(:warn).with(/radio/)
+
+        page.form
+      end
+
+      it "does not log warning for properly separated panels" do
+        page = test_form_page_class.new
+
+        expect(Rails.logger).not_to receive(:warn)
+
+        page.form
+      end
+    end
+
+    context "in production environment" do
+      before do
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("production"))
+      end
+
+      it "does not validate panels" do
+        page = violating_form_page_class.new
+
+        expect(Rails.logger).not_to receive(:warn)
+
+        page.form
+      end
+    end
+  end
+
+  describe "#view_component_class" do
+    it "returns BetterPage::FormViewComponent when defined" do
+      page = test_form_page_class.new
+
+      # BetterPage::FormViewComponent is already defined in rails_helper
+      expect(page.view_component_class).to eq(BetterPage::FormViewComponent)
+    end
+  end
+
+  describe "#stream_components" do
+    it "returns default stream components" do
+      page = test_form_page_class.new
+
+      expect(page.stream_components).to eq(%i[alerts errors panels])
     end
   end
 end

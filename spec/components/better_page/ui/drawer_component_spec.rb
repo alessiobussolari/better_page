@@ -188,7 +188,7 @@ RSpec.describe BetterPage::Ui::DrawerComponent, type: :component do
 
     it "returns large size for horizontal drawers" do
       component = described_class.new(id: "drawer-test", direction: :right, size: :large)
-      expect(component.panel_size_class).to include("max-w-2xl")
+      expect(component.panel_size_class).to include("max-w-[75vw]")
     end
 
     it "returns normal size for vertical drawers" do
@@ -208,7 +208,7 @@ RSpec.describe BetterPage::Ui::DrawerComponent, type: :component do
       classes = component.panel_classes
 
       expect(classes).to include("bg-white")
-      expect(classes).to include("shadow-xl")
+      expect(classes).to include("shadow")
       expect(classes).to include("h-full")
     end
 
@@ -217,7 +217,7 @@ RSpec.describe BetterPage::Ui::DrawerComponent, type: :component do
       classes = component.panel_classes
 
       expect(classes).to include("bg-white")
-      expect(classes).to include("shadow-xl")
+      expect(classes).to include("shadow")
       expect(classes).not_to include("h-full")
     end
   end

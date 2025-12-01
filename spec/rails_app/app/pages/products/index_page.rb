@@ -2,9 +2,10 @@
 
 module Products
   class IndexPage < IndexBasePage
-    def initialize(products, current_user = nil)
+    def initialize(products, metadata = {})
       @products = products
-      @current_user = current_user
+      @user = metadata[:user]
+      super(products, metadata)
     end
 
     private

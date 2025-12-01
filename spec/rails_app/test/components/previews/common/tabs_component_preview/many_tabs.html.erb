@@ -1,0 +1,43 @@
+<%= render BetterPage::Ui::TabsComponent.new(id: "tabs-many") do |tabs| %>
+  <% tabs.with_tab(id: "overview", label: "Overview") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Overview</h3>
+      <p class="mt-2 text-gray-600">General overview of your dashboard.</p>
+    </div>
+  <% end %>
+
+  <% tabs.with_tab(id: "analytics", label: "Analytics") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Analytics</h3>
+      <p class="mt-2 text-gray-600">View your analytics and statistics.</p>
+    </div>
+  <% end %>
+
+  <% tabs.with_tab(id: "reports", label: "Reports") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Reports</h3>
+      <p class="mt-2 text-gray-600">Download and view reports.</p>
+    </div>
+  <% end %>
+
+  <% tabs.with_tab(id: "logs", label: "Logs") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Logs</h3>
+      <p class="mt-2 text-gray-600">System logs and activity history.</p>
+    </div>
+  <% end %>
+
+  <% tabs.with_tab(id: "integrations", label: "Integrations") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">Integrations</h3>
+      <p class="mt-2 text-gray-600">Connect with third-party services.</p>
+    </div>
+  <% end %>
+
+  <% tabs.with_tab(id: "api", label: "API") do %>
+    <div class="p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-lg font-medium text-gray-900">API</h3>
+      <p class="mt-2 text-gray-600">API keys and documentation.</p>
+    </div>
+  <% end %>
+<% end %>

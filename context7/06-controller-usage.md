@@ -8,22 +8,22 @@ Instantiate the page and call the main action method. Page returns Hash, control
 class ProductsController < ApplicationController
   def index
     @products = Product.all.order(:name)
-    @page = Products::IndexPage.new(@products, current_user).index
+    @page = Products::IndexPage.new(@products, user: current_user).index
   end
 
   def show
     @product = Product.find(params[:id])
-    @page = Products::ShowPage.new(@product, current_user).show
+    @page = Products::ShowPage.new(@product, user: current_user).show
   end
 
   def new
     @product = Product.new
-    @page = Products::NewPage.new(@product, current_user).form
+    @page = Products::NewPage.new(@product, user: current_user).form
   end
 
   def edit
     @product = Product.find(params[:id])
-    @page = Products::EditPage.new(@product, current_user).form
+    @page = Products::EditPage.new(@product, user: current_user).form
   end
 end
 ```
@@ -77,7 +77,7 @@ Use the @page hash to render UI components.
 Each page action returns a complete Hash with all component configurations.
 
 ```ruby
-# Products::IndexPage.new(@products, current_user).index returns:
+# Products::IndexPage.new(@products, user: current_user).index returns:
 {
   header: {
     title: "Products",

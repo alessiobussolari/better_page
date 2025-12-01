@@ -7,7 +7,7 @@
           <% if selectable? %>
             <th scope="col" class="relative px-6 py-3">
               <input type="checkbox"
-                     class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                     class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                      data-table-target="selectAll"
                      data-action="change->table#selectAll">
             </th>
@@ -34,7 +34,7 @@
             <% if selectable? %>
               <td class="relative px-6 py-4" onclick="event.stopPropagation()">
                 <input type="checkbox"
-                       class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                       class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                        value="<%= item_id(item) %>"
                        data-table-target="row"
                        data-action="change->table#rowChanged">
@@ -51,7 +51,7 @@
                   <div data-controller="dropdown" class="relative inline-block text-left">
                     <button type="button"
                             data-action="click->dropdown#toggle"
-                            class="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            class="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                       <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
                       </svg>
@@ -59,7 +59,7 @@
                     </button>
 
                     <div data-dropdown-target="menu"
-                         class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                         class="hidden w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                       <div class="py-1" role="menu">
                         <% actions_for(item).each do |action| %>
                           <%= link_to action[:path],
@@ -103,7 +103,7 @@
       <% if empty_state[:action] %>
         <%= link_to empty_state[:action][:path],
             data: { turbo_frame: "_top" },
-            class: "mt-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+            class: "mt-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
           <%= empty_state[:action][:label] %>
         <% end %>
       <% end %>

@@ -39,9 +39,10 @@ rails generate better_page:page admin/users index show new edit
 ```ruby
 # app/pages/admin/users/index_page.rb
 class Admin::Users::IndexPage < IndexBasePage
-  def initialize(users, current_user)
+  def initialize(users, metadata = {})
     @users = users
-    @current_user = current_user
+    @user = metadata[:user]
+    super(users, metadata)
   end
 
   private
@@ -73,7 +74,8 @@ end
 class Admin::UsersController < ApplicationController
   def index
     users = User.all.order(:name)
-    @page = Admin::Users::IndexPage.new(users, current_user).index
+    @config = Admin::Users::IndexPage.new(users, user: current_user).index
+    # @config is a BetterPage::Config object
   end
 end
 ```
@@ -81,9 +83,13 @@ end
 ### Access in View
 
 ```erb
-<h1><%= @page[:header][:title] %></h1>
+<%# Direct method access %>
+<h1><%= @config.header[:title] %></h1>
 
-<% @page[:table][:items].each do |user| %>
+<%# Hash-like access (backward compatible) %>
+<h1><%= @config[:header][:title] %></h1>
+
+<% @config.table[:items].each do |user| %>
   <%= user.name %>
 <% end %>
 ```
@@ -96,6 +102,78 @@ end
 | Show | `ShowBasePage` | `header` | Detail views |
 | Form | `FormBasePage` | `header`, `panels` | New/Edit forms |
 | Custom | `CustomBasePage` | `content` | Dashboards, reports |
+
+## BetterPage::Config
+
+When you call a page action (e.g., `page.index`, `page.show`), it returns a `BetterPage::Config` object. This follows the same pattern as `BetterService::Result` and `BetterController::Result`.
+
+### Structure
+
+```ruby
+config = Admin::Users::IndexPage.new(users, user: current_user).index
+
+config.components  # => Hash of all component configurations
+config.meta        # => { page_type: :index, klass: IndexViewComponent }
+```
+
+### Component Access
+
+```ruby
+# Direct method access
+config.header            # => { title: "Users", breadcrumbs: [...] }
+config.table             # => { items: [...], columns: [...] }
+config.statistics        # => [{ label: "Total", value: 100 }]
+
+# Hash-like access (backward compatible)
+config[:header][:title]  # => "Users"
+config.dig(:header, :breadcrumbs, 0, :label)  # => "Admin"
+```
+
+### Meta Access
+
+```ruby
+config.page_type  # => :index, :show, :form, :custom
+config.klass      # => ViewComponent class for rendering
+```
+
+### Destructuring
+
+```ruby
+# Supports destructuring like BetterService::Result
+components, meta = config
+
+components[:header][:title]  # => "Users"
+meta[:page_type]             # => :index
+```
+
+### Component Helpers
+
+```ruby
+# Check if component is present (not nil/empty)
+config.component?(:header)      # => true
+config.component?(:pagination)  # => false if empty
+
+# List all component names
+config.component_names  # => [:header, :table, :statistics, ...]
+
+# Get only present (non-empty) components
+config.present_components  # => { header: {...}, table: {...} }
+
+# Iterate over components
+config.each_component do |name, value|
+  puts "#{name}: #{value}"
+end
+```
+
+### Hash-like Interface
+
+For backward compatibility, Config supports full hash-like access:
+
+```ruby
+config[:header]           # => { title: "Users", ... }
+config.key?(:header)      # => true
+config.dig(:table, :items, 0)  # => first item
+```
 
 ## Configuration
 
@@ -178,6 +256,25 @@ Run compliance check:
 ```bash
 rake better_page:compliance:analyze
 ```
+
+## ViewComponent Architecture
+
+All UI components inherit from `ApplicationViewComponent`:
+
+```
+ViewComponent::Base
+       │
+       ▼
+BetterPage::ApplicationViewComponent (includes Turbo::FramesHelper)
+       │
+       ├── IndexViewComponent
+       ├── ShowViewComponent
+       ├── FormViewComponent
+       ├── CustomViewComponent
+       └── Ui::* (Header, Table, Drawer, Modal, etc.)
+```
+
+The `ApplicationViewComponent` base class includes `Turbo::FramesHelper`, making Turbo helpers available in all component templates.
 
 ## Turbo Support
 

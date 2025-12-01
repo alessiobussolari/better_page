@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+# SimpleCov must be required before any other requires
+require "simplecov"
+SimpleCov.start do
+  add_filter "/spec/"
+  add_filter "/lib/generators/better_page/templates/"
+
+  add_group "Pages", "lib/better_page"
+  add_group "Generators", "lib/generators"
+  add_group "Components", "app/components"
+
+  minimum_coverage 80
+  enable_coverage :branch
+end
+
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 

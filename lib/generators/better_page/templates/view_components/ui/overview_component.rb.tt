@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class OverviewComponent < ViewComponent::Base
+    class OverviewComponent < BetterPage::ApplicationViewComponent
       def initialize(fields:, columns: 2)
         @fields = fields
         @columns = columns
@@ -56,8 +56,8 @@ module BetterPage
           "#{base} bg-yellow-100 text-yellow-800"
         when :blue
           "#{base} bg-blue-100 text-blue-800"
-        when :indigo
-          "#{base} bg-indigo-100 text-indigo-800"
+        when :blue
+          "#{base} bg-blue-100 text-blue-800"
         when :purple
           "#{base} bg-purple-100 text-purple-800"
         when :pink

@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class ContentSectionComponent < ViewComponent::Base
+    class ContentSectionComponent < BetterPage::ApplicationViewComponent
       def initialize(title: nil, description: nil, content: nil, actions: [])
         @title = title
         @description = description
@@ -22,11 +22,11 @@ module BetterPage
 
         case style&.to_sym
         when :primary
-          "#{base} border-transparent text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
+          "#{base} border-transparent text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
         when :danger
           "#{base} border-transparent text-white bg-red-600 hover:bg-red-700 focus:ring-red-500"
         else
-          "#{base} border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-indigo-500"
+          "#{base} border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-blue-500"
         end
       end
     end

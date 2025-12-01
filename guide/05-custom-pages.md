@@ -5,19 +5,20 @@ A complete guide to building dashboards, reports, and other custom pages.
 ### Basic Custom Page Structure
 
 ```ruby
-class Admin::DashboardPage < BetterPage::CustomBasePage
-  def initialize(data, current_user)
+class Admin::DashboardPage < CustomBasePage
+  def initialize(data, metadata = {})
     @data = data
-    @current_user = current_user
+    @user = metadata[:user]
+    super(data, metadata)
   end
 
   private
 
-  def build_custom_header
+  def header
     { title: "Dashboard" }
   end
 
-  def build_custom_content
+  def content
     { widgets: [] }
   end
 end
@@ -28,7 +29,7 @@ end
 ### Adding Widgets
 
 ```ruby
-def build_custom_content
+def content
   {
     widgets: [
       widget_format(title: "Total Users", type: :counter, data: { value: @data[:users_count] }),
@@ -60,7 +61,7 @@ widget_format(
 ### Adding Charts
 
 ```ruby
-def build_custom_content
+def content
   {
     widgets: [
       chart_format(
@@ -124,7 +125,7 @@ chart_format(title: "Growth", type: :area, data: chart_data)
 ### Adding List Widget
 
 ```ruby
-def build_custom_content
+def content
   {
     widgets: [
       widget_format(
@@ -151,7 +152,7 @@ end
 ### Adding Table Widget
 
 ```ruby
-def build_custom_content
+def content
   {
     widgets: [
       widget_format(
@@ -176,7 +177,7 @@ end
 ### Dashboard with Grid Layout
 
 ```ruby
-def build_custom_content
+def content
   {
     layout: :grid,
     columns: 3,
@@ -203,16 +204,17 @@ end
 ### Reports Page Example
 
 ```ruby
-class Reports::SalesPage < BetterPage::CustomBasePage
-  def initialize(report_data, current_user, period:)
+class Reports::SalesPage < CustomBasePage
+  def initialize(report_data, metadata = {})
     @report_data = report_data
-    @current_user = current_user
-    @period = period
+    @user = metadata[:user]
+    @period = metadata[:period]
+    super(report_data, metadata)
   end
 
   private
 
-  def build_custom_header
+  def header
     {
       title: "Sales Report",
       description: "Sales performance for #{@period}",
@@ -223,7 +225,7 @@ class Reports::SalesPage < BetterPage::CustomBasePage
     }
   end
 
-  def build_custom_content
+  def content
     {
       widgets: [
         # Summary statistics
@@ -273,22 +275,23 @@ end
 ### Complete Dashboard Example
 
 ```ruby
-class Admin::DashboardPage < BetterPage::CustomBasePage
-  def initialize(stats, current_user)
+class Admin::DashboardPage < CustomBasePage
+  def initialize(stats, metadata = {})
     @stats = stats
-    @current_user = current_user
+    @user = metadata[:user]
+    super(stats, metadata)
   end
 
   private
 
-  def build_custom_header
+  def header
     {
       title: "Dashboard",
-      description: "Welcome back, #{@current_user.name}"
+      description: "Welcome back, #{@user.name}"
     }
   end
 
-  def build_custom_content
+  def content
     {
       layout: :grid,
       columns: 4,

@@ -9,7 +9,7 @@
               <%% if field[:format] == :badge && field[:color] %>
                 <span class="<%%= badge_classes(field[:color]) %>"><%%= format_value(field) %></span>
               <%% elsif field[:link] %>
-                <%%= link_to format_value(field), field[:link], class: "text-indigo-600 hover:text-indigo-500" %>
+                <%%= link_to format_value(field), field[:link], class: "text-blue-600 hover:text-blue-500" %>
               <%% else %>
                 <%%= format_value(field) %>
               <%% end %>

@@ -101,10 +101,11 @@ Form pages: Checkbox and radio fields must be in separate panels from other inpu
 module Admin
   module Users
     class IndexPage < IndexBasePage
-      def initialize(users, user, params = {})
+      def initialize(users, metadata = {})
         @users = users
-        @user = user
-        @params = params
+        @user = metadata[:user]
+        @params = metadata[:params] || {}
+        super(users, metadata)
       end
 
       private
@@ -119,6 +120,9 @@ module Admin
     end
   end
 end
+
+# In controller:
+# Admin::Users::IndexPage.new(users, user: current_user, params: filter_params).index
 ```
 
 ## Configuration

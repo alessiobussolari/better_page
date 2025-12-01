@@ -4,10 +4,11 @@
 <%= "  " * i %>module <%= ns.camelize %>
 <% end -%>
 <%= "  " * namespace_path.length %>class IndexPage < IndexBasePage
-<%= "  " * namespace_path.length %>  def initialize(<%= resource_plural %>, user, params = {})
+<%= "  " * namespace_path.length %>  def initialize(<%= resource_plural %>, metadata = {})
 <%= "  " * namespace_path.length %>    @<%= resource_plural %> = <%= resource_plural %>
-<%= "  " * namespace_path.length %>    @user = user
-<%= "  " * namespace_path.length %>    @params = params
+<%= "  " * namespace_path.length %>    @user = metadata[:user]
+<%= "  " * namespace_path.length %>    @params = metadata[:params] || {}
+<%= "  " * namespace_path.length %>    super(<%= resource_plural %>, metadata)
 <%= "  " * namespace_path.length %>  end
 
 <%= "  " * namespace_path.length %>  private

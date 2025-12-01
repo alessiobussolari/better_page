@@ -21,25 +21,15 @@ module BetterPage
 
     attr_reader :user, :items, :stats, :item, :primary_data, :metadata
 
-    def initialize(*args)
-      # Support both patterns:
-      # - New pattern: (primary_data, metadata = {})
-      # - Old pattern: (user, items, stats, item)
-      if args.length <= 2 && (args[1].nil? || args[1].is_a?(Hash))
-        @primary_data = args[0]
-        @metadata = args[1] || {}
-        @user = @metadata[:user]
-        @items = @primary_data
-        @stats = @metadata[:stats]
-        @item = @metadata[:item]
-      else
-        @user = args[0]
-        @items = args[1]
-        @stats = args[2]
-        @item = args[3]
-        @primary_data = @items
-        @metadata = { user: @user, stats: @stats, item: @item }
-      end
+    # @param primary_data [Object] The main data for the page (e.g., collection, record)
+    # @param metadata [Hash] Additional metadata (user, stats, item, etc.)
+    def initialize(primary_data, metadata = {})
+      @primary_data = primary_data
+      @metadata = metadata
+      @items = primary_data
+      @user = metadata[:user]
+      @stats = metadata[:stats]
+      @item = metadata[:item]
     end
 
     protected

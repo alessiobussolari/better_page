@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class DrawerComponent < ViewComponent::Base
+    class DrawerComponent < BetterPage::ApplicationViewComponent
       renders_one :trigger
       renders_one :actions
 
@@ -47,17 +47,21 @@ module BetterPage
         horizontal = [:left, :right].include?(direction)
         case size
         when :large
-          horizontal ? "max-w-2xl w-screen" : "max-h-[80vh]"
+          horizontal ? "max-w-[75vw] w-screen" : "max-h-[80vh]"
         else # normal
           horizontal ? "max-w-md w-screen" : "max-h-[50vh]"
         end
       end
 
       def panel_classes
-        base = "pointer-events-auto bg-white shadow-xl"
+        base = "pointer-events-auto bg-white shadow flex flex-col transform transition-transform duration-300 ease-in-out"
         case direction
-        when :left, :right then "#{base} w-full h-full"
-        when :top, :bottom then "#{base} w-full"
+        when :right
+          "#{base} rounded-t-xl md:rounded-l-xl md:rounded-tr-none w-full h-full"
+        when :left
+          "#{base} rounded-t-xl md:rounded-r-xl md:rounded-tl-none w-full h-full"
+        when :top, :bottom
+          "#{base} rounded-xl w-full"
         end
       end
 

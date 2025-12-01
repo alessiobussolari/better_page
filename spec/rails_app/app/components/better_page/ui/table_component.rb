@@ -2,7 +2,7 @@
 
 module BetterPage
   module Ui
-    class TableComponent < ViewComponent::Base
+    class TableComponent < BetterPage::ApplicationViewComponent
       def initialize(items:, columns:, row_actions: nil, empty_state: nil,
                      selectable: false, row_link: nil, actions_display: :inline)
         @items = items

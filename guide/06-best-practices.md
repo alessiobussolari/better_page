@@ -8,7 +8,7 @@ Pages should only configure UI. Move complex logic to the controller or service 
 
 ```ruby
 # WRONG - Logic in page
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   def statistics
     total = @products.sum(&:price) * 1.1  # Tax calculation
     [{ label: "Total", value: total }]
@@ -20,14 +20,16 @@ class ProductsController < ApplicationController
   def index
     products = Product.all
     stats = { total_with_tax: ProductCalculator.total_with_tax(products) }
-    @page = Products::IndexPage.new(products, current_user, stats: stats).index
+    @page = Products::IndexPage.new(products, user: current_user, stats: stats).index
   end
 end
 
-class Products::IndexPage < BetterPage::IndexBasePage
-  def initialize(products, current_user, stats:)
+class Products::IndexPage < IndexBasePage
+  def initialize(products, metadata = {})
     @products = products
-    @stats = stats
+    @user = metadata[:user]
+    @stats = metadata[:stats]
+    super(products, metadata)
   end
 
   def statistics
@@ -44,18 +46,19 @@ Never query the database in a page. All data should be passed through the constr
 
 ```ruby
 # WRONG - Database query in page
-def build_index_header
+def header
   { title: "#{User.count} Users" }
 end
 
 # CORRECT - Data passed via constructor
-def initialize(users, stats, current_user)
+def initialize(users, metadata = {})
   @users = users
-  @stats = stats
-  @current_user = current_user
+  @user = metadata[:user]
+  @stats = metadata[:stats]
+  super(users, metadata)
 end
 
-def build_index_header
+def header
   { title: "#{@stats[:count]} Users" }
 end
 ```
@@ -67,14 +70,14 @@ end
 Extract repeated configurations into private helper methods.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   private
 
-  def build_index_header
+  def header
     { title: "Products", breadcrumbs: breadcrumb_items, actions: header_actions }
   end
 
-  def build_index_table
+  def table
     { items: @products, columns: table_columns, empty_state: empty_config }
   end
 
@@ -129,7 +132,7 @@ Always put checkbox and radio fields in separate panels from text inputs.
 
 ```ruby
 # CORRECT
-def build_form_panels
+def panels
   [
     panel_format(
       title: "Details",
@@ -177,7 +180,7 @@ end
 Always provide helpful empty states for lists and tables.
 
 ```ruby
-def build_index_table
+def table
   {
     items: @products,
     columns: table_columns,
@@ -248,7 +251,7 @@ STRICT=true rake better_page:analyze
 Add comments explaining custom configurations.
 
 ```ruby
-class Products::IndexPage < BetterPage::IndexBasePage
+class Products::IndexPage < IndexBasePage
   private
 
   # Table columns with custom formatter for price
@@ -285,7 +288,7 @@ require "test_helper"
 class Products::IndexPageTest < ActiveSupport::TestCase
   test "returns correct header" do
     products = [Product.new(name: "Test")]
-    page = Products::IndexPage.new(products, users(:admin)).index
+    page = Products::IndexPage.new(products, user: users(:admin)).index
 
     assert_equal "Products", page[:header][:title]
     assert_equal 1, page[:header][:actions].size
@@ -293,14 +296,14 @@ class Products::IndexPageTest < ActiveSupport::TestCase
 
   test "returns table with products" do
     products = [Product.new(name: "Test", price: 100)]
-    page = Products::IndexPage.new(products, users(:admin)).index
+    page = Products::IndexPage.new(products, user: users(:admin)).index
 
     assert_equal 1, page[:table][:items].size
     assert_equal 3, page[:table][:columns].size
   end
 
   test "returns empty state when no products" do
-    page = Products::IndexPage.new([], users(:admin)).index
+    page = Products::IndexPage.new([], user: users(:admin)).index
 
     assert_equal "No products", page[:table][:empty_state][:title]
   end

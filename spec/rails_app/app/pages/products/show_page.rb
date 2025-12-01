@@ -2,9 +2,10 @@
 
 module Products
   class ShowPage < ShowBasePage
-    def initialize(product, current_user = nil)
+    def initialize(product, metadata = {})
       @product = product
-      @current_user = current_user
+      @user = metadata[:user]
+      super(product, metadata)
     end
 
     private
@@ -30,15 +31,15 @@ module Products
 
     def statistics
       [
-        statistic_format(label: "Price", value: @product.formatted_price, icon: "dollar", color: "green"),
-        statistic_format(label: "Stock", value: @product.stock, icon: "box", color: "blue"),
-        statistic_format(label: "Status", value: @product.status, icon: "tag", color: @product.active? ? "green" : "red")
+        { label: "Price", value: @product.formatted_price, icon: "dollar", color: "green" },
+        { label: "Stock", value: @product.stock, icon: "box", color: "blue" },
+        { label: "Status", value: @product.status, icon: "tag", color: @product.active? ? "green" : "red" }
       ]
     end
 
     def content_sections
       [
-        content_section_format(
+        {
           title: "Product Details",
           icon: "info-circle",
           color: "blue",
@@ -48,18 +49,16 @@ module Products
             "Name" => @product.name,
             "Price" => @product.formatted_price,
             "Stock" => @product.stock,
-            "Status" => @product.status,
-            "Created" => format_date(@product.created_at),
-            "Updated" => format_date(@product.updated_at)
+            "Status" => @product.status
           }
-        ),
-        content_section_format(
+        },
+        {
           title: "Description",
           icon: "document",
           color: "gray",
           type: :text_content,
           content: @product.description || "No description provided."
-        )
+        }
       ]
     end
   end

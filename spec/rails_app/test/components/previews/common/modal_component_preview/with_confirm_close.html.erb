@@ -1,0 +1,32 @@
+<%= render BetterPage::Ui::ModalComponent.new(id: "modal-confirm-close", title: "Unsaved Changes", confirm_close: true, actions_position: :footer) do |modal| %>
+  <% modal.with_trigger do %>
+    <button type="button"
+            data-action="click->modal#open"
+            class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+      Open (with confirm close)
+    </button>
+  <% end %>
+
+  <% modal.with_actions do %>
+    <button type="button"
+            data-action="click->modal#requestClose"
+            class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+      Discard
+    </button>
+    <button type="button"
+            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+      Save
+    </button>
+  <% end %>
+
+  <div class="space-y-4">
+    <p class="text-gray-700">
+      This modal has <code class="bg-gray-100 px-1 rounded">confirm_close: true</code>.
+      Try to close it by clicking the X, pressing ESC, or clicking the backdrop.
+    </p>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Some input</label>
+      <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Type something...">
+    </div>
+  </div>
+<% end %>

@@ -14,6 +14,14 @@ bundle install
 rails g better_page:install
 ```
 
+This creates:
+- `app/pages/application_page.rb` - Base page class
+- `app/pages/index_base_page.rb` - Base for index pages
+- `app/pages/show_base_page.rb` - Base for show pages
+- `app/pages/form_base_page.rb` - Base for form pages
+- `app/pages/custom_base_page.rb` - Base for custom pages
+- `config/initializers/better_page.rb` - Configuration file
+
 --------------------------------
 
 ### Generate Your First Page
@@ -36,15 +44,16 @@ This creates:
 # app/pages/admin/products/index_page.rb
 module Admin
   module Products
-    class IndexPage < BetterPage::IndexBasePage
-      def initialize(products, current_user)
+    class IndexPage < IndexBasePage
+      def initialize(products, metadata = {})
         @products = products
-        @current_user = current_user
+        @user = metadata[:user]
+        super(products, metadata)
       end
 
       private
 
-      def build_index_header
+      def header
         {
           title: "Products",
           breadcrumbs: [
@@ -57,7 +66,7 @@ module Admin
         }
       end
 
-      def build_index_table
+      def table
         {
           items: @products,
           columns: [
@@ -86,7 +95,7 @@ end
 class Admin::ProductsController < ApplicationController
   def index
     products = Product.all
-    @page = Admin::Products::IndexPage.new(products, current_user).index
+    @page = Admin::Products::IndexPage.new(products, user: current_user).index
   end
 end
 ```
