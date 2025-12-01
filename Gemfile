@@ -5,7 +5,7 @@ gemspec
 
 gem "puma"
 
-gem "sqlite3"
+gem "sqlite3", "~> 2.8"
 
 # Turbo for Turbo::FramesHelper in ViewComponents
 gem "turbo-rails"
@@ -14,7 +14,7 @@ gem "turbo-rails"
 gem "rubocop-rails-omakase", require: false
 
 # RSpec for testing
-gem "rspec-rails", "~> 7.0"
+gem "rspec-rails", "~> 8.0"
 gem "capybara"
 gem "simplecov", require: false
 
