@@ -3,6 +3,8 @@
 module BetterPage
   module Ui
     class TableComponent < BetterPage::ApplicationViewComponent
+      renders_one :footer
+
       def initialize(items:, columns:, row_actions: nil, empty_state: nil,
                      selectable: false, row_link: nil, actions_display: :inline)
         @items = items

@@ -7,12 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2025-12-01
+
 ### Added
+
+- **ViewComponents Library** - Complete set of reusable UI components
+  - **Layout Components**
+    - `AppNavComponent` - Application navigation bar with user menu, notifications, mobile support
+    - `SidebarComponent` - Collapsible sidebar with groups, items, badges, persist state
+    - `DrawerComponent` - Slide-in drawer panels (right/left position)
+  - **UI Components**
+    - `TableComponent` - Data tables with sorting, pagination footer, row actions, selection
+    - `DropdownController` - Stimulus controller for dropdown menus
+
+- **Stimulus Controllers Package** (`better-page-stimulus`)
+  - Published on npm for easy JavaScript integration
+  - Controllers: `dropdown`, `table`, `drawer`, `sidebar`, `app-nav`
+  - Works with Rails importmap or npm/yarn
 
 - **ApplicationViewComponent** - Base class for all ViewComponents
   - All ViewComponents now inherit from `BetterPage::ApplicationViewComponent` instead of `ViewComponent::Base`
   - Includes `Turbo::FramesHelper` for Turbo frame/stream support in component templates
   - Generated automatically by `better_page:install` generator
+
+- **Generator Updates**
+  - Installs Stimulus controllers via generator
+  - Creates ViewComponent previews for development
+
+### Changed
+
+- Minimum Rails version updated to 8.1.1
+- ViewComponent dependency updated to >= 3.0
 
 ## [0.1.0] - 2025-01-28
 

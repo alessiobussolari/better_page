@@ -89,6 +89,13 @@
         <% end %>
       </tbody>
     </table>
+
+    <%# Footer slot per paginazione e altri dati %>
+    <% if footer? %>
+      <div class="border-t border-gray-300 bg-white px-6 py-4">
+        <%= footer %>
+      </div>
+    <% end %>
   <% elsif empty_state? %>
     <div class="text-center py-12">
       <% if empty_state[:icon] %>

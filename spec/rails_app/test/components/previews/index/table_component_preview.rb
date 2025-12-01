@@ -200,6 +200,12 @@ module Index
       )
     end
 
+    # @label With Footer/Pagination
+    # Table with footer slot showing pagination controls
+    def with_footer
+      render_with_template
+    end
+
     # @label Combined Features
     # Row links + dropdown actions + selectable
     def combined_features
