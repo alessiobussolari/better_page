@@ -60,6 +60,14 @@ jobs:
           # REDIS_URL: redis://localhost:6379/0
         run: bin/test
 
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/coverage.xml
+          fail_ci_if_error: false
+          verbose: true
+
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v5
         if: failure()

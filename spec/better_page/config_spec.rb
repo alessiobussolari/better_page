@@ -85,7 +85,7 @@ RSpec.describe BetterPage::Config do
           alerts: [],
           tabs: { items: [] },
           pagination: { current_page: 1 },
-          overview: { enabled: true },
+          details: { enabled: true },
           footer: { text: "Footer" },
           panel: { title: "Panel" },
           errors: ["Error 1"],
@@ -99,8 +99,8 @@ RSpec.describe BetterPage::Config do
         expect(config.pagination).to eq({ current_page: 1 })
       end
 
-      it "returns overview component" do
-        expect(config.overview).to eq({ enabled: true })
+      it "returns details component" do
+        expect(config.details).to eq({ enabled: true })
       end
 
       it "returns footer component" do

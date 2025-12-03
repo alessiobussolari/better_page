@@ -8,7 +8,12 @@
       "Bash(git tag:*)",
       "Bash(git push:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(bin/test:*)",
+      "Bash(bundle exec rspec:*)",
+      "Bash(xargs:*)",
+      "mcp__mcp-server-firecrawl__firecrawl_search",
+      "mcp__mcp-server-firecrawl__firecrawl_scrape"
     ],
     "deny": [],
     "ask": []

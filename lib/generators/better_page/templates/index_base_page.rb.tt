@@ -4,8 +4,8 @@
 #
 # Components available (from global configuration):
 #   Required: header, table
-#   Optional: alerts, statistics, metrics, tabs, search, pagination,
-#             overview, calendar, footer, modals, split_view
+#   Optional: alerts, statistics, tabs, search, pagination,
+#             details, calendar, footer, modals, split_view
 #
 # Customize this class to:
 #   - Add custom components with register_component

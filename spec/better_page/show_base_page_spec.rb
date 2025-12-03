@@ -72,7 +72,7 @@ RSpec.describe BetterPage::ShowBasePage do
 
       expect(components[:alerts].default).to eq([])
       expect(components[:statistics].default).to eq([])
-      expect(components[:overview].default).to eq({ enabled: false })
+      expect(components[:details].default).to eq({ enabled: false })
       expect(components[:content_sections].default).to eq([])
       expect(components[:footer].default).to eq({ enabled: false })
     end
@@ -116,7 +116,7 @@ RSpec.describe BetterPage::ShowBasePage do
 
       expect(result[:alerts]).to eq([])
       expect(result[:statistics]).to eq([])
-      expect(result[:overview][:enabled]).to be false
+      expect(result[:details][:enabled]).to be false
     end
   end
 
@@ -229,7 +229,7 @@ RSpec.describe BetterPage::ShowBasePage do
     it "returns default stream components" do
       page = test_show_page_class.new({ id: 1, name: "Test", email: "test@example.com" })
 
-      expect(page.stream_components).to eq(%i[alerts statistics overview content_sections])
+      expect(page.stream_components).to eq(%i[alerts statistics details content_sections])
     end
   end
 

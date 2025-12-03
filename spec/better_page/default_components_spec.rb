@@ -17,10 +17,10 @@ RSpec.describe BetterPage::DefaultComponents do
     end
 
     it "returns expected number of components" do
-      # header, table, alerts, statistics, metrics, tabs, search, pagination,
-      # overview, calendar, footer, modals, split_view, content_sections,
+      # header, table, alerts, statistics, tabs, search, pagination,
+      # details, calendar, footer, modals, split_view, content_sections,
       # errors, panels, content
-      expect(described_class.component_names.size).to eq(17)
+      expect(described_class.component_names.size).to eq(16)
     end
   end
 

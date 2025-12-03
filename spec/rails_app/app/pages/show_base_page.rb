@@ -14,6 +14,6 @@ class ShowBasePage < ApplicationPage
   end
 
   def stream_components
-    %i[alerts statistics overview content_sections]
+    %i[alerts statistics details content_sections]
   end
 end

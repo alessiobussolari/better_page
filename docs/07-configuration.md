@@ -91,7 +91,6 @@ BetterPage registers these components by default:
 
 **Index Components:**
 - `table` - Data table with columns and actions
-- `metrics` - Metric displays
 - `tabs` - Tab navigation
 - `search` - Search configuration
 - `pagination` - Pagination settings

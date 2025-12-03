@@ -300,7 +300,7 @@ module BetterPage
         alerts: defined?(BetterPage::Ui::AlertsComponent) ? BetterPage::Ui::AlertsComponent : nil,
         statistics: defined?(BetterPage::Ui::StatisticsComponent) ? BetterPage::Ui::StatisticsComponent : nil,
         pagination: defined?(BetterPage::Ui::PaginationComponent) ? BetterPage::Ui::PaginationComponent : nil,
-        overview: defined?(BetterPage::Ui::OverviewComponent) ? BetterPage::Ui::OverviewComponent : nil,
+        details: defined?(BetterPage::Ui::DetailsComponent) ? BetterPage::Ui::DetailsComponent : nil,
         tabs: defined?(BetterPage::Ui::TabsComponent) ? BetterPage::Ui::TabsComponent : nil,
         footer: defined?(BetterPage::Ui::FooterComponent) ? BetterPage::Ui::FooterComponent : nil,
         panel: defined?(BetterPage::Ui::PanelComponent) ? BetterPage::Ui::PanelComponent : nil,

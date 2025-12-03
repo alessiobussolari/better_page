@@ -15,7 +15,7 @@ module BetterPage
       MAIN_COMPONENTS = %w[index show form custom].freeze
       UI_COMPONENTS = %w[
         header table alerts statistics pagination
-        panel field errors overview content_section
+        panel field errors details content_section
         widget footer tabs drawer
       ].freeze
 

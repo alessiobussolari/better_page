@@ -5,8 +5,8 @@ module BetterPage
   # Called automatically during Rails initialization before user initializers.
   #
   # Components are organized by page type:
-  # - Index: header, table, alerts, statistics, metrics, tabs, search, pagination, overview, calendar, footer, modals, split_view
-  # - Show: header, alerts, statistics, overview, content_sections, footer
+  # - Index: header, table, alerts, statistics, tabs, search, pagination, details, calendar, footer, modals, split_view
+  # - Show: header, alerts, statistics, details, content_sections, footer
   # - Form: header, alerts, errors, panels, footer
   # - Custom: header, content, footer, alerts
   #
@@ -31,8 +31,8 @@ module BetterPage
       # @return [Array<Symbol>]
       def component_names
         %i[
-          header table alerts statistics metrics tabs search pagination
-          overview calendar footer modals split_view content_sections
+          header table alerts statistics tabs search pagination
+          details calendar footer modals split_view content_sections
           errors panels content
         ]
       end
@@ -58,8 +58,8 @@ module BetterPage
         # Statistics - used by index and show
         config.register_component :statistics, default: []
 
-        # Overview - used by index and show
-        config.register_component :overview, default: { enabled: false }
+        # Details - used by index and show
+        config.register_component :details, default: { enabled: false }
       end
 
       def register_index_components(config)
@@ -75,9 +75,6 @@ module BetterPage
             optional(:action).hash
           end
         end
-
-        # Metrics section
-        config.register_component :metrics, default: []
 
         # Tabs navigation
         config.register_component :tabs, default: { enabled: false, current_tab: "all", tabs: [] } do
@@ -164,13 +161,13 @@ module BetterPage
       def map_components_to_page_types(config)
         # Index page components
         config.allow_components :index,
-          :header, :table, :alerts, :statistics, :metrics,
-          :tabs, :search, :pagination, :overview, :calendar,
+          :header, :table, :alerts, :statistics,
+          :tabs, :search, :pagination, :details, :calendar,
           :footer, :modals, :split_view
 
         # Show page components
         config.allow_components :show,
-          :header, :alerts, :statistics, :overview,
+          :header, :alerts, :statistics, :details,
           :content_sections, :footer
 
         # Form page components

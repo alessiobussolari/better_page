@@ -11,8 +11,8 @@
     <%%= render BetterPage::Ui::StatisticsComponent.new(stats: statistics) %>
   <%% end %>
 
-  <%% if overview? %>
-    <%%= render BetterPage::Ui::OverviewComponent.new(**overview) %>
+  <%% if details? %>
+    <%%= render BetterPage::Ui::DetailsComponent.new(**details) %>
   <%% end %>
 
   <%% if content_sections? %>

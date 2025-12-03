@@ -6,7 +6,7 @@ module BetterPage
   #
   # Available components (from configuration):
   # - header (required): Page header with title, breadcrumbs, metadata, actions
-  # - alerts, statistics, overview, content_sections, footer
+  # - alerts, statistics, details, content_sections, footer
   #
   # @example
   #   class Admin::Users::ShowPage < ShowBasePage
@@ -30,9 +30,9 @@ module BetterPage
 
     # Note: frame_show and stream_show are dynamically generated via method_missing in ComponentRegistry
     # Usage:
-    #   page.frame_show(:overview)                    # Single component for Turbo Frame
+    #   page.frame_show(:details)                    # Single component for Turbo Frame
     #   page.stream_show                               # All stream components for Turbo Streams
-    #   page.stream_show(:overview, :content_sections) # Specific components for Turbo Streams
+    #   page.stream_show(:details, :content_sections) # Specific components for Turbo Streams
 
     # The ViewComponent class used to render this show page
     # @return [Class] BetterPage::ShowViewComponent
@@ -45,7 +45,7 @@ module BetterPage
     # Components to include in stream updates by default
     # @return [Array<Symbol>]
     def stream_components
-      %i[alerts statistics overview content_sections]
+      %i[alerts statistics details content_sections]
     end
 
     protected

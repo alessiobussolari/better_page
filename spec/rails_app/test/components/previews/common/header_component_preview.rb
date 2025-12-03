@@ -4,70 +4,47 @@ module Common
   class HeaderComponentPreview < ViewComponent::Preview
     layout "component_preview"
 
-    # @label Default
-    # Header with just a title
-    def default
-      render BetterPage::Ui::HeaderComponent.new(
-        title: "Products"
-      )
-    end
+    # Header Component
+    # ----------------
+    # Displays a page header with optional breadcrumbs, metadata, and actions.
+    #
+    # **Action Styles:**
+    # - `:primary` - Main action (blue)
+    # - `:secondary` - Secondary action (gray)
+    # - `:danger` - Destructive action (red)
+    #
+    # @label Playground
+    # @param title text "Page title"
+    # @param show_breadcrumbs toggle "Show navigation breadcrumbs"
+    # @param show_metadata toggle "Show metadata info"
+    # @param show_actions toggle "Show action buttons"
+    def playground(
+      title: "Products",
+      show_breadcrumbs: false,
+      show_metadata: false,
+      show_actions: false
+    )
+      breadcrumbs = show_breadcrumbs ? [
+        { label: "Home", path: "/" },
+        { label: "Admin", path: "/admin" },
+        { label: title }
+      ] : []
 
-    # @label With Breadcrumbs
-    # Header with navigation breadcrumbs
-    def with_breadcrumbs
-      render BetterPage::Ui::HeaderComponent.new(
-        title: "Products",
-        breadcrumbs: [
-          { label: "Home", path: "/" },
-          { label: "Admin", path: "/admin" },
-          { label: "Products" }
-        ]
-      )
-    end
+      metadata = show_metadata ? [
+        { value: "128 items" },
+        { value: "Last updated: Today" }
+      ] : []
 
-    # @label With Actions
-    # Header with action buttons
-    def with_actions
-      render BetterPage::Ui::HeaderComponent.new(
-        title: "Products",
-        actions: [
-          { label: "Export", path: "#", style: :secondary },
-          { label: "New Product", path: "#", style: :primary }
-        ]
-      )
-    end
+      actions = show_actions ? [
+        { label: "Export", path: "#", style: :secondary },
+        { label: "New Item", path: "#", style: :primary }
+      ] : []
 
-    # @label With Metadata
-    # Header with metadata information
-    def with_metadata
-      render BetterPage::Ui::HeaderComponent.new(
-        title: "Users",
-        metadata: [
-          { value: "248 users" },
-          { value: "195 active" }
-        ]
-      )
-    end
-
-    # @label Full Example
-    # Header with all features
-    def full_example
-      render BetterPage::Ui::HeaderComponent.new(
-        title: "Products",
-        breadcrumbs: [
-          { label: "Home", path: "/" },
-          { label: "Admin", path: "/admin" },
-          { label: "Products" }
-        ],
-        metadata: [
-          { value: "128 items" },
-          { value: "Last updated: Today" }
-        ],
-        actions: [
-          { label: "Export", path: "#", style: :secondary },
-          { label: "Delete All", path: "#", style: :danger },
-          { label: "New Product", path: "#", style: :primary }
-        ]
+      render BetterPage::Common::HeaderComponent.new(
+        title: title,
+        breadcrumbs: breadcrumbs,
+        metadata: metadata,
+        actions: actions
       )
     end
   end

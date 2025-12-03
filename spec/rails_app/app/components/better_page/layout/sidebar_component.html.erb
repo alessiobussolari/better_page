@@ -69,6 +69,8 @@
                  data-sidebar-target="item">
                 <% if item.content? %>
                   <span class="flex-shrink-0 w-5 h-5"><%= item %></span>
+                <% elsif item.icon.present? %>
+                  <span class="flex-shrink-0 w-5 h-5 flex items-center justify-center"><%= item.render_icon %></span>
                 <% end %>
                 <span data-sidebar-target="itemLabel" class="flex-1 whitespace-nowrap transition-opacity duration-200 overflow-hidden">
                   <%= item.label %>
@@ -94,6 +96,8 @@
                data-sidebar-target="item">
               <% if item.content? %>
                 <span class="flex-shrink-0 w-5 h-5"><%= item %></span>
+              <% elsif item.icon.present? %>
+                <span class="flex-shrink-0 w-5 h-5 flex items-center justify-center"><%= item.render_icon %></span>
               <% end %>
               <span data-sidebar-target="itemLabel" class="flex-1 whitespace-nowrap transition-opacity duration-200 overflow-hidden">
                 <%= item.label %>

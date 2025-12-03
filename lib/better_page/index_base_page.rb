@@ -7,8 +7,8 @@ module BetterPage
   # Available components (from configuration):
   # - header (required): Page header with title, breadcrumbs, metadata, actions
   # - table (required): Table with items, columns, actions, empty_state
-  # - alerts, statistics, metrics, tabs, search, pagination
-  # - overview, calendar, footer, modals, split_view
+  # - alerts, statistics, tabs, search, pagination
+  # - details, calendar, footer, modals, split_view
   #
   # @example
   #   class Admin::Users::IndexPage < IndexBasePage

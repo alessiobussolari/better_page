@@ -17,6 +17,7 @@ gem "rubocop-rails-omakase", require: false
 gem "rspec-rails", "~> 8.0"
 gem "capybara"
 gem "simplecov", require: false
+gem "simplecov-cobertura", require: false
 
 # Lookbook for component previews
 gem "lookbook", "~> 2.3"

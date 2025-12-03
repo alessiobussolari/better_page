@@ -1,5 +1,7 @@
 # BetterPage
 
+[![Codecov](https://codecov.io/gh/alessiobussolari/better_page/graph/badge.svg)](https://codecov.io/gh/alessiobussolari/better_page)
+
 A Rails engine that provides a structured Page Object pattern for building UI configurations. Pages are presentation-layer classes that configure UI without business logic, making your views cleaner and more maintainable.
 
 ## Features

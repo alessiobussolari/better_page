@@ -148,7 +148,7 @@ module BetterPage
           panel
           field
           errors
-          overview
+          details
           content_section
           widget
           footer

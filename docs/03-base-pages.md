@@ -36,8 +36,7 @@ Components available for list/index pages.
 | `header` | Yes | - | Page header with title, breadcrumbs, actions |
 | `table` | Yes | - | Table with items, columns, actions |
 | `alerts` | No | `[]` | Alert messages |
-| `statistics` | No | `[]` | Statistic cards |
-| `metrics` | No | `[]` | Metric displays |
+| `statistics` | No | `[]` | Statistic cards with trends, icons, units |
 | `tabs` | No | `{ enabled: false }` | Tab navigation |
 | `search` | No | `{ enabled: false }` | Search configuration |
 | `pagination` | No | `{ enabled: false }` | Pagination settings |

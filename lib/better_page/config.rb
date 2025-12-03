@@ -50,8 +50,8 @@ module BetterPage
       components[:pagination]
     end
 
-    def overview
-      components[:overview]
+    def details
+      components[:details]
     end
 
     def footer

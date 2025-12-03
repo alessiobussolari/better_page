@@ -34,8 +34,8 @@
         </div>
       <%% elsif content.is_a?(Hash) && content[:type] == :table %>
         <%%= render BetterPage::Ui::TableComponent.new(**content.except(:type)) %>
-      <%% elsif content.is_a?(Hash) && content[:type] == :overview %>
-        <%%= render BetterPage::Ui::OverviewComponent.new(**content.except(:type)) %>
+      <%% elsif content.is_a?(Hash) && content[:type] == :details %>
+        <%%= render BetterPage::Ui::DetailsComponent.new(**content.except(:type)) %>
       <%% end %>
     </div>
   <%% end %>

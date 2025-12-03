@@ -23,5 +23,11 @@ module Layout
     def with_footer
       render_with_template
     end
+
+    # @label With FontAwesome Icons
+    # Uses FontAwesome icon classes via the icon parameter
+    def with_fontawesome_icons
+      render_with_template
+    end
   end
 end

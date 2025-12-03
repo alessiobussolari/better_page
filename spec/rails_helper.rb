@@ -2,6 +2,8 @@
 
 # SimpleCov must be required before any other requires
 require "simplecov"
+require "simplecov-cobertura"
+
 SimpleCov.start do
   add_filter "/spec/"
   add_filter "/lib/generators/better_page/templates/"
@@ -13,6 +15,11 @@ SimpleCov.start do
   minimum_coverage 80
   enable_coverage :branch
 end
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::CoberturaFormatter
+])
 
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"

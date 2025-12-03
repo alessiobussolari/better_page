@@ -79,6 +79,13 @@ module BetterPage
           end
         end
 
+        # Renderizza icona FontAwesome
+        def render_icon
+          return nil unless icon.present?
+
+          tag.i(class: icon)
+        end
+
         def call
           content
         end

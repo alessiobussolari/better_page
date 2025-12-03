@@ -79,9 +79,8 @@ RSpec.describe BetterPage::IndexBasePage do
 
       expect(components[:alerts].default).to eq([])
       expect(components[:statistics].default).to eq([])
-      expect(components[:metrics].default).to eq([])
       expect(components[:pagination].default).to eq({ enabled: false })
-      expect(components[:overview].default).to eq({ enabled: false })
+      expect(components[:details].default).to eq({ enabled: false })
       expect(components[:footer].default).to eq({ enabled: false })
       expect(components[:modals].default).to eq([])
     end
