@@ -1,0 +1,23 @@
+<%= render BetterPage::Layout::SidebarComponent.new(
+  id: "fontawesome-sidebar",
+  brand: "BetterPage",
+  collapsed: false
+) do |sidebar| %>
+  <% sidebar.with_group(id: "main", label: "Main") do |group| %>
+    <% group.with_item(id: "dashboard", label: "Dashboard", href: "#", icon: "fa-solid fa-house", active: true) %>
+    <% group.with_item(id: "analytics", label: "Analytics", href: "#", icon: "fa-solid fa-chart-line") %>
+    <% group.with_item(id: "calendar", label: "Calendar", href: "#", icon: "fa-solid fa-calendar") %>
+  <% end %>
+
+  <% sidebar.with_group(id: "management", label: "Management") do |group| %>
+    <% group.with_item(id: "users", label: "Users", href: "#", icon: "fa-solid fa-users", badge: "12") %>
+    <% group.with_item(id: "products", label: "Products", href: "#", icon: "fa-solid fa-box") %>
+    <% group.with_item(id: "orders", label: "Orders", href: "#", icon: "fa-solid fa-shopping-cart", badge: "3") %>
+  <% end %>
+
+  <% sidebar.with_group(id: "settings", label: "Settings") do |group| %>
+    <% group.with_item(id: "profile", label: "Profile", href: "#", icon: "fa-solid fa-user") %>
+    <% group.with_item(id: "settings", label: "Settings", href: "#", icon: "fa-solid fa-gear") %>
+    <% group.with_item(id: "logout", label: "Logout", href: "#", icon: "fa-solid fa-right-from-bracket") %>
+  <% end %>
+<% end %>

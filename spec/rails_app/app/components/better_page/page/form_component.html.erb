@@ -1,0 +1,67 @@
+<div class="min-h-full" data-testid="form-page">
+  <div class="py-6 px-4 sm:px-6 lg:px-8" data-testid="form-container">
+
+    <% if has_header? %>
+      <div data-testid="form-header-section">
+        <%= render BetterPage::Form::HeaderComponent.new(**form_header) %>
+      </div>
+    <% end %>
+
+    <% if has_alerts? %>
+      <div data-testid="form-alerts-section">
+        <%= render BetterPage::Form::AlertsComponent.new(items: form_alerts) %>
+      </div>
+    <% end %>
+
+    <div id="form-errors"></div>
+
+    <%= form_with model: form_object, local: true,
+        class: "",
+        data: form_data_options,
+        **form_html_options do |form| %>
+
+      <div id="form-wrapper" data-testid="form-wrapper">
+        <% if should_render_errors? %>
+          <div data-testid="form-errors-section">
+            <%= render BetterPage::Form::ErrorsComponent.new(
+                  form_object: form_object,
+                  custom_errors: form_errors
+                ) %>
+          </div>
+        <% end %>
+
+        <% if has_panels? %>
+          <% if use_tabs %>
+            <%= render BetterPage::Form::TabsComponent.new(form: form, panels: form_panels) %>
+          <% else %>
+            <div data-testid="form-panels-section">
+              <% form_panels.each_with_index do |panel, index| %>
+                <%= render BetterPage::Form::PanelComponent.new(
+                      form: form,
+                      **panel.merge(panel_index: index, is_last: index == form_panels.length - 1)
+                    ) %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+
+        <div class="px-6 py-4 flex justify-end space-x-3 border-t border-gray-200 bg-gray-50" data-testid="form-actions-section">
+          <%= link_to "Cancel", :back,
+              class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
+              data: { testid: "form-cancel-button" } %>
+          <%= button_tag "Save",
+              type: "submit",
+              class: "inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
+              data: { testid: "form-submit-button" } %>
+        </div>
+      </div>
+
+    <% end %>
+
+    <% if has_footer? %>
+      <div data-testid="form-footer-section">
+        <%= render BetterPage::Form::FooterComponent.new(**form_footer) %>
+      </div>
+    <% end %>
+  </div>
+</div>

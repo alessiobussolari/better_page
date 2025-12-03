@@ -1,0 +1,39 @@
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Text Input</h3>
+
+  <%= form_with model: Product.new, url: "#", method: :post do |f| %>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+        <%= render BetterPage::Form::InputComponent.new(
+          form: f,
+          field_name: :name,
+          field_type: :text,
+          placeholder: "Enter product name"
+        ) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <%= render BetterPage::Form::InputComponent.new(
+          form: f,
+          field_name: :email,
+          field_type: :email,
+          placeholder: "user@example.com"
+        ) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+        <%= render BetterPage::Form::InputComponent.new(
+          form: f,
+          field_name: :price,
+          field_type: :number,
+          placeholder: "0.00",
+          min: 0,
+          step: 0.01
+        ) %>
+      </div>
+    </div>
+  <% end %>
+</div>

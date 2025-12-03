@@ -1,0 +1,43 @@
+<div class="mb-6">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-lg font-semibold text-gray-900"><%= formatted_title %></h2>
+    <div class="flex items-center space-x-2">
+      <% if today_path.present? %>
+        <%= link_to "Today", today_path, class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+      <% end %>
+      <div class="flex items-center rounded-md shadow-sm">
+        <% if previous_path.present? %>
+          <%= link_to previous_path, class: "rounded-l-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+            </svg>
+          <% end %>
+        <% end %>
+        <% if next_path.present? %>
+          <%= link_to next_path, class: "rounded-r-md bg-white px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+            </svg>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if month_view? %>
+    <%= render BetterPage::Common::CalendarMonthComponent.new(
+          current_date: current_date,
+          events: events
+        ) %>
+  <% elsif week_view? %>
+    <%= render BetterPage::Common::CalendarWeekComponent.new(
+          current_date: current_date,
+          events: events
+        ) %>
+  <% elsif day_view? %>
+    <%= render BetterPage::Common::CalendarDayComponent.new(
+          current_date: current_date,
+          events: events
+        ) %>
+  <% end %>
+</div>

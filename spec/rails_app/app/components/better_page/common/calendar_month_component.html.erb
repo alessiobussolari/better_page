@@ -1,0 +1,43 @@
+<div class="overflow-hidden rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5">
+  <div class="grid grid-cols-7 gap-px border-b border-gray-200 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700">
+    <% BetterPage::Common::CalendarMonthComponent::DAYS_OF_WEEK.each do |day| %>
+      <div class="bg-white py-2"><%= day %></div>
+    <% end %>
+  </div>
+  <div class="grid grid-cols-7 gap-px bg-gray-200 text-sm">
+    <% days_in_month.each do |day_info| %>
+      <%
+        day_classes = "relative min-h-[80px] bg-white px-3 py-2"
+        day_classes += " bg-gray-50" unless day_info[:is_current_month]
+      %>
+      <div class="<%= day_classes %>">
+        <time datetime="<%= day_info[:date].strftime('%Y-%m-%d') %>"
+              class="<%= day_info[:is_today] ? 'flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 font-semibold text-white' : (day_info[:is_current_month] ? 'text-gray-900' : 'text-gray-400') %>">
+          <%= day_info[:day] %>
+        </time>
+        <% if day_info[:events].present? %>
+          <ol class="mt-2 space-y-1">
+            <% day_info[:events].first(2).each do |event| %>
+              <li>
+                <% if event[:path].present? %>
+                  <%= link_to event[:path], class: "group flex" do %>
+                    <p class="flex-auto truncate font-medium text-gray-900 group-hover:text-blue-600">
+                      <%= event[:title] || event[:name] %>
+                    </p>
+                  <% end %>
+                <% else %>
+                  <p class="flex-auto truncate font-medium text-gray-900">
+                    <%= event[:title] || event[:name] %>
+                  </p>
+                <% end %>
+              </li>
+            <% end %>
+            <% if day_info[:events].size > 2 %>
+              <li class="text-gray-500">+ <%= day_info[:events].size - 2 %> more</li>
+            <% end %>
+          </ol>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

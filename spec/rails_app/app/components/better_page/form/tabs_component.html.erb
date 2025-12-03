@@ -1,0 +1,43 @@
+<div data-controller="form-tabs" class="flex gap-6 pb-4" data-testid="form-tabs">
+
+  <nav class="w-64 bg-gray-50 rounded-lg pr-2 pt-4 pl-0 space-y-1 flex-shrink-0" data-testid="form-tabs-navigation">
+    <% tabs_data.each do |tab| %>
+      <button type="button"
+              data-action="click->form-tabs#showTab"
+              data-tab-index="<%= tab[:index] %>"
+              data-form-tabs-target="tab"
+              class="w-full text-left px-3 py-2 rounded-lg hover:bg-white transition-colors duration-200 <%= tab[:active] ? 'bg-white shadow-sm border border-gray-200' : '' %>"
+              data-testid="form-tab-button-<%= tab[:index] %>">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <% if tab[:icon] %>
+              <svg class="h-4 w-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+              </svg>
+            <% end %>
+            <span class="text-sm font-medium text-gray-700"><%= tab[:title] %></span>
+          </div>
+          <span data-form-tabs-target="indicator"
+                data-tab-index="<%= tab[:index] %>"
+                class="w-2 h-2 bg-red-500 rounded-full hidden"
+                data-testid="form-tab-indicator-<%= tab[:index] %>"></span>
+        </div>
+      </button>
+    <% end %>
+  </nav>
+
+  <div class="flex-1 min-w-0" data-testid="form-tabs-content">
+    <% tabs_data.each do |tab| %>
+      <div data-form-tabs-target="panel"
+           data-panel-index="<%= tab[:index] %>"
+           class="<%= 'hidden' unless tab[:active] %>"
+           data-testid="form-tab-panel-<%= tab[:index] %>">
+        <%= render BetterPage::Form::PanelComponent.new(
+              form: form,
+              **panel_with_index(tab[:panel], tab[:index])
+            ) %>
+      </div>
+    <% end %>
+  </div>
+
+</div>

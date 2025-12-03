@@ -1,0 +1,16 @@
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Multiple Select</h3>
+
+  <%= form_with model: Product.new, url: "#", method: :post do |f| %>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+      <%= render BetterPage::Form::SelectComponent.new(
+        form: f,
+        field_name: :tags,
+        options_list: [["Featured", "featured"], ["Sale", "sale"], ["New", "new"], ["Popular", "popular"]],
+        multiple: true
+      ) %>
+      <p class="mt-1 text-sm text-gray-500">Hold Ctrl/Cmd to select multiple</p>
+    </div>
+  <% end %>
+</div>

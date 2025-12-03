@@ -1,0 +1,20 @@
+<div class="mt-6 border-t border-gray-200 pt-4">
+  <div class="flex items-center justify-between">
+    <% if has_text? %>
+      <p class="text-sm text-gray-500"><%= text %></p>
+    <% else %>
+      <div></div>
+    <% end %>
+    <% if has_actions? %>
+      <div class="flex space-x-3">
+        <% actions.each do |action| %>
+          <%= link_to action[:path] || "#",
+                      class: "text-sm font-medium text-blue-600 hover:text-blue-500",
+                      data: action[:data] || {} do %>
+            <%= action[:label] %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

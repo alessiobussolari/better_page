@@ -1,0 +1,21 @@
+<div class="overflow-hidden rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5">
+  <div class="grid grid-cols-1">
+    <% visible_hours.each do |hour| %>
+      <div class="grid grid-cols-[80px_1fr] border-b border-gray-200">
+        <div class="border-r border-gray-200 py-3 text-right pr-3">
+          <span class="text-xs text-gray-500"><%= format('%02d:00', hour) %></span>
+        </div>
+        <div class="relative min-h-[60px] p-1">
+          <% events_for_hour(hour).each do |event| %>
+            <div class="rounded bg-blue-100 px-3 py-2 mb-1">
+              <p class="font-medium text-blue-700 text-sm"><%= event[:title] || event[:name] %></p>
+              <% if event[:duration] %>
+                <p class="text-xs text-blue-600"><%= event[:duration] %> min</p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

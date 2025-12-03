@@ -1,0 +1,73 @@
+<div class="space-y-1" data-testid="form-field-<%= field_name %>">
+  <% if show_label? %>
+    <label for="<%= html_field_id %>" class="block text-sm font-medium text-gray-700" data-testid="form-field-label-<%= field_name %>">
+      <%= field_label %>
+      <% if required? %>
+        <span class="text-red-500">*</span>
+      <% end %>
+    </label>
+  <% end %>
+
+  <div data-testid="form-field-input-<%= field_name %>">
+    <% case field_type %>
+    <% when "text", "email", "password", "url", "tel", "number", "date", "datetime", "time", "month", "week", "range", "color", "search" %>
+      <%= render BetterPage::Form::InputComponent.new(
+            form: form,
+            field_name: field_name,
+            field_type: field_type,
+            **input_component_options
+          ) %>
+
+    <% when "textarea" %>
+      <%= render BetterPage::Form::TextareaComponent.new(
+            form: form,
+            field_name: field_name,
+            **textarea_component_options
+          ) %>
+
+    <% when "select" %>
+      <%= render BetterPage::Form::SelectComponent.new(
+            form: form,
+            field_name: field_name,
+            **select_component_options
+          ) %>
+
+    <% when "checkbox" %>
+      <%= render BetterPage::Form::CheckboxComponent.new(
+            form: form,
+            field_name: field_name,
+            **checkbox_component_options
+          ) %>
+
+    <% when "radio" %>
+      <%= render BetterPage::Form::RadioComponent.new(
+            form: form,
+            field_name: field_name,
+            **radio_component_options
+          ) %>
+
+    <% when "file" %>
+      <%= form.file_field field_name, **file_field_options, data: { testid: "form-field-file-#{field_name}" } %>
+
+    <% when "hidden" %>
+      <%= form.hidden_field field_name, value: field_value %>
+
+    <% when "custom" %>
+      <div data-testid="form-field-custom-<%= field_name %>">
+        <%= options[:custom_html].html_safe if options[:custom_html].present? %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if has_help? %>
+    <p class="text-xs text-gray-500" data-testid="form-field-help-<%= field_name %>">
+      <%= help %>
+    </p>
+  <% end %>
+
+  <% if has_error? %>
+    <p class="text-xs text-red-600" data-testid="form-field-error-<%= field_name %>">
+      <%= field_error %>
+    </p>
+  <% end %>
+</div>

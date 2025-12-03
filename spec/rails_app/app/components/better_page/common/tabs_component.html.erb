@@ -1,0 +1,52 @@
+<div id="<%= id %>"
+     class="bg-white shadow rounded-xl p-4"
+     data-controller="tabs"
+     data-tabs-default-value="<%= default_tab_id %>"
+     data-tabs-active-class="<%= active_classes %>"
+     data-tabs-inactive-class="<%= inactive_classes %>">
+
+  <%# Tab navigation %>
+  <nav class="<%= nav_classes %>" role="tablist" aria-label="Tabs">
+    <% tabs.each_with_index do |tab, index| %>
+      <% if tab.link? %>
+        <%= link_to tab.href,
+            class: "#{tab_base_classes} #{tab.active? ? active_classes : inactive_classes}" do %>
+          <% if tab.icon? %><%= tab.icon %><% end %>
+          <%= tab.label %>
+        <% end %>
+      <% else %>
+        <% content_index = content_tabs.find_index { |t| t.id == tab.id } || 0 %>
+        <button type="button"
+                role="tab"
+                id="<%= id %>-tab-<%= tab.id %>"
+                data-tabs-target="tab"
+                data-action="click->tabs#select keydown->tabs#keydown"
+                data-tab-id="<%= tab.id %>"
+                aria-controls="<%= id %>-panel-<%= tab.id %>"
+                aria-selected="<%= content_index == default_index %>"
+                tabindex="<%= content_index == default_index ? '0' : '-1' %>"
+                class="<%= tab_base_classes %> <%= content_index == default_index ? active_classes : inactive_classes %>">
+          <% if tab.icon? %><%= tab.icon %><% end %>
+          <%= tab.label %>
+        </button>
+      <% end %>
+    <% end %>
+  </nav>
+
+  <%# Tab panels (only for content tabs) %>
+  <% if content_tabs.any? %>
+    <div class="mt-4">
+      <% content_tabs.each_with_index do |tab, index| %>
+        <div id="<%= id %>-panel-<%= tab.id %>"
+             data-tabs-target="panel"
+             data-tab-id="<%= tab.id %>"
+             role="tabpanel"
+             aria-labelledby="<%= id %>-tab-<%= tab.id %>"
+             tabindex="0"
+             class="<%= index == default_index ? '' : 'hidden' %>">
+          <%= tab %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

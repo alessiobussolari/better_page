@@ -1,0 +1,25 @@
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Radio Component</h3>
+
+  <%= form_with model: Product.new, url: "#", method: :post do |f| %>
+    <fieldset>
+      <legend class="text-sm font-medium text-gray-700 mb-2">Shipping Method</legend>
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <input type="radio" name="product[shipping]" id="shipping_standard" value="standard" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" checked>
+          <label for="shipping_standard" class="ml-2 block text-sm text-gray-900">Standard (5-7 days)</label>
+        </div>
+
+        <div class="flex items-center">
+          <input type="radio" name="product[shipping]" id="shipping_express" value="express" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+          <label for="shipping_express" class="ml-2 block text-sm text-gray-900">Express (2-3 days)</label>
+        </div>
+
+        <div class="flex items-center">
+          <input type="radio" name="product[shipping]" id="shipping_overnight" value="overnight" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+          <label for="shipping_overnight" class="ml-2 block text-sm text-gray-900">Overnight (Next day)</label>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+</div>

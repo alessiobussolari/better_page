@@ -1,0 +1,43 @@
+<div class="better-page-index">
+  <% if should_render_alerts? %>
+    <%= render BetterPage::Common::AlertsComponent.new(alerts: alerts) %>
+  <% end %>
+
+  <% if should_render_header? %>
+    <%= render BetterPage::Common::HeaderComponent.new(**header.except(:enabled)) %>
+  <% end %>
+
+  <% if should_render_statistics? %>
+    <%= render BetterPage::Common::StatisticsComponent.new(statistics: statistics) %>
+  <% end %>
+
+  <% if should_render_details? %>
+    <%= render BetterPage::Common::DetailsComponent.new(**details.except(:enabled)) %>
+  <% end %>
+
+  <% if should_render_calendar? %>
+    <%= render BetterPage::Common::CalendarComponent.new(**calendar.except(:enabled)) %>
+  <% end %>
+
+  <% if should_render_tabs? %>
+    <%= render BetterPage::Common::TabsComponent.new(**tabs.except(:enabled)) %>
+  <% end %>
+
+  <% if should_render_search? %>
+    <%= render BetterPage::Common::SearchComponent.new(**search.except(:enabled)) %>
+  <% end %>
+
+  <% if should_render_split_view? %>
+    <%= render BetterPage::Common::DualComponent.new(**split_view.except(:enabled)) %>
+  <% elsif should_render_table? %>
+    <%= render BetterPage::Common::TableComponent.new(**table.except(:enabled)) %>
+  <% end %>
+
+  <% if should_render_pagination? %>
+    <%= render BetterPage::Common::PaginationComponent.new(**pagination.except(:enabled)) %>
+  <% end %>
+
+  <% if should_render_footer? %>
+    <%= render BetterPage::Common::FooterComponent.new(**footer.except(:enabled)) %>
+  <% end %>
+</div>

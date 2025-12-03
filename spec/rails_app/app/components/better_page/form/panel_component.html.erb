@@ -1,0 +1,30 @@
+<div class="border-b border-gray-100 mt-4 bg-white shadow rounded-lg" data-testid="form-panel-<%= panel_index %>">
+  <% if has_title? %>
+    <div class="px-6 <%= panel_index == 0 ? 'pt-6' : 'pt-8' %>" data-testid="form-panel-title-section-<%= panel_index %>">
+      <div class="flex items-center mb-6 pb-4 border-b border-gray-200">
+        <div class="flex items-center space-x-2">
+          <% if panel_icon.present? %>
+            <svg class="h-5 w-5 text-<%= panel_color %>-500" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+            </svg>
+          <% end %>
+          <span class="text-sm text-<%= panel_color %>-600 font-medium" data-testid="form-panel-title-<%= panel_index %>">
+            <%= panel_title %>
+          </span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="px-6 <%= has_title? ? 'pb-6' : (panel_index == 0 ? 'pt-6 pb-6' : 'py-6') %>" data-testid="form-panel-content-<%= panel_index %>">
+    <% if has_fields? %>
+      <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4" data-testid="form-panel-fields-<%= panel_index %>">
+        <% panel_fields.each_with_index do |field, field_index| %>
+          <div class="<%= field[:full_width] ? 'sm:col-span-2' : 'sm:col-span-1' %>" data-testid="form-panel-field-wrapper-<%= panel_index %>-<%= field_index %>">
+            <%= render BetterPage::Form::FieldComponent.new(form: form, **field) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="<%= wrapper_classes %>">
+  <% options_list.each do |option| %>
+    <%
+      value = option.is_a?(Array) ? option.last : option
+      label_text = option.is_a?(Array) ? option.first : option
+    %>
+    <div class="flex items-center">
+      <%= form.radio_button field_name, value, radio_options(value) %>
+      <%= form.label html_field_id(value), label_text, class: label_classes %>
+    </div>
+  <% end %>
+</div>
+<% if error.present? %>
+  <p class="mt-1 text-sm text-red-600"><%= error %></p>
+<% end %>

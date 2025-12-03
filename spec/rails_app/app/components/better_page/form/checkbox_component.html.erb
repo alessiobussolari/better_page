@@ -1,0 +1,9 @@
+<div class="flex items-center">
+  <%= form.check_box field_name, checkbox_options %>
+  <% if label.present? %>
+    <%= form.label field_name, label, class: label_classes %>
+  <% end %>
+</div>
+<% if error.present? %>
+  <p class="mt-1 text-sm text-red-600"><%= error %></p>
+<% end %>

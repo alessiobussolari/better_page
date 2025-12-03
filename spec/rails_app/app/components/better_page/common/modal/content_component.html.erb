@@ -1,0 +1,7 @@
+<div class="bg-white px-4 py-5 sm:p-6">
+  <% if custom_partial.present? %>
+    <%= render partial: custom_partial, locals: partial_locals %>
+  <% else %>
+    <%= content %>
+  <% end %>
+</div>

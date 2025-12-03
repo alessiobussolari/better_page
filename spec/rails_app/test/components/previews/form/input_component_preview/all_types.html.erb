@@ -1,0 +1,57 @@
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
+  <h3 class="text-lg font-semibold text-gray-900 mb-4">Input Types</h3>
+
+  <%= form_with model: Product.new, url: "#", method: :post do |f| %>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Text</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :text_field, field_type: :text) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :email_field, field_type: :email) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :password_field, field_type: :password) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Number</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :number_field, field_type: :number) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :date_field, field_type: :date) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :time_field, field_type: :time) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :url_field, field_type: :url) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tel</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :tel_field, field_type: :tel) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :color_field, field_type: :color) %>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Range</label>
+        <%= render BetterPage::Form::InputComponent.new(form: f, field_name: :range_field, field_type: :range, min: 0, max: 100) %>
+      </div>
+    </div>
+  <% end %>
+</div>

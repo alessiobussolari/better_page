@@ -1,0 +1,43 @@
+<div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
+  <% actions.each do |action| %>
+    <%
+      style = action[:style] || :secondary
+      label = action[:label]
+      action_sym = action_type(action)
+      icon = action[:icon]
+      url = action[:url]
+      data = action[:data] || {}
+    %>
+
+    <% case action_sym %>
+    <% when :submit %>
+      <button type="submit" class="<%= button_classes(style) %> ml-3">
+        <% if icon.present? %>
+          <span class="mr-2"><%= icon %></span>
+        <% end %>
+        <%= label %>
+      </button>
+    <% when :close %>
+      <button type="button" class="<%= button_classes(style) %> ml-3" data-action="modal#close">
+        <% if icon.present? %>
+          <span class="mr-2"><%= icon %></span>
+        <% end %>
+        <%= label %>
+      </button>
+    <% when :link %>
+      <%= link_to url, class: "#{button_classes(style)} ml-3", data: data do %>
+        <% if icon.present? %>
+          <span class="mr-2"><%= icon %></span>
+        <% end %>
+        <%= label %>
+      <% end %>
+    <% else %>
+      <button type="button" class="<%= button_classes(style) %> ml-3" data-action="<%= data[:action] %>">
+        <% if icon.present? %>
+          <span class="mr-2"><%= icon %></span>
+        <% end %>
+        <%= label %>
+      </button>
+    <% end %>
+  <% end %>
+</div>

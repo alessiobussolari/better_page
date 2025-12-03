@@ -1,0 +1,32 @@
+<% case field_type %>
+<% when :text %>
+  <%= form.text_field field_name, input_options %>
+<% when :email %>
+  <%= form.email_field field_name, input_options %>
+<% when :password %>
+  <%= form.password_field field_name, input_options %>
+<% when :url %>
+  <%= form.url_field field_name, input_options %>
+<% when :tel %>
+  <%= form.telephone_field field_name, input_options %>
+<% when :number %>
+  <%= form.number_field field_name, input_options %>
+<% when :date %>
+  <%= form.date_field field_name, input_options %>
+<% when :datetime %>
+  <%= form.datetime_local_field field_name, input_options %>
+<% when :time %>
+  <%= form.time_field field_name, input_options %>
+<% when :month %>
+  <%= form.month_field field_name, input_options %>
+<% when :week %>
+  <%= form.week_field field_name, input_options %>
+<% when :range %>
+  <%= form.range_field field_name, input_options %>
+<% when :color %>
+  <%= form.color_field field_name, input_options %>
+<% when :search %>
+  <%= form.search_field field_name, input_options %>
+<% else %>
+  <%= form.text_field field_name, input_options %>
+<% end %>

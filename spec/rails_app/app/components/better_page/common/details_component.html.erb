@@ -1,0 +1,41 @@
+<div class="bg-white shadow rounded-lg p-6" data-testid="details-card">
+  <% if title.present? %>
+    <h3 class="text-lg font-medium leading-6 text-gray-900"><%= title %></h3>
+  <% end %>
+  <% if description.present? %>
+    <p class="mt-1 text-sm text-gray-500"><%= description %></p>
+  <% end %>
+  <dl class="<%= title.present? || description.present? ? 'mt-4 ' : '' %>grid <%= grid_classes %> gap-x-4 gap-y-6" data-testid="info-grid">
+    <% items.each_with_index do |item, index| %>
+      <% item_label = item[:label] || item[:name] %>
+      <% item_key = item_label.to_s.parameterize %>
+      <div class="space-y-1" data-testid="info-grid-item-<%= item_key %>">
+        <dt class="text-sm font-medium text-gray-500" data-testid="info-grid-label-<%= item_key %>">
+          <%= item_label %>
+        </dt>
+        <dd class="text-sm <%= item[:class] || 'text-gray-900' %>" data-testid="info-grid-value-<%= item_key %>">
+          <% item_type = (item[:type] || 'string').to_s %>
+          <% link_class = item[:link_class] || "text-blue-600 hover:text-blue-800 underline" %>
+          <% case item_type %>
+          <% when 'email' %>
+            <%= link_to item[:value], "mailto:#{item[:value]}", class: link_class, data: { testid: "info-grid-link-#{item_key}" } %>
+          <% when 'phone' %>
+            <%= link_to item[:value], "tel:#{item[:value].to_s.gsub(/\s/, '')}", class: link_class, data: { testid: "info-grid-link-#{item_key}" } %>
+          <% when 'url' %>
+            <%= link_to item[:value], item[:value], target: "_blank", rel: "noopener", class: link_class, data: { testid: "info-grid-link-#{item_key}" } %>
+          <% else %>
+            <% if item[:link].present? %>
+              <% link_target = item[:link_target] || "_self" %>
+              <%= link_to item[:value], item[:link],
+                  class: link_class,
+                  target: link_target,
+                  data: { testid: "info-grid-link-#{item_key}" } %>
+            <% else %>
+              <%= item[:value] %>
+            <% end %>
+          <% end %>
+        </dd>
+      </div>
+    <% end %>
+  </dl>
+</div>

@@ -1,0 +1,35 @@
+<div class="mb-6">
+  <dl class="grid gap-5 <%= grid_classes %>">
+    <% statistics.each do |stat| %>
+      <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+        <dt class="flex items-center gap-3">
+          <% if stat[:icon].present? %>
+            <div class="rounded-md bg-blue-500 p-3 text-white flex-shrink-0">
+              <%= stat[:icon] %>
+            </div>
+          <% end %>
+          <span class="truncate text-sm font-medium text-gray-500">
+            <%= stat[:label] || stat[:name] %>
+          </span>
+        </dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-gray-900">
+            <%= stat[:value] %>
+            <% if stat[:unit].present? %>
+              <span class="ml-1 text-sm font-medium text-gray-500"><%= stat[:unit] %></span>
+            <% end %>
+          </div>
+          <% if stat[:change].present? || stat[:change_percentage].present? %>
+            <div class="inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium <%= trend_classes(stat) %> md:mt-2 lg:mt-0">
+              <span><%= trend_icon(stat) %></span>
+              <span class="ml-1"><%= stat[:change] || stat[:change_percentage] %></span>
+            </div>
+          <% end %>
+        </dd>
+        <% if stat[:description].present? %>
+          <dd class="mt-2 text-sm text-gray-500"><%= stat[:description] %></dd>
+        <% end %>
+      </div>
+    <% end %>
+  </dl>
+</div>
