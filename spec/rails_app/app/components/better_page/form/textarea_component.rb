@@ -51,7 +51,7 @@ module BetterPage
           base = "w-full px-3 py-2 border rounded-lg focus:ring-2 focus:border-transparent resize-y"
           error_classes = error.present? ? "border-red-300 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
           disabled_classes = disabled ? "bg-gray-50 text-gray-500" : ""
-          [base, error_classes, disabled_classes].reject(&:blank?).join(" ")
+          [ base, error_classes, disabled_classes ].reject(&:blank?).join(" ")
         end
 
         def html_field_id

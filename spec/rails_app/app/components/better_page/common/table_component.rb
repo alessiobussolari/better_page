@@ -75,10 +75,10 @@ module BetterPage
       def action_dropdown_class(style)
         base = "block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
         color = case style&.to_sym
-                when :danger then "text-red-600"
-                when :primary then "text-indigo-600"
-                else "text-gray-700"
-                end
+        when :danger then "text-red-600"
+        when :primary then "text-indigo-600"
+        else "text-gray-700"
+        end
         "#{base} #{color}"
       end
 

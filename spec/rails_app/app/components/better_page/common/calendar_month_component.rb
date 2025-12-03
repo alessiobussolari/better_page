@@ -34,6 +34,6 @@ module BetterPage
             event_date&.to_date == date
           end
         end
-      end
+    end
   end
 end

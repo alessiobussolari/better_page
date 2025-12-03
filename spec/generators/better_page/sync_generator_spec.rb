@@ -252,7 +252,7 @@ RSpec.describe BetterPage::Generators::SyncGenerator, type: :generator do
 
       result = generator.send(:extract_local_components, file_path)
 
-      expect(result).to eq([:my_component])
+      expect(result).to eq([ :my_component ])
     end
 
     it "extracts multiple components" do

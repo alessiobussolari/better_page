@@ -14,9 +14,9 @@ RSpec.describe BetterPage::IndexBasePage do
       def header
         {
           title: "Test Index",
-          breadcrumbs: [{ label: "Home", path: "/" }],
-          metadata: [{ label: "Count", value: @test_items.size }],
-          actions: [{ label: "New", path: "/new", icon: "plus" }]
+          breadcrumbs: [ { label: "Home", path: "/" } ],
+          metadata: [ { label: "Count", value: @test_items.size } ],
+          actions: [ { label: "New", path: "/new", icon: "plus" } ]
         }
       end
 
@@ -88,7 +88,7 @@ RSpec.describe BetterPage::IndexBasePage do
 
   describe "#index" do
     it "builds complete page" do
-      items = [{ name: "Test", email: "test@example.com" }]
+      items = [ { name: "Test", email: "test@example.com" } ]
       page = test_index_page_class.new(items)
       result = page.index
 
@@ -109,7 +109,7 @@ RSpec.describe BetterPage::IndexBasePage do
     end
 
     it "includes table data" do
-      items = [{ name: "Alice" }, { name: "Bob" }]
+      items = [ { name: "Alice" }, { name: "Bob" } ]
       page = test_index_page_class.new(items)
       result = page.index
 
@@ -212,7 +212,7 @@ RSpec.describe BetterPage::IndexBasePage do
     end
 
     it "filters by component name" do
-      page = test_index_page_class.new([{ name: "Test" }])
+      page = test_index_page_class.new([ { name: "Test" } ])
       result = page.stream_index(:table)
 
       component_names = result.map { |c| c[:component] }
@@ -221,7 +221,7 @@ RSpec.describe BetterPage::IndexBasePage do
     end
 
     it "includes target for turbo streams" do
-      page = test_index_page_class.new([{ name: "Test" }])
+      page = test_index_page_class.new([ { name: "Test" } ])
       result = page.stream_index(:table)
 
       table_component = result.find { |c| c[:component] == :table }
@@ -240,7 +240,7 @@ RSpec.describe BetterPage::IndexBasePage do
 
   describe "#frame_index" do
     it "returns single component configuration" do
-      page = test_index_page_class.new([{ name: "Test" }])
+      page = test_index_page_class.new([ { name: "Test" } ])
       result = page.frame_index(:table)
 
       expect(result).to be_a(Hash)

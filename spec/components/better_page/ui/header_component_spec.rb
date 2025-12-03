@@ -48,7 +48,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
     end
 
     it "applies primary action style" do
-      actions = [{ label: "Save", path: "#", style: :primary }]
+      actions = [ { label: "Save", path: "#", style: :primary } ]
 
       render_inline(described_class.new(title: "Test", actions: actions))
 
@@ -56,7 +56,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
     end
 
     it "applies danger action style" do
-      actions = [{ label: "Delete", path: "#", style: :danger }]
+      actions = [ { label: "Delete", path: "#", style: :danger } ]
 
       render_inline(described_class.new(title: "Test", actions: actions))
 
@@ -64,7 +64,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
     end
 
     it "applies secondary action style" do
-      actions = [{ label: "Cancel", path: "#", style: :secondary }]
+      actions = [ { label: "Cancel", path: "#", style: :secondary } ]
 
       render_inline(described_class.new(title: "Test", actions: actions))
 
@@ -74,7 +74,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
 
   describe "predicate methods" do
     it "returns true for breadcrumbs? when breadcrumbs present" do
-      component = described_class.new(title: "Test", breadcrumbs: [{ label: "Home" }])
+      component = described_class.new(title: "Test", breadcrumbs: [ { label: "Home" } ])
       expect(component.breadcrumbs?).to be true
     end
 
@@ -84,7 +84,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
     end
 
     it "returns true for actions? when actions present" do
-      component = described_class.new(title: "Test", actions: [{ label: "Save", path: "#" }])
+      component = described_class.new(title: "Test", actions: [ { label: "Save", path: "#" } ])
       expect(component.actions?).to be true
     end
 
@@ -94,7 +94,7 @@ RSpec.describe BetterPage::Ui::HeaderComponent, type: :component do
     end
 
     it "returns true for metadata? when metadata present" do
-      component = described_class.new(title: "Test", metadata: [{ value: "Info" }])
+      component = described_class.new(title: "Test", metadata: [ { value: "Info" } ])
       expect(component.metadata?).to be true
     end
 

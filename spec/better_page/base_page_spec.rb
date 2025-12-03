@@ -27,7 +27,7 @@ RSpec.describe BetterPage::BasePage do
 
   describe "initialization" do
     it "initializes with new pattern (primary_data, metadata)" do
-      data = [1, 2, 3]
+      data = [ 1, 2, 3 ]
       metadata = { user: "test_user", stats: { count: 10 } }
 
       page = test_base_page_class.new(data, metadata)
@@ -39,7 +39,7 @@ RSpec.describe BetterPage::BasePage do
     end
 
     it "initializes with primary data only" do
-      data = [1, 2, 3]
+      data = [ 1, 2, 3 ]
       page = test_base_page_class.new(data)
 
       expect(page.primary_data).to eq(data)
@@ -149,10 +149,10 @@ RSpec.describe BetterPage::BasePage do
     end
 
     it "default_table_config returns empty table structure" do
-      page_with_data = test_base_page_class.new([1, 2, 3])
+      page_with_data = test_base_page_class.new([ 1, 2, 3 ])
       result = page_with_data.send(:default_table_config)
 
-      expect(result[:items]).to eq([1, 2, 3])
+      expect(result[:items]).to eq([ 1, 2, 3 ])
       expect(result[:empty_state]).to have_key(:icon)
       expect(result[:columns]).to eq([])
     end

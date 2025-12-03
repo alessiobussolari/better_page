@@ -27,17 +27,17 @@ module Common
           { type: :error, message: "An error occurred. Please try again." }
         ]
       when :info
-        base = [{ type: :info, message: "Did you know? You can customize your dashboard settings." }]
-        show_multiple ? base + [{ type: :info, message: "New features are available. Check the changelog." }] : base
+        base = [ { type: :info, message: "Did you know? You can customize your dashboard settings." } ]
+        show_multiple ? base + [ { type: :info, message: "New features are available. Check the changelog." } ] : base
       when :success
-        base = [{ type: :success, message: "Your changes have been saved successfully." }]
-        show_multiple ? base + [{ type: :success, message: "Profile updated!" }] : base
+        base = [ { type: :success, message: "Your changes have been saved successfully." } ]
+        show_multiple ? base + [ { type: :success, message: "Profile updated!" } ] : base
       when :warning
-        base = [{ type: :warning, message: "Your session will expire in 5 minutes." }]
-        show_multiple ? base + [{ type: :warning, message: "Some fields are incomplete." }] : base
+        base = [ { type: :warning, message: "Your session will expire in 5 minutes." } ]
+        show_multiple ? base + [ { type: :warning, message: "Some fields are incomplete." } ] : base
       when :error
-        base = [{ type: :error, message: "Failed to save changes. Please check your input." }]
-        show_multiple ? base + [{ type: :error, message: "Connection lost. Retrying..." }] : base
+        base = [ { type: :error, message: "Failed to save changes. Please check your input." } ]
+        show_multiple ? base + [ { type: :error, message: "Connection lost. Retrying..." } ] : base
       end
 
       render BetterPage::Common::AlertsComponent.new(alerts: alerts)

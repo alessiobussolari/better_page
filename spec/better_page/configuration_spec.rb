@@ -114,7 +114,7 @@ RSpec.describe BetterPage::Configuration do
     it "returns components for a page type" do
       config.allow_components :index, :header, :table
 
-      expect(config.components_for(:index)).to eq([:header, :table])
+      expect(config.components_for(:index)).to eq([ :header, :table ])
     end
 
     it "returns empty array for unknown page type" do

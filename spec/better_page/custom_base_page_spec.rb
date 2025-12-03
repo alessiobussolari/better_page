@@ -13,9 +13,9 @@ RSpec.describe BetterPage::CustomBasePage do
       def header
         {
           title: "Dashboard",
-          breadcrumbs: [{ label: "Home", path: "/" }],
-          metadata: [{ label: "Last Updated", value: "Today" }],
-          actions: [{ label: "Refresh", path: "/refresh", icon: "refresh" }]
+          breadcrumbs: [ { label: "Home", path: "/" } ],
+          metadata: [ { label: "Last Updated", value: "Today" } ],
+          actions: [ { label: "Refresh", path: "/refresh", icon: "refresh" } ]
         }
       end
 
@@ -165,7 +165,7 @@ RSpec.describe BetterPage::CustomBasePage do
     it "builds chart hash" do
       data = {
         labels: %w[Jan Feb Mar],
-        datasets: [{ label: "Sales", data: [10, 20, 30] }]
+        datasets: [ { label: "Sales", data: [ 10, 20, 30 ] } ]
       }
       result = page.send(:chart_format,
                          title: "Monthly Sales",

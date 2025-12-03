@@ -20,13 +20,13 @@ module Common
     # @param ratio select { choices: ["1:2", "1:1", "2:1", "1:3"] } "Panel ratio"
     def playground(ratio: "1:2")
       ratio_descriptions = {
-        "1:2" => ["1/3 width", "2/3 width"],
-        "1:1" => ["1/2 width", "1/2 width"],
-        "2:1" => ["2/3 width", "1/3 width"],
-        "1:3" => ["1/4 width", "3/4 width"]
+        "1:2" => [ "1/3 width", "2/3 width" ],
+        "1:1" => [ "1/2 width", "1/2 width" ],
+        "2:1" => [ "2/3 width", "1/3 width" ],
+        "1:3" => [ "1/4 width", "3/4 width" ]
       }
 
-      left_desc, right_desc = ratio_descriptions[ratio.to_s] || ["1/3 width", "2/3 width"]
+      left_desc, right_desc = ratio_descriptions[ratio.to_s] || [ "1/3 width", "2/3 width" ]
 
       render BetterPage::Common::DualComponent.new(ratio: ratio.to_s) do |dual|
         dual.with_left_panel do

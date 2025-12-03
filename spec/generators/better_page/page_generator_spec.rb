@@ -38,7 +38,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
   end
 
   describe "#template_for_action" do
-    let(:generator) { described_class.new(["Products"], [], destination_root: destination) }
+    let(:generator) { described_class.new([ "Products" ], [], destination_root: destination) }
 
     it "returns index_page for index action" do
       expect(generator.send(:template_for_action, "index")).to eq("index_page")
@@ -67,21 +67,21 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
 
   describe "#page_path" do
     it "generates correct path for simple resource" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       path = generator.send(:page_path, "index")
 
       expect(path).to eq("app/pages/products/index_page.rb")
     end
 
     it "generates correct path for namespaced resource" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       path = generator.send(:page_path, "index")
 
       expect(path).to eq("app/pages/admin/users/index_page.rb")
     end
 
     it "generates correct path for deeply namespaced resource" do
-      generator = described_class.new(["Admin::Settings::Roles"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Settings::Roles" ], [], destination_root: destination)
       path = generator.send(:page_path, "show")
 
       expect(path).to eq("app/pages/admin/settings/roles/show_page.rb")
@@ -90,89 +90,89 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
 
   describe "#namespace_path" do
     it "returns underscored path parts" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       expect(generator.send(:namespace_path)).to eq(%w[admin users])
     end
 
     it "handles simple resources" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:namespace_path)).to eq(%w[products])
     end
   end
 
   describe "#resource_namespace" do
     it "returns namespace for namespaced resource" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       expect(generator.send(:resource_namespace)).to eq("Admin")
     end
 
     it "returns nil for simple resource" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:resource_namespace)).to be_nil
     end
 
     it "returns nested namespace" do
-      generator = described_class.new(["Admin::Settings::Roles"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Settings::Roles" ], [], destination_root: destination)
       expect(generator.send(:resource_namespace)).to eq("Admin::Settings")
     end
   end
 
   describe "#resource_name" do
     it "returns last part of namespaced resource" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       expect(generator.send(:resource_name)).to eq("Users")
     end
 
     it "returns resource for simple resource" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:resource_name)).to eq("Products")
     end
   end
 
   describe "#resource_singular" do
     it "returns singular underscored name" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:resource_singular)).to eq("product")
     end
 
     it "handles already singular names" do
-      generator = described_class.new(["User"], [], destination_root: destination)
+      generator = described_class.new([ "User" ], [], destination_root: destination)
       expect(generator.send(:resource_singular)).to eq("user")
     end
   end
 
   describe "#resource_plural" do
     it "returns plural underscored name" do
-      generator = described_class.new(["Product"], [], destination_root: destination)
+      generator = described_class.new([ "Product" ], [], destination_root: destination)
       expect(generator.send(:resource_plural)).to eq("products")
     end
 
     it "handles already plural names" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:resource_plural)).to eq("products")
     end
   end
 
   describe "#full_class_name" do
     it "generates full class name for simple resource" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:full_class_name, "index")).to eq("Products::IndexPage")
     end
 
     it "generates full class name for namespaced resource" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       expect(generator.send(:full_class_name, "show")).to eq("Admin::Users::ShowPage")
     end
   end
 
   describe "#module_nesting_start" do
     it "generates module nesting for simple resource" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:module_nesting_start)).to eq("module Products")
     end
 
     it "generates nested modules for namespaced resource" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       nesting = generator.send(:module_nesting_start)
       expect(nesting).to include("module Admin")
       expect(nesting).to include("module Users")
@@ -181,12 +181,12 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
 
   describe "#class_indent" do
     it "returns correct indentation for simple resource" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:class_indent)).to eq("  ")
     end
 
     it "returns correct indentation for namespaced resource" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       expect(generator.send(:class_indent)).to eq("    ")
     end
   end
@@ -215,18 +215,18 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
 
   describe "#module_nesting_end" do
     it "generates end statements for simple resource" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       expect(generator.send(:module_nesting_end)).to eq("end")
     end
 
     it "generates multiple end statements for namespaced resource" do
-      generator = described_class.new(["Admin::Users"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Users" ], [], destination_root: destination)
       nesting = generator.send(:module_nesting_end)
       expect(nesting).to eq("end\nend")
     end
 
     it "generates three end statements for deeply nested resource" do
-      generator = described_class.new(["Admin::Settings::Roles"], [], destination_root: destination)
+      generator = described_class.new([ "Admin::Settings::Roles" ], [], destination_root: destination)
       nesting = generator.send(:module_nesting_end)
       expect(nesting).to eq("end\nend\nend")
     end
@@ -234,7 +234,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
 
   describe "#check_pages_directory" do
     it "allows generation when app/pages exists" do
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       # Directory exists from before block - stub Rails.root to point to destination
       allow(Rails).to receive(:root).and_return(Pathname.new(destination))
 
@@ -245,7 +245,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
       # Remove the pages directory
       FileUtils.rm_rf(File.join(destination, "app", "pages"))
 
-      generator = described_class.new(["Products"], [], destination_root: destination)
+      generator = described_class.new([ "Products" ], [], destination_root: destination)
       allow(generator).to receive(:say)
       # Stub Rails.root to point to destination where app/pages doesn't exist
       allow(Rails).to receive(:root).and_return(Pathname.new(destination))
@@ -257,7 +257,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
 
   describe "#create_page_files" do
     context "with explicit actions" do
-      let(:generator) { described_class.new(["Products", "index"], [], destination_root: destination) }
+      let(:generator) { described_class.new([ "Products", "index" ], [], destination_root: destination) }
 
       before do
         allow(generator).to receive(:template)
@@ -274,7 +274,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
     end
 
     context "with unknown action" do
-      let(:generator) { described_class.new(["Products", "unknown_action"], [], destination_root: destination) }
+      let(:generator) { described_class.new([ "Products", "unknown_action" ], [], destination_root: destination) }
 
       before do
         allow(generator).to receive(:template)
@@ -290,7 +290,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
     end
 
     context "with no actions specified" do
-      let(:generator) { described_class.new(["Products"], [], destination_root: destination) }
+      let(:generator) { described_class.new([ "Products" ], [], destination_root: destination) }
 
       before do
         allow(generator).to receive(:template)
@@ -307,7 +307,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
     end
 
     context "with custom action" do
-      let(:generator) { described_class.new(["Products", "custom"], [], destination_root: destination) }
+      let(:generator) { described_class.new([ "Products", "custom" ], [], destination_root: destination) }
 
       before do
         allow(generator).to receive(:template)
@@ -325,7 +325,7 @@ RSpec.describe BetterPage::Generators::PageGenerator, type: :generator do
   end
 
   describe "#show_completion_message" do
-    let(:generator) { described_class.new(["Products"], [], destination_root: destination) }
+    let(:generator) { described_class.new([ "Products" ], [], destination_root: destination) }
 
     before do
       allow(generator).to receive(:say)

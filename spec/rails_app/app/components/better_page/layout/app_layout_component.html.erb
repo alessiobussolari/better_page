@@ -1,0 +1,31 @@
+<div id="<%= id %>"
+     class="min-h-screen bg-gray-100"
+     data-controller="app-layout"
+     data-app-layout-collapsed-value="<%= sidebar_collapsed? %>">
+
+  <%# Sidebar (desktop only) %>
+  <% if sidebar? %>
+    <aside class="fixed inset-y-0 left-0 z-30"
+           data-app-layout-target="sidebar">
+      <%= sidebar %>
+    </aside>
+  <% end %>
+
+  <%# Main content area %>
+  <div class="<%= content_classes %>" data-app-layout-target="content">
+    <%# Topbar %>
+    <% if topbar? %>
+      <%= topbar %>
+    <% end %>
+
+    <%# Page content %>
+    <main class="<%= main_classes %>">
+      <%= content %>
+    </main>
+  </div>
+
+  <%# Dock mobile (fixed bottom) %>
+  <% if dock? %>
+    <%= dock %>
+  <% end %>
+</div>

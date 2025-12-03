@@ -30,6 +30,6 @@ module BetterPage
           config = ALERT_STYLES[type.to_sym] || ALERT_STYLES[:info]
           config[:icon]
         end
-      end
+    end
   end
 end

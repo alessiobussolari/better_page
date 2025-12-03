@@ -86,7 +86,7 @@ RSpec.describe BetterPage::Ui::TableComponent, type: :component do
 
     it "renders row actions from callable" do
       row_actions = ->(item) {
-        [{ label: "View #{item[:name]}", path: "#" }]
+        [ { label: "View #{item[:name]}", path: "#" } ]
       }
 
       render_inline(described_class.new(
@@ -162,7 +162,7 @@ RSpec.describe BetterPage::Ui::TableComponent, type: :component do
       component = described_class.new(
         items: items,
         columns: columns,
-        row_actions: [{ label: "Edit", path: "#" }]
+        row_actions: [ { label: "Edit", path: "#" } ]
       )
       expect(component.row_actions?).to be true
     end

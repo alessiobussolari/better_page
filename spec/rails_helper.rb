@@ -25,7 +25,7 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
 ENV["RAILS_ENV"] = "test"
 
 require_relative "rails_app/config/environment"
-ActiveRecord::Migrator.migrations_paths = [File.expand_path("rails_app/db/migrate", __dir__)]
+ActiveRecord::Migrator.migrations_paths = [ File.expand_path("rails_app/db/migrate", __dir__) ]
 
 # Register default components for testing (simulates what railtie does in production)
 unless BetterPage.defaults_registered?
@@ -39,7 +39,7 @@ require "capybara/rspec"
 
 # Load fixtures from the engine
 RSpec.configure do |config|
-  config.fixture_paths = [File.expand_path("fixtures", __dir__)]
+  config.fixture_paths = [ File.expand_path("fixtures", __dir__) ]
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!

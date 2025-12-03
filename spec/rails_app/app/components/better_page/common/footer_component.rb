@@ -23,6 +23,6 @@ module BetterPage
         def has_text?
           text.present?
         end
-      end
+    end
   end
 end

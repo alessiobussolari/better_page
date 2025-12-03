@@ -32,6 +32,6 @@ module BetterPage
         def form_action
           action_path || request.path
         end
-      end
+    end
   end
 end

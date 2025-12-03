@@ -64,8 +64,8 @@ module BetterPage
             result << { type: :page, number: 1, current: current_page == 1 }
             result << { type: :gap } if current_page > 4
 
-            start_range = [current_page - 1, 2].max
-            end_range = [current_page + 1, total_pages - 1].min
+            start_range = [ current_page - 1, 2 ].max
+            end_range = [ current_page + 1, total_pages - 1 ].min
 
             (start_range..end_range).each do |page|
               result << { type: :page, number: page, current: page == current_page }
@@ -92,6 +92,6 @@ module BetterPage
           query = params.to_query
           query.present? ? "#{path}?#{query}" : path
         end
-      end
+    end
   end
 end

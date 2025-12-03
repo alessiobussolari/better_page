@@ -41,6 +41,6 @@ module BetterPage
           else "lg:w-2/3"
           end
         end
-      end
+    end
   end
 end

@@ -48,6 +48,6 @@ module BetterPage
             current_date.strftime("%A, %B %d, %Y")
           end
         end
-      end
+    end
   end
 end

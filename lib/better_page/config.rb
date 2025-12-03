@@ -88,7 +88,7 @@ module BetterPage
     # Supports destructuring: components, meta = config
     # @return [Array] [components, meta]
     def to_ary
-      [components, meta]
+      [ components, meta ]
     end
 
     # Alias for destructuring compatibility

@@ -74,9 +74,9 @@ module BetterPage
 
           base_classes += if has_error?
                             " border-red-300 focus:ring-red-500"
-                          else
+          else
                             " border-gray-300 focus:ring-blue-500"
-                          end
+          end
 
           base_classes += " bg-gray-50 text-gray-500" if disabled?
           base_classes
@@ -87,9 +87,9 @@ module BetterPage
 
           base_classes += if has_error?
                             " border-red-300 focus:ring-red-500"
-                          else
+          else
                             " border-gray-300 focus:ring-blue-500"
-                          end
+          end
 
           base_classes += " bg-gray-50 text-gray-500" if disabled?
           base_classes
@@ -204,7 +204,7 @@ module BetterPage
 
         def checked?
           if field_value.present?
-            [true, "1", "true"].include?(field_value)
+            [ true, "1", "true" ].include?(field_value)
           else
             options[:checked] || false
           end
@@ -245,7 +245,7 @@ module BetterPage
           return [] unless options[:options]
 
           options[:options].map do |option|
-            [option[:label], option[:value]]
+            [ option[:label], option[:value] ]
           end
         end
     end

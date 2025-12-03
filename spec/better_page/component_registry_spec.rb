@@ -374,7 +374,7 @@ RSpec.describe "ComponentRegistry additional coverage" do
         end
 
         def items
-          [{ name: 123 }] # Invalid - name should be string
+          [ { name: 123 } ] # Invalid - name should be string
         end
 
         define_method(:view_component_class) { mock_component }

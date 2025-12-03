@@ -7,7 +7,7 @@ RSpec.describe BetterPage::Config do
     {
       header: { title: "Users", breadcrumbs: [] },
       table: { items: [], columns: [] },
-      statistics: [{ label: "Total", value: 100 }],
+      statistics: [ { label: "Total", value: 100 } ],
       alerts: []
     }
   end
@@ -65,7 +65,7 @@ RSpec.describe BetterPage::Config do
     end
 
     it "returns statistics component" do
-      expect(config.statistics).to eq([{ label: "Total", value: 100 }])
+      expect(config.statistics).to eq([ { label: "Total", value: 100 } ])
     end
 
     it "returns alerts component" do
@@ -88,7 +88,7 @@ RSpec.describe BetterPage::Config do
           details: { enabled: true },
           footer: { text: "Footer" },
           panel: { title: "Panel" },
-          errors: ["Error 1"],
+          errors: [ "Error 1" ],
           content_section: { title: "Section" },
           widget: { type: :chart }
         }
@@ -112,7 +112,7 @@ RSpec.describe BetterPage::Config do
       end
 
       it "returns errors component" do
-        expect(config.errors).to eq(["Error 1"])
+        expect(config.errors).to eq([ "Error 1" ])
       end
 
       it "returns content_section component" do
@@ -322,9 +322,9 @@ RSpec.describe BetterPage::Config do
   describe "real-world usage patterns" do
     let(:index_components) do
       {
-        header: { title: "Products", breadcrumbs: [{ label: "Home", path: "/" }] },
-        table: { items: [1, 2, 3], columns: [:name, :price] },
-        statistics: [{ label: "Total", value: 3 }],
+        header: { title: "Products", breadcrumbs: [ { label: "Home", path: "/" } ] },
+        table: { items: [ 1, 2, 3 ], columns: [ :name, :price ] },
+        statistics: [ { label: "Total", value: 3 } ],
         pagination: { current_page: 1, total_pages: 1 }
       }
     end

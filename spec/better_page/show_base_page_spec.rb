@@ -17,7 +17,7 @@ RSpec.describe BetterPage::ShowBasePage do
             { label: "Home", path: "/" },
             { label: "Items", path: "/items" }
           ],
-          metadata: [{ label: "ID", value: @test_item[:id] }],
+          metadata: [ { label: "ID", value: @test_item[:id] } ],
           actions: [
             { path: "/edit", label: "Edit", icon: "edit", style: "primary" }
           ]
@@ -237,7 +237,7 @@ RSpec.describe BetterPage::ShowBasePage do
     let(:page) { test_show_page_class.new({ id: 1, name: "Test", email: "test@example.com" }) }
 
     it "handles info_grid with pre-formatted items array" do
-      items = [{ name: "Name", value: "John" }, { name: "Email", value: "john@example.com" }]
+      items = [ { name: "Name", value: "John" }, { name: "Email", value: "john@example.com" } ]
       result = page.send(:content_section_format,
                          title: "Details",
                          icon: "info",
@@ -249,7 +249,7 @@ RSpec.describe BetterPage::ShowBasePage do
     end
 
     it "handles info_grid with plain array content" do
-      content = ["item1", "item2"]
+      content = [ "item1", "item2" ]
       result = page.send(:content_section_format,
                          title: "List",
                          icon: "list",

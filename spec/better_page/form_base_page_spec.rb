@@ -53,7 +53,7 @@ RSpec.describe BetterPage::FormBasePage do
       end
 
       def panels
-        [{ title: "Main", fields: [] }]
+        [ { title: "Main", fields: [] } ]
       end
     end
   end
@@ -173,7 +173,7 @@ RSpec.describe BetterPage::FormBasePage do
     let(:page) { test_form_page_class.new }
 
     it "builds panel hash" do
-      fields = [{ name: :test, type: :text, label: "Test" }]
+      fields = [ { name: :test, type: :text, label: "Test" } ]
       result = page.send(:panel_format,
                          title: "Test Panel",
                          fields: fields,

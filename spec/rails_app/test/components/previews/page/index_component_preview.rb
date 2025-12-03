@@ -41,7 +41,7 @@ module Page
     def with_search
       header = {
         title: "Users",
-        actions: [{ label: "Add User", path: "#", style: :primary }]
+        actions: [ { label: "Add User", path: "#", style: :primary } ]
       }
 
       search = {
@@ -49,7 +49,7 @@ module Page
         placeholder: "Search users...",
         current_search: nil,
         filters: [
-          { name: :role, label: "Role", type: :select, options: [["All", ""], ["Admin", "admin"], ["User", "user"]] }
+          { name: :role, label: "Role", type: :select, options: [ [ "All", "" ], [ "Admin", "admin" ], [ "User", "user" ] ] }
         ]
       }
 

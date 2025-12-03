@@ -28,7 +28,7 @@ module Common
 
       total_records = pages * per_page - rand(0..per_page)
       start_record = (current - 1) * per_page + 1
-      end_record = [current * per_page, total_records].min
+      end_record = [ current * per_page, total_records ].min
 
       render BetterPage::Common::PaginationComponent.new(
         current_page: current,

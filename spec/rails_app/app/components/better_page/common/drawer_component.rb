@@ -44,7 +44,7 @@ module BetterPage
       end
 
       def panel_size_class
-        horizontal = [:left, :right].include?(direction)
+        horizontal = [ :left, :right ].include?(direction)
         case size
         when :large
           horizontal ? "max-w-[75vw] w-screen" : "max-h-[80vh]"

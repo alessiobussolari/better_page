@@ -37,8 +37,8 @@ module Page
     def with_sections
       show_header = {
         title: "Order #1001",
-        metadata: [{ value: "Placed on Dec 1, 2024" }],
-        actions: [{ label: "Print", path: "#", style: :secondary }]
+        metadata: [ { value: "Placed on Dec 1, 2024" } ],
+        actions: [ { label: "Print", path: "#", style: :secondary } ]
       }
 
       show_overview = {

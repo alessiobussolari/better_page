@@ -357,7 +357,7 @@ RSpec.describe BetterPage::Compliance::Analyzer do
         result = analyzer.analyze_page(file_path)
 
         expect(result[:compliant]).to be true
-        expect([:compliant, :warning]).to include(result[:status])
+        expect([ :compliant, :warning ]).to include(result[:status])
         expect(result[:issues]).to be_empty
       end
     end
@@ -424,7 +424,7 @@ RSpec.describe BetterPage::Compliance::Analyzer do
         class_name: "TestPage",
         page_type: :index_page,
         namespace: "Admin",
-        issues: ["Database queries forbidden"],
+        issues: [ "Database queries forbidden" ],
         warnings: [],
         status: :error
       }
@@ -442,7 +442,7 @@ RSpec.describe BetterPage::Compliance::Analyzer do
         page_type: :index_page,
         namespace: "Admin",
         issues: [],
-        warnings: ["Hardcoded paths detected"],
+        warnings: [ "Hardcoded paths detected" ],
         status: :warning
       }
 
