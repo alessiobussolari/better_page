@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "dry-schema"
+require "ostruct"
 
 module BetterPage
   # Module that provides component registration DSL for page classes.
