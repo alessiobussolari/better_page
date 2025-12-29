@@ -5,7 +5,7 @@ gemspec
 
 gem "puma"
 
-gem "sqlite3", "~> 2.8"
+gem "sqlite3", "~> 2.9"
 
 # Turbo for Turbo::FramesHelper in ViewComponents
 gem "turbo-rails"
